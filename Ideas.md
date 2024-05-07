@@ -24,3 +24,5 @@ que se invierta en una reserva natural, para el caso de la sabana
 una idea (que es imposible en la vida real pero bueno xd) seria para el bioma ciudad, q se pueda invertir en una empresa (luego le damos mejor contexto) que cree nanorobots que vuelen y detecten
 particulas contaminantes de co2 y liberen compuestos naturales o quimicos q las neutralicen
 o que algo en lo q puedas invertir sea en crear una bacteria u organimo en un laboratorio q sea capaz de comer plasticos, eso solucionaria varios temas de contaminacion
+
+agregas idea
