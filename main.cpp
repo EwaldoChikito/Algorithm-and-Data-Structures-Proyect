@@ -44,6 +44,8 @@ Jugadores *CrearJugador(string nombre){
     return NuevoJugador;
 }
 
+
+
 //CONTROL DE GRÁFICOS
 
 //CONTROL DE ARCHIVOS
