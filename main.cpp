@@ -18,6 +18,7 @@ struct Jugadores{
     Recursos *Inventario;
     Jugadores *prox;
 };
+//prueba de cambio
 
 struct Casillas{
     int id;
