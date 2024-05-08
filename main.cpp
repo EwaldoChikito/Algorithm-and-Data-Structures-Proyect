@@ -11,7 +11,7 @@ struct Recursos{
     string nombre;
     Recursos *prox;
 };
-
+/// @brief a
 struct Jugadores{
     int pts;
     string nombre;
