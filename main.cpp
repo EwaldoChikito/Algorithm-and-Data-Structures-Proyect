@@ -11,14 +11,13 @@ struct Recursos{
     string nombre;
     Recursos *prox;
 };
-/// @brief a
+
 struct Jugadores{
     int pts;
     string nombre;
     Recursos *Inventario;
     Jugadores *prox;
 };
-//prueba de cambio
 
 struct Casillas{
     int id;
@@ -44,8 +43,6 @@ Jugadores *CrearJugador(string nombre){
     NuevoJugador->prox=NULL;
     return NuevoJugador;
 }
-
-
 
 //CONTROL DE GRÁFICOS
 
