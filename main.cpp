@@ -29,7 +29,7 @@ struct Casillas{
 
 Recursos *CrearRecurso(int id, string nombre){
     Recursos *NuevoRecurso= new Recursos;
-    NuevoRecurso->id_recursos=id;
+    NuevoRecurso->id_recurso=id;
     NuevoRecurso->nombre_recurso=nombre;
     NuevoRecurso->prox_recurso=NULL;
     return NuevoRecurso;
