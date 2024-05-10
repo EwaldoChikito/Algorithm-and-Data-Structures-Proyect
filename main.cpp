@@ -2,12 +2,17 @@
 //MADE BY: RICARDO MEJIA & EDUARDO ROJAS
 
 
-//#include <stdio.h>
+#include <stdio.h>
 #include <iostream>
 #include <cstdlib>
 #include <string> 
 #include <windows.h>
 using namespace std;
+
+#define ARRIBA 'i'
+#define ABAJO 'k'
+#define ENTER 13
+#define color SetConsoleTextAttribute
 
 //Declaración de Estructuras
 
@@ -20,7 +25,7 @@ struct Recursos{
 struct Jugadores{
     int pts;
     int equipo;
-    int posicion
+    int posicion;
     string nombre_equipo;
     string nombre_jugador;
     Recursos *inventario;
@@ -54,11 +59,112 @@ Jugadores *CrearJugador(string nombre){
 
 //CONTROL DE GRÁFICOS
 
+char getch2 (){
+   char c=0;
+   DWORD modo, contador;
+   HANDLE ih = GetStdHandle(STD_INPUT_HANDLE);
+ 
+   // Desactivamos escritura en terminal
+   SetConsoleMode (ih, modo & ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT));
+ 
+   ReadConsoleA (ih, &c, 1, &contador, NULL);
+ 
+   if (c == 0) {
+      ReadConsoleA (ih, &c, 1, &contador, NULL);
+   }
+ 
+   SetConsoleMode (ih, modo); // Devolvemos control normal
+   return c;
+}
+
+void gotoxy(int x, int y){
+    HANDLE hcon;
+    hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD dwPos;
+    dwPos.X = x;
+    dwPos.Y = y;
+    SetConsoleCursorPosition(hcon, dwPos);
+}
+
+void ocultarCursor(){
+    HANDLE hCon;
+    hCon=GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO cci;
+    cci.dwSize = 1;
+    cci.bVisible = FALSE;
+}
+
+int flechas_menu(const char *opciones[], int n){
+   int opcionSeleccionada = 1;  // Indica la opcionSeleccionada
+    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
+ 
+   int tecla;
+ 
+   bool repite = true; // controla el bucle para regresar a la rutina que lo llamo, al presionar ENTER
+ 
+   do {
+        ocultarCursor();
+        system("cls");
+        color(hConsole, 12);
+        gotoxy(15, 3 + opcionSeleccionada); cout << "==>" << endl;
+ 
+      // Imprime el título del menú
+      ocultarCursor();
+      color(hConsole, 6);
+      gotoxy(15, 2); cout << "BIENVENIDO AL JUEGO AMBIENTAL"; //Hay que encontrar un mejor nombre
+      color(hConsole, 8);
+      gotoxy(8,9); cout<<"Usar las teclas I y K para moverse por el menu";
+      gotoxy(8,10); cout<<"Presione enter para seleccionar alguna opcion";
+      // Imprime las opciones del menú
+
+      for (int i = 0; i < n; ++i) {
+        ocultarCursor();
+        color(hConsole, 7);
+        gotoxy(19, 4 + i); cout << i + 1 << ") " << opciones[i];
+      }
+ 
+      // Solo permite que se ingrese ARRIBA, ABAJO o ENTER
+ 
+      do {
+            ocultarCursor();
+         tecla = getch2();
+      } while (tecla != ARRIBA && tecla != ABAJO && tecla != ENTER);
+ 
+      switch (tecla) {
+ 
+         case ARRIBA:   // En caso que se presione ARRIBA
+ 
+            opcionSeleccionada--;
+ 
+            if (opcionSeleccionada < 1) {
+               opcionSeleccionada = n;
+            }
+ 
+            break;
+ 
+         case ABAJO:
+            opcionSeleccionada++;
+ 
+            if (opcionSeleccionada > n) {
+               opcionSeleccionada = 1;
+            }
+ 
+            break;
+ 
+         case ENTER:
+            repite = false;
+            break;
+      }
+   } while (repite);
+ 
+   return opcionSeleccionada;
+}
+
 //CONTROL DE ARCHIVOS
 
 //TABLERO
 
-Casillas* crearCasilla(int valor) {
+Casillas* crearCasilla(int valor){
   Casillas *nuevo = new Casillas;
   nuevo->id_casillas = valor;
   nuevo->prox = NULL;
@@ -119,31 +225,39 @@ void Partida(/*parámetros*/){ //acaba cuando se cumple la condicion de fin de p
 void MainMenu(/*parámetros*/){// acaba cuando se decida cerrar el juego(programa) por completo
     bool fin_partida=false;
     int opcion;
-    cout<<"Que opcion desea escoger?";
-    imprime_opciones_menu();
-    cin>>opcion;
-    switch (opcion){
-    case 1: //INICIA PARTIDA
-        Partida(); //In
-    break;
-    
-    case 2: //INICIA INSTRUCCIONES/REGLAS/TURORIAL
-        imprime_instrucciones();
-    break;
-    
-    default:
-        cout<<"Opcion Inválida..."<<endl;
-    break;
+    int n=3; //numero de opciones del Menú
+    const char *opciones[] = {"INICIAR PARTIDA", "REGLAS/TUTORIAL", "SALIR DEL JUEGO"};
+    opcion=flechas_menu(opciones,n);
+    while(fin_partida!=true){
+
+        switch (opcion){
+        case 1: //INICIA PARTIDA
+            Partida(); //Inicia la partida
+        break;
+        
+        case 2: //INICIA INSTRUCCIONES/REGLAS/TURORIAL
+            imprime_instrucciones();
+        break;
+
+        case 3:
+            system("cls");
+            gotoxy(15,2);cout<<"\n\nHa Salido con exito del Juego, Hasta luego!"<<endl;
+            fin_partida=true;
+        break;   
+        default:
+            cout<<"Opcion Inválida..."<<endl;
+        break;
+        }
     }
 }
 void Mover_Jugador(Jugadores jugador){
-    Jugadores *JugadorN= CrearJugador()
+    //Jugadores *JugadorN= CrearJugador()
 
 }
 
 //PROGRAMA PRINCIPAL
 main(){
-    int idtablero=1,i=0;
+  /*  int idtablero=1,i=0;
     Casillas *Tablero=NULL;
     while(i<25){
         llenado_tablero(Tablero,idtablero);
@@ -151,7 +265,7 @@ main(){
         i++;
     };
     mostrartablero(Tablero);
-
-   /// MainMenu(/*parámetros*/);  //Llamamos al ciclo general de la partida
+*/
+    MainMenu(/*parámetros*/);  //Llamamos al ciclo general de la partida
     
 }

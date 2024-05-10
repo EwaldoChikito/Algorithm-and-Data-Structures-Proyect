@@ -1,35 +1,16 @@
-// Se usa la función getch implementada mediante la API de Windows
-// Pude encontrar una función getch que sí funciona, ya lo puse :D
-// Solo las teclas i k para arrib y abajo
  
 #include <iostream>
 #include <windows.h>
- 
-/*
-#define ARRIBA 72
-#define ABAJO 80
-#define ENTER 13
-*/
- 
  
 #define ARRIBA 'i'
 #define ABAJO 'k'
 #define ENTER 13
  
- 
-/*
-#define ARRIBA 1
-#define ABAJO 0
-#define ENTER 13
-#define INVALIDO -1
-*/
- 
 using namespace std;
  
 // API DE WINDOWS
  
-char getch2 ()
-{
+char getch2 (){
    char c=0;
    DWORD modo, contador;
    HANDLE ih = GetStdHandle(STD_INPUT_HANDLE);
@@ -44,7 +25,6 @@ char getch2 ()
    }
  
    SetConsoleMode (ih, modo); // Devolvemos control normal
- 
    return c;
 }
  
@@ -61,15 +41,13 @@ void menu_resta();
 void menu_producto();
 void menu_division();
  
-int main()
-{
+int main(){
    menu_principal();
  
    return 0;
 }
  
-void menu_principal()
-{
+void menu_principal(){
    bool repite = true;
    int opcion;   
  
@@ -323,7 +301,7 @@ int menu(const char titulo[], const char *opciones[], int n)
  
    do {
       system("cls");
-      system("color 1e");
+      system("color");
       gotoxy(5, 3 + opcionSeleccionada); cout << "==>" << endl;
  
       // Imprime el título del menú
