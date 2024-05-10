@@ -1,7 +1,10 @@
 //PROYECTO DE ALGORITMOS Y ESTRUCTURAS DE DATOS 
 //MADE BY: RICARDO MEJIA & EDUARDO ROJAS
 
+
+//#include <stdio.h>
 #include <iostream>
+#include <string>
 using namespace std;
 
 //Declaración de Estructuras
@@ -14,6 +17,8 @@ struct Recursos{
 
 struct Jugadores{
     int pts;
+    int equipo;
+    string nombre_equipo;
     string nombre_jugador;
     Recursos *inventario;
     Jugadores *prox_jugador;
@@ -53,7 +58,9 @@ Jugadores *CrearJugador(string nombre){
 //CICLOS MENU/JUEGO/RONDA/TURNO
 
 //PROGRAMA PRINCIPAL
-
-void main(){
+main(){
+    string palabra;
+    cout<<"digalo ";
+    cin>>palabra;
     
 }
