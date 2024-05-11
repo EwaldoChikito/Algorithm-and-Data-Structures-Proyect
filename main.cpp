@@ -22,22 +22,20 @@ struct Recursos{
     Recursos *prox_recurso;
 };
 
-struct Jugadores{
-    int pts;
-    int equipo;
-    int posicion;
-    string nombre_equipo;
-    string nombre_jugador;
-    Recursos *inventario;
-    Jugadores *prox_jugador;
-};
-
 struct Casillas{
     int id_casillas;
     string bioma;
     Recursos *RLista;
-    Jugadores *Jlista;
     Casillas *prox;
+};
+struct Jugadores{
+    int pts;
+    int equipo;
+    Casillas *ubicacion_casilla;
+    string nombre_equipo;
+    string nombre_jugador;
+    Recursos *inventario;
+    Jugadores *prox_jugador;
 };
 
 Recursos *CrearRecurso(int id, string nombre){
@@ -46,7 +44,7 @@ Recursos *CrearRecurso(int id, string nombre){
     NuevoRecurso->nombre_recurso=nombre;
     NuevoRecurso->prox_recurso=NULL;
     return NuevoRecurso;
-}
+};
 
 Jugadores *CrearJugador(string nombre){
     Jugadores *NuevoJugador= new Jugadores;
@@ -55,8 +53,7 @@ Jugadores *CrearJugador(string nombre){
     NuevoJugador->inventario=NULL;
     NuevoJugador->prox_jugador=NULL;
     return NuevoJugador;
-}
-
+};
 //CONTROL DE GRÁFICOS
 
 char getch2 (){
@@ -174,6 +171,9 @@ Casillas* crearCasilla(int valor){
 bool TableroVacio(Casillas *inicio){
     return inicio==NULL;
 }
+bool JugadoresVacio(Jugadores *inicio){
+    return inicio==NULL;
+}
 
 void mostrartablero(Casillas *Tablero){
    Casillas *mover=Tablero;
@@ -185,18 +185,60 @@ void mostrartablero(Casillas *Tablero){
          cout<<"F I N"<<endl;
    }  
 
-void llenado_tablero(Casillas *&Tablero,int iddelacasilla){ //llenado de archivo de forma manual sin uso de archivos
-    Casillas *CasillaNueva=crearCasilla(iddelacasilla);
-    if(TableroVacio(Tablero)){
-        Tablero=CasillaNueva;
-    }else{
-        Casillas *auxiliar_mover=Tablero;
-        while(auxiliar_mover->prox!=NULL){
-            auxiliar_mover=auxiliar_mover->prox;
+void llenado_tablero(Casillas *&Tablero) {
+    int i = 1;
+    while (i <= 25) { 
+        Casillas *CasillaNueva = crearCasilla(i);
+        if (TableroVacio(Tablero)) {
+            Tablero = CasillaNueva;
+        } else {
+            Casillas *auxiliar_mover = Tablero;
+            while (auxiliar_mover->prox != NULL) {
+                auxiliar_mover = auxiliar_mover->prox;
+            }
+            auxiliar_mover->prox = CasillaNueva;
         }
-        auxiliar_mover->prox=CasillaNueva;
+        i++;
     }
 }
+
+void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero){
+    int numerodejugadores;
+    cout<<"Indique la cantidad de jugadores: ";
+    cin>>numerodejugadores;
+    int i=1;
+    string nombredejugador;
+    while(i<=numerodejugadores){
+        cout<<"Indique el nombre del jugador numero "<<i<<" aqui: ";
+        cin>>nombredejugador;
+        Jugadores *JugadorNuevo=CrearJugador(nombredejugador);
+        JugadorNuevo->ubicacion_casilla=Tablero;
+
+        if(JugadoresVacio(JugadorInicial)){
+            JugadorInicial=JugadorNuevo;
+        }else{
+            Jugadores *auxiliar=JugadorInicial;
+            while(auxiliar->prox_jugador != NULL){
+                auxiliar=auxiliar->prox_jugador;
+            }
+            auxiliar->prox_jugador=JugadorNuevo;
+        }
+        
+        i++;
+    }
+}
+
+
+void mostrarjugadores(Jugadores *JugadorInicial){
+    Jugadores *mover=JugadorInicial;
+      while (mover != NULL){
+           cout <<" | "<< mover->nombre_jugador<<" | " <<"->";
+           mover = mover->prox_jugador;
+        }
+        cout<<"F I N"<<endl;
+   }  
+
+
 
 //CICLOS MENU/JUEGO/RONDA/TURNO
 
@@ -218,7 +260,7 @@ void Ronda(/*parámetros*/){ //acaba al haber terminado el Turno de cada jugador
 
 }
 
-void Partida(/*parámetros*/){ //acaba cuando se cumple la condicion de fin de partida, ya sea victoria o salida forzada
+void Partida(){ //acaba cuando se cumple la condicion de fin de partida, ya sea victoria o salida forzada
 
 }
 
@@ -250,22 +292,18 @@ void MainMenu(/*parámetros*/){// acaba cuando se decida cerrar el juego(program
         }
     }
 }
-void Mover_Jugador(Jugadores jugador){
-    //Jugadores *JugadorN= CrearJugador()
 
-}
 
 //PROGRAMA PRINCIPAL
 main(){
-  /*  int idtablero=1,i=0;
+    Jugadores *jugador1=NULL;
     Casillas *Tablero=NULL;
-    while(i<25){
-        llenado_tablero(Tablero,idtablero);
-        idtablero++;
-        i++;
-    };
+    llenado_tablero(Tablero);
     mostrartablero(Tablero);
-*/
-    MainMenu(/*parámetros*/);  //Llamamos al ciclo general de la partida
+ 	CrearListadeJugadores(jugador1,Tablero);
+    mostrarjugadores(jugador1);
+
+    //MainMenu();  //Llamamos al ciclo general de la partida
     
 }
+
