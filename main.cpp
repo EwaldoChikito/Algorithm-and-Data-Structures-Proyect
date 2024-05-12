@@ -31,6 +31,7 @@ struct Casillas{
 struct Jugadores{
     int pts;
     int equipo;
+    int posicion;
     Casillas *ubicacion_casilla;
     string nombre_equipo;
     string nombre_jugador;
@@ -207,12 +208,13 @@ void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero){
     cout<<"Indique la cantidad de jugadores: ";
     cin>>numerodejugadores;
     int i=1;
-    string nombredejugador;
+    string nombredejugador; 
     while(i<=numerodejugadores){
         cout<<"Indique el nombre del jugador numero "<<i<<" aqui: ";
         cin>>nombredejugador;
         Jugadores *JugadorNuevo=CrearJugador(nombredejugador);
         JugadorNuevo->ubicacion_casilla=Tablero;
+        JugadorNuevo->posicion=Tablero->id_casillas;
 
         if(JugadoresVacio(JugadorInicial)){
             JugadorInicial=JugadorNuevo;
@@ -236,10 +238,36 @@ void mostrarjugadores(Jugadores *JugadorInicial){
            mover = mover->prox_jugador;
         }
         cout<<"F I N"<<endl;
-   }  
+   }
 
 
 
+void mover_jugador(Jugadores *&JugadorInicial, Casillas *&Tablero){//esto iria en turno y luego en ronda
+    Jugadores *Auxiliar=JugadorInicial;
+    int contador=1,opcion;
+
+
+    while(Auxiliar!=NULL){
+        cout<<Auxiliar->nombre_jugador<<" quieres moverte una casilla hacia adelante?"<<endl;
+        cout<<"1 para SI"<<endl;
+        cout<<"0 para NO"<<endl;
+        cin>>opcion;
+        if(opcion==1){
+            if(Auxiliar->ubicacion_casilla->prox!=NULL){
+                Auxiliar->ubicacion_casilla=Auxiliar->ubicacion_casilla->prox;
+                Auxiliar->posicion=Auxiliar->ubicacion_casilla->id_casillas;
+                cout<<Auxiliar->nombre_jugador<<" se movio a la casilla "<<Auxiliar->posicion<<endl;
+            }else{
+                cout<< Auxiliar->nombre_jugador << " ha llegado al final del tablero" << endl;
+            }
+        }else if(opcion==0){
+        cout<< Auxiliar->nombre_jugador<<" no realizo ningun movimiento,esta ubicado en la casilla: "<<Auxiliar->posicion;
+        }else{
+            cout<<"Opcion Invalida"<<endl;
+        }
+        Auxiliar = Auxiliar->prox_jugador;
+        }
+}
 //CICLOS MENU/JUEGO/RONDA/TURNO
 
 void imprime_opciones_menu(){
@@ -298,12 +326,15 @@ void MainMenu(/*parámetros*/){// acaba cuando se decida cerrar el juego(program
 main(){
     Jugadores *jugador1=NULL;
     Casillas *Tablero=NULL;
+    int k=1;
+    //MainMenu();  //Llamamos al ciclo general de la partida
     llenado_tablero(Tablero);
     mostrartablero(Tablero);
  	CrearListadeJugadores(jugador1,Tablero);
     mostrarjugadores(jugador1);
+    mover_jugador(jugador1,Tablero);
 
-    //MainMenu();  //Llamamos al ciclo general de la partida
+
     
 }
 
