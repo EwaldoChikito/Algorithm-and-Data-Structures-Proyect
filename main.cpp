@@ -60,6 +60,8 @@ Jugadores *CrearJugador(string nombre){
 //CONTROL DE GRÁFICOS
 
 char getch2 (){
+   //FUNCIÓN QUE DETECTA LA TECLA PRESIONADA EN EL TECLADO EN TIEMPO REAL
+   
    char c=0;
    DWORD modo, contador;
    HANDLE ih = GetStdHandle(STD_INPUT_HANDLE);
@@ -78,6 +80,8 @@ char getch2 (){
 }
 
 void gotoxy(int x, int y){
+    //FUNCION QUE IMPRIME UN TEXTO DESEADO EN UNAS COORDENADAS (X,Y) ESPECÍFICAS
+
     HANDLE hcon;
     hcon = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD dwPos;
@@ -87,59 +91,59 @@ void gotoxy(int x, int y){
 }
 
 void ocultarCursor(){
+    //FUNCION  QUE OCULTA EL CURSOR QUE PARPADEA EN LA TERMINAL
+
     HANDLE hCon;
     hCon=GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cci;
     cci.dwSize = 1;
     cci.bVisible = FALSE;
+
+    SetConsoleCursorInfo(hCon,&cci);
 }
 
 int flechas_menu(const char *opciones[], int n){
-   int opcionSeleccionada = 1;  // Indica la opcionSeleccionada
+    int opcionSeleccionada = 1; 
     HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
  
-   int tecla;
+    int tecla;
+    bool repite = true;
  
-   bool repite = true; // controla el bucle para regresar a la rutina que lo llamo, al presionar ENTER
- 
-   do {
+    do{
         ocultarCursor();
         system("cls");
         color(hConsole, 12);
         gotoxy(15, 3 + opcionSeleccionada); cout << "==>" << endl;
  
-      // Imprime el título del menú
-      ocultarCursor();
-      color(hConsole, 6);
-      gotoxy(15, 2); cout << "BIENVENIDO AL JUEGO AMBIENTAL"; //Hay que encontrar un mejor nombre
-      color(hConsole, 8);
-      gotoxy(8,9); cout<<"Usar las teclas I y K para moverse por el menu";
-      gotoxy(8,10); cout<<"Presione enter para seleccionar alguna opcion";
-      // Imprime las opciones del menú
-
-      for (int i = 0; i < n; ++i) {
+        // Imprime el título del menú
         ocultarCursor();
-        color(hConsole, 7);
-        gotoxy(19, 4 + i); cout << i + 1 << ") " << opciones[i];
-      }
+        color(hConsole, 6);
+        gotoxy(15, 2); cout << "BIENVENIDO AL JUEGO AMBIENTAL"; //Hay que encontrar un mejor nombre
+        color(hConsole, 8);
+        gotoxy(8,9); cout<<"Usar las teclas I y K para moverse por el menu";
+        gotoxy(8,10); cout<<"Presione enter para seleccionar alguna opcion";
+        // Imprime las opciones del menú
+
+        for (int i = 0; i < n; ++i) {
+            ocultarCursor();
+            color(hConsole, 7);
+            gotoxy(19, 4 + i); cout << i + 1 << ") " << opciones[i];
+        }
  
       // Solo permite que se ingrese ARRIBA, ABAJO o ENTER
  
-      do {
+        do {
             ocultarCursor();
-         tecla = getch2();
-      } while (tecla != ARRIBA && tecla != ABAJO && tecla != ENTER);
+            tecla = getch2();} 
+        while (tecla != ARRIBA && tecla != ABAJO && tecla != ENTER);
+        
+        switch (tecla) {
  
-      switch (tecla) {
- 
-         case ARRIBA:   // En caso que se presione ARRIBA
- 
-            opcionSeleccionada--;
- 
-            if (opcionSeleccionada < 1) {
-               opcionSeleccionada = n;
-            }
- 
+            case ARRIBA:   // En caso que se presione ARRIBA 
+                opcionSeleccionada--;
+                if (opcionSeleccionada < 1) {
+                    opcionSeleccionada = n;
+                }
             break;
  
          case ABAJO:
@@ -332,12 +336,12 @@ main(){
     Casillas *Tablero=NULL;
     int k=1;
     //MainMenu();  //Llamamos al ciclo general de la partida
+    
     llenado_tablero(Tablero);
     mostrartablero(Tablero);
  	CrearListadeJugadores(jugador1,Tablero);
     mostrarjugadores(jugador1);
     mover_jugador(jugador1,Tablero);
-
 
     
 }
