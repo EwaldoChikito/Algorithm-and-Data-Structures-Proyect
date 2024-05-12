@@ -1,14 +1,14 @@
 //PROYECTO DE ALGORITMOS Y ESTRUCTURAS DE DATOS 
 //MADE BY: RICARDO MEJIA & EDUARDO ROJAS
 
-
+//CONSTANTES Y LIBRERIAS
 #include <stdio.h>
 #include <iostream>
 #include <cstdlib>
 #include <string> 
 #include <windows.h>
-using namespace std;
 
+using namespace std;
 #define ARRIBA 'i'
 #define ABAJO 'k'
 #define ENTER 13
@@ -28,6 +28,7 @@ struct Casillas{
     Recursos *RLista;
     Casillas *prox;
 };
+
 struct Jugadores{
     int pts;
     int equipo;
@@ -55,6 +56,7 @@ Jugadores *CrearJugador(string nombre){
     NuevoJugador->prox_jugador=NULL;
     return NuevoJugador;
 };
+
 //CONTROL DE GRÁFICOS
 
 char getch2 (){
@@ -158,6 +160,16 @@ int flechas_menu(const char *opciones[], int n){
    return opcionSeleccionada;
 }
 
+void imprime_opciones_menu(){
+    cout<<"A:  Iniciar Partida"<<endl;
+    cout<<"C:  Tutorial/Instrucciones"<<endl;
+    cout<<"B:  Salir del Juego"<<endl;
+}
+
+void imprime_instrucciones(){
+
+}
+
 //CONTROL DE ARCHIVOS
 
 //TABLERO
@@ -172,6 +184,7 @@ Casillas* crearCasilla(int valor){
 bool TableroVacio(Casillas *inicio){
     return inicio==NULL;
 }
+
 bool JugadoresVacio(Jugadores *inicio){
     return inicio==NULL;
 }
@@ -268,17 +281,8 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *&Tablero){//esto iria e
         Auxiliar = Auxiliar->prox_jugador;
         }
 }
+
 //CICLOS MENU/JUEGO/RONDA/TURNO
-
-void imprime_opciones_menu(){
-    cout<<"A:  Iniciar Partida"<<endl;
-    cout<<"C:  Tutorial/Instrucciones"<<endl;
-    cout<<"B:  Salir del Juego"<<endl;
-}
-
-void imprime_instrucciones(){
-
-}
 
 void Turno(/*parámetros*/){ //acaba cuando el jugador elija su acción
 
