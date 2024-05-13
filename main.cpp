@@ -247,7 +247,6 @@ void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero){
     }
 }
 
-
 void mostrarjugadores(Jugadores *JugadorInicial){
     Jugadores *mover=JugadorInicial;
       while (mover != NULL){
@@ -257,35 +256,38 @@ void mostrarjugadores(Jugadores *JugadorInicial){
         cout<<"F I N"<<endl;
    }
 
-
-
-void mover_jugador(Jugadores *&JugadorInicial, Casillas *&Tablero){//esto iria en turno y luego en ronda
+void mover_jugadores(Jugadores *&JugadorInicial, Casillas *&Tablero) {
     Jugadores *Auxiliar=JugadorInicial;
-    int contador=1,opcion;
-
-
-    while(Auxiliar!=NULL){
+    int opcion;
+    while (Auxiliar!=NULL) {
+        bool valido=false; 
         cout<<Auxiliar->nombre_jugador<<" quieres moverte una casilla hacia adelante?"<<endl;
-        cout<<"1 para SI"<<endl;
-        cout<<"0 para NO"<<endl;
+        cout<<"1 para SI"<< endl;
+        cout<<"0 para NO"<< endl;
         cin>>opcion;
-        if(opcion==1){
-            if(Auxiliar->ubicacion_casilla->prox!=NULL){
-                Auxiliar->ubicacion_casilla=Auxiliar->ubicacion_casilla->prox;
-                Auxiliar->posicion=Auxiliar->ubicacion_casilla->id_casillas;
-                cout<<Auxiliar->nombre_jugador<<" se movio a la casilla "<<Auxiliar->posicion<<endl;
-            }else{
-                cout<< Auxiliar->nombre_jugador << " ha llegado al final del tablero" << endl;
+        
+        while (!valido) {
+            if (opcion==1 || opcion==0) {
+                if (opcion==1) {
+                    if (Auxiliar->ubicacion_casilla->prox != NULL) {
+                        Auxiliar->ubicacion_casilla=Auxiliar->ubicacion_casilla->prox;
+                        Auxiliar->posicion=Auxiliar->ubicacion_casilla->id_casillas;
+                        cout<<Auxiliar->nombre_jugador<<" se ha movido a la casilla "<<Auxiliar->posicion<<endl;
+                    } else {
+                        cout<<Auxiliar->nombre_jugador << " ha llegado al final del tablero"<<endl;
+                    }
+                } else {
+                    cout<<Auxiliar->nombre_jugador<<" no realizo ningun movimiento, esta ubicado en la casilla: "<<Auxiliar->posicion;
+                }
+                valido=true;
+            } else {
+                cout<<"La opcion seleccionada es incorrecta, por favor vuelva a intentarlo: ";
+                cin>>opcion;
             }
-        }else if(opcion==0){
-        cout<< Auxiliar->nombre_jugador<<" no realizo ningun movimiento,esta ubicado en la casilla: "<<Auxiliar->posicion;
-        }else{
-            cout<<"Opcion Invalida"<<endl;
         }
-        Auxiliar = Auxiliar->prox_jugador;
-        }
+        Auxiliar=Auxiliar->prox_jugador;  
+    }
 }
-
 //CICLOS MENU/JUEGO/RONDA/TURNO
 
 void Turno(/*parámetros*/){ //acaba cuando el jugador elija su acción
@@ -329,8 +331,8 @@ void MainMenu(/*parámetros*/){// acaba cuando se decida cerrar el juego(program
     }
 }
 
-
 //PROGRAMA PRINCIPAL
+
 main(){
     Jugadores *jugador1=NULL;
     Casillas *Tablero=NULL;
@@ -341,8 +343,5 @@ main(){
     mostrartablero(Tablero);
  	CrearListadeJugadores(jugador1,Tablero);
     mostrarjugadores(jugador1);
-    mover_jugador(jugador1,Tablero);
-
-    
+    mover_jugadores(jugador1,Tablero);
 }
-
