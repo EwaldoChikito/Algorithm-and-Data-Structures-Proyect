@@ -7,10 +7,13 @@
 #include <cstdlib>
 #include <string> 
 #include <windows.h>
+#include <conio.h>
 
 using namespace std;
-#define ARRIBA 'i'
-#define ABAJO 'k'
+//#define ARRIBA 'i'
+//#define ABAJO 'k'
+#define ARRIBA 72
+#define ABAJO 80
 #define ENTER 13
 #define color SetConsoleTextAttribute
 
@@ -113,29 +116,30 @@ int flechas_menu(const char *opciones[], int n){
         ocultarCursor();
         system("cls");
         color(hConsole, 12);
-        gotoxy(15, 3 + opcionSeleccionada); cout << "==>" << endl;
- 
+        gotoxy(28, 3 + opcionSeleccionada); cout << "==>" << endl;
+        gotoxy(51, 3 + opcionSeleccionada); cout << "<==" << endl;
+
         // Imprime el título del menú
         ocultarCursor();
         color(hConsole, 6);
-        gotoxy(15, 2); cout << "BIENVENIDO AL JUEGO AMBIENTAL"; //Hay que encontrar un mejor nombre
+        gotoxy(26, 2); cout << "BIENVENIDO AL JUEGO AMBIENTAL"; //Hay que encontrar un mejor nombre
         color(hConsole, 8);
-        gotoxy(8,9); cout<<"Usar las teclas I y K para moverse por el menu";
-        gotoxy(8,10); cout<<"Presione enter para seleccionar alguna opcion";
+        gotoxy(6,9); cout<<"Usar las Teclas de las ''FLECHAS DIRECCIONALES'' para moverse por el menu";
+        gotoxy(18,10); cout<<"Presione enter para seleccionar alguna opcion";
         // Imprime las opciones del menú
 
         for (int i = 0; i < n; ++i) {
             ocultarCursor();
             color(hConsole, 7);
-            gotoxy(19, 4 + i); cout << i + 1 << ") " << opciones[i];
+            gotoxy(32, 4 + i); cout << i + 1 << ") " << opciones[i];
         }
  
       // Solo permite que se ingrese ARRIBA, ABAJO o ENTER
  
         do {
             ocultarCursor();
-            tecla = getch2();} 
-        while (tecla != ARRIBA && tecla != ABAJO && tecla != ENTER);
+            tecla = getch();
+        }while (tecla != ARRIBA && tecla != ABAJO && tecla != ENTER);
         
         switch (tecla) {
  
@@ -337,11 +341,11 @@ main(){
     Jugadores *jugador1=NULL;
     Casillas *Tablero=NULL;
     int k=1;
-    //MainMenu();  //Llamamos al ciclo general de la partida
+    MainMenu();  //Llamamos al ciclo general de la partida
     
-    llenado_tablero(Tablero);
-    mostrartablero(Tablero);
- 	CrearListadeJugadores(jugador1,Tablero);
-    mostrarjugadores(jugador1);
-    mover_jugadores(jugador1,Tablero);
+//     llenado_tablero(Tablero);
+//     mostrartablero(Tablero);
+//  	CrearListadeJugadores(jugador1,Tablero);
+//     mostrarjugadores(jugador1);
+//     mover_jugadores(jugador1,Tablero);
 }
