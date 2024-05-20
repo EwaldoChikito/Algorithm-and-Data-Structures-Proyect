@@ -25,6 +25,17 @@ struct Recursos{
     Recursos *prox_recurso;
 };
 
+struct Inventario{
+    int agua;
+    int metal;
+    int piedra;
+    int madera;
+    int papel;
+    int semilla;
+    Inventario *prox;
+};
+
+
 struct Casillas{
     int id_casillas;
     string bioma;
@@ -39,7 +50,7 @@ struct Jugadores{
     Casillas *ubicacion_casilla;
     string nombre_equipo;
     string nombre_jugador;
-    Recursos *inventario;
+    Inventario *inventario;
     Jugadores *prox_jugador;
 };
 
@@ -50,6 +61,10 @@ Recursos *CrearRecurso(int id, string nombre){
     NuevoRecurso->prox_recurso=NULL;
     return NuevoRecurso;
 };
+
+void crear_listarecursos(int id,string nombre){
+    
+}
 
 Jugadores *CrearJugador(string nombre){
     Jugadores *NuevoJugador= new Jugadores;
@@ -101,6 +116,18 @@ void ocultarCursor(){
     CONSOLE_CURSOR_INFO cci;
     cci.dwSize = 1;
     cci.bVisible = FALSE;
+
+    SetConsoleCursorInfo(hCon,&cci);
+}
+
+void mostrarCursor(){
+    //FUNCION  QUE OCULTA EL CURSOR QUE PARPADEA EN LA TERMINAL
+
+    HANDLE hCon;
+    hCon=GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO cci;
+    cci.dwSize = 4;
+    cci.bVisible = true;
 
     SetConsoleCursorInfo(hCon,&cci);
 }
@@ -198,14 +225,16 @@ bool JugadoresVacio(Jugadores *inicio){
 }
 
 void mostrartablero(Casillas *Tablero){
-   Casillas *mover=Tablero;
-      while (mover != NULL)
-        {
-           cout <<" | "<< mover->id_casillas<<" | " <<"->";
-           mover = mover->prox;
-         }
-         cout<<"F I N"<<endl;
-   }  
+    system("cls");
+    mostrarCursor();
+    int contador=0;
+    Casillas *mover=Tablero;
+        while (mover != NULL){
+            cout<< mover->id_casillas<<" -> ";
+            mover = mover->prox;
+        }
+        cout<<"F I N"<<endl;
+    }  
 
 void llenado_tablero(Casillas *&Tablero) {
     int i = 1;
@@ -213,7 +242,8 @@ void llenado_tablero(Casillas *&Tablero) {
         Casillas *CasillaNueva = crearCasilla(i);
         if (TableroVacio(Tablero)) {
             Tablero = CasillaNueva;
-        } else {
+        } 
+        else {
             Casillas *auxiliar_mover = Tablero;
             while (auxiliar_mover->prox != NULL) {
                 auxiliar_mover = auxiliar_mover->prox;
@@ -225,7 +255,7 @@ void llenado_tablero(Casillas *&Tablero) {
 }
 
 void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero){
-    int numerodejugadores;
+    int numerodejugadores,opcion_equipo;
     cout<<"Indique la cantidad de jugadores: ";
     cin>>numerodejugadores;
     int i=1;
@@ -236,6 +266,35 @@ void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero){
         Jugadores *JugadorNuevo=CrearJugador(nombredejugador);
         JugadorNuevo->ubicacion_casilla=Tablero;
         JugadorNuevo->posicion=Tablero->id_casillas;
+        do {
+            cout<<"Indique a cual equipo quiere pertenecer: "<<endl;
+            cout<<"1. Equipo Rojo,son expertos en el uso de energias renovables"<<endl;
+            cout<<"2. Equipo Azul,encargados del cuidado de ecosistemas maritimos"<<endl;
+            cout<<"3. Equipo Verde,enfocados en la conservacion de la fauna y la deforestacion"<<endl;
+            cin>>opcion_equipo;
+
+            if (opcion_equipo<1 || opcion_equipo>3) {
+                cout << "Opcion invalida,por favor  seleccione 1, 2 o 3." << endl;
+            }
+        } while (opcion_equipo < 1 || opcion_equipo > 3);
+        switch(opcion_equipo){
+            case 1:
+                cout<<"Bienvenido al Equipo Rojo, "<<nombredejugador<<endl;
+                JugadorNuevo->nombre_equipo="Equipo Rojo";
+                JugadorNuevo->equipo=1;
+                break;
+            case 2:
+                cout<<"Bienvenido al Equipo Azul, "<<nombredejugador<<endl;
+                JugadorNuevo->nombre_equipo="Equipo Azul";
+                JugadorNuevo->equipo=2;
+                break;
+            case 3:
+                cout<<"Bienvenido al Equipo Verde, "<<nombredejugador<<endl;
+                JugadorNuevo->nombre_equipo="Equipo Verde";
+                JugadorNuevo->equipo=3;
+                break;
+
+        }
 
         if(JugadoresVacio(JugadorInicial)){
             JugadorInicial=JugadorNuevo;
@@ -249,6 +308,9 @@ void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero){
         
         i++;
     }
+
+
+
 }
 
 void mostrarjugadores(Jugadores *JugadorInicial){
@@ -259,54 +321,51 @@ void mostrarjugadores(Jugadores *JugadorInicial){
         }
         cout<<"F I N"<<endl;
    }
-
-void mover_jugadores(Jugadores *&JugadorInicial, Casillas *&Tablero) {
+   
+void mover_jugador(Jugadores *&JugadorInicial, Casillas *&Tablero){//esto iria en turno y luego en ronda
     Jugadores *Auxiliar=JugadorInicial;
-    int opcion;
-    while (Auxiliar!=NULL) {
-        bool valido=false; 
+    int contador=1,opcion;
+
+
+    while(Auxiliar!=NULL){
+        system("cls");
         cout<<Auxiliar->nombre_jugador<<" quieres moverte una casilla hacia adelante?"<<endl;
-        cout<<"1 para SI"<< endl;
-        cout<<"0 para NO"<< endl;
+        cout<<"1 para SI"<<endl;
+        cout<<"0 para NO"<<endl;
         cin>>opcion;
-        
-        while (!valido) {
-            if (opcion==1 || opcion==0) {
-                if (opcion==1) {
-                    if (Auxiliar->ubicacion_casilla->prox != NULL) {
-                        Auxiliar->ubicacion_casilla=Auxiliar->ubicacion_casilla->prox;
-                        Auxiliar->posicion=Auxiliar->ubicacion_casilla->id_casillas;
-                        cout<<Auxiliar->nombre_jugador<<" se ha movido a la casilla "<<Auxiliar->posicion<<endl;
-                    } else {
-                        cout<<Auxiliar->nombre_jugador << " ha llegado al final del tablero"<<endl;
-                    }
-                } else {
-                    cout<<Auxiliar->nombre_jugador<<" no realizo ningun movimiento, esta ubicado en la casilla: "<<Auxiliar->posicion;
-                }
-                valido=true;
-            } else {
-                cout<<"La opcion seleccionada es incorrecta, por favor vuelva a intentarlo: ";
-                cin>>opcion;
+        if(opcion==1){
+            if(Auxiliar->ubicacion_casilla->prox!=NULL){
+                Auxiliar->ubicacion_casilla=Auxiliar->ubicacion_casilla->prox;
+                Auxiliar->posicion=Auxiliar->ubicacion_casilla->id_casillas;
+                cout<<Auxiliar->nombre_jugador<<" del equipo "<<Auxiliar->nombre_equipo<<" se movio a la casilla "<<Auxiliar->posicion<<endl;
+            }else{
+                cout<< Auxiliar->nombre_jugador << " ha llegado al final del tablero" << endl;
             }
+        }else if(opcion==0){
+        cout<< Auxiliar->nombre_jugador<<" no realizo ningun movimiento,esta ubicado en la casilla: "<<Auxiliar->posicion;
+        }else{
+            cout<<"Opcion Invalida"<<endl;
         }
-        Auxiliar=Auxiliar->prox_jugador;  
-    }
-}
+        Auxiliar = Auxiliar->prox_jugador;
+        }
+        }
 //CICLOS MENU/JUEGO/RONDA/TURNO
 
 void Turno(/*parámetros*/){ //acaba cuando el jugador elija su acción
-
 }
 
 void Ronda(/*parámetros*/){ //acaba al haber terminado el Turno de cada jugador
 
 }
 
-void Partida(){ //acaba cuando se cumple la condicion de fin de partida, ya sea victoria o salida forzada
+void Partida(Casillas **Tablero, Jugadores *lista_jugadores){ //acaba cuando se cumple la condicion de fin de partida, ya sea victoria o salida forzada
+    mostrartablero(*Tablero);
+    CrearListadeJugadores(lista_jugadores,*Tablero);
+    mover_jugador(lista_jugadores,*Tablero);
 
 }
 
-void MainMenu(/*parámetros*/){// acaba cuando se decida cerrar el juego(programa) por completo
+void MainMenu(Casillas **Tablero, Jugadores **lista_jugadores){// acaba cuando se decida cerrar el juego(programa) por completo
     bool fin_partida=false;
     int opcion;
     int n=3; //numero de opciones del Menú
@@ -315,25 +374,26 @@ void MainMenu(/*parámetros*/){// acaba cuando se decida cerrar el juego(program
     while(fin_partida!=true){
 
         switch (opcion){
-        case 1: //INICIA PARTIDA
-            Partida(); //Inicia la partida
-        break;
-        
-        case 2: //INICIA INSTRUCCIONES/REGLAS/TURORIAL
-            imprime_instrucciones();
-        break;
+            case 1: //INICIA PARTIDA
+                Partida(*&Tablero,*lista_jugadores); //Inicia la partida
+            break;
+            
+            case 2: //INICIA INSTRUCCIONES/REGLAS/TURORIAL
+                imprime_instrucciones();
+            break;
 
-        case 3:
-            system("cls");
-            gotoxy(15,2);cout<<"\n\nHa Salido con exito del Juego, Hasta luego!"<<endl;
-            fin_partida=true;
-        break;   
-        default:
-            cout<<"Opcion Inválida..."<<endl;
-        break;
+            case 3:
+                system("cls");
+                gotoxy(15,2);cout<<"\n\nHa Salido con exito del Juego, Hasta luego!"<<endl;
+                fin_partida=true;
+            break;   
+            default:
+                cout<<"Opcion Inválida..."<<endl;
+            break;
         }
     }
 }
+
 
 //PROGRAMA PRINCIPAL
 
@@ -341,11 +401,7 @@ main(){
     Jugadores *jugador1=NULL;
     Casillas *Tablero=NULL;
     int k=1;
-    MainMenu();  //Llamamos al ciclo general de la partida
+    llenado_tablero(Tablero);
+    MainMenu(&Tablero,&jugador1);  //Llamamos al ciclo general de la partida
     
-//     llenado_tablero(Tablero);
-//     mostrartablero(Tablero);
-//  	CrearListadeJugadores(jugador1,Tablero);
-//     mostrarjugadores(jugador1);
-//     mover_jugadores(jugador1,Tablero);
 }
