@@ -8,8 +8,8 @@
 #include <string> 
 #include <windows.h>
 #include <conio.h>
-using namespace std;
 
+using namespace std;
 //#define ARRIBA 'i'
 //#define ABAJO 'k'
 #define ARRIBA 72
@@ -34,7 +34,6 @@ struct Inventario{
     int semilla;
     Inventario *prox;
 };
-
 
 struct Casillas{
     int id_casillas;
@@ -63,7 +62,8 @@ void CrearInventario(Jugadores *&JugadorX){
     NuevoInventario->madera=1;
     NuevoInventario->semilla=1;
     NuevoInventario->papel=1;
-};
+}
+
 void MostrarInventario(Jugadores *&JugadorX){
     int opcion;
     cout<<" Hola! "<<JugadorX->nombre_jugador<<" desea ver su inventario? "<<endl;
@@ -90,9 +90,6 @@ void MostrarInventario(Jugadores *&JugadorX){
             cout << "Opcion invalida,por favor  seleccione 1 o 2" << endl;
         }
         }
-
-
-
 
 Jugadores *CrearJugador(string nombre){
     Jugadores *NuevoJugador= new Jugadores;
@@ -251,19 +248,6 @@ bool JugadoresVacio(Jugadores *inicio){
     return inicio==NULL;
 }
 
-/*void mostrartablero(Casillas *Tablero){
-    system("cls");
-    mostrarCursor();
-    int contador=0;
-    Casillas *mover=Tablero;
-        while (mover != NULL){
-            cout<< mover->id_casillas<<" -> ";
-            mover = mover->prox;
-        }
-
-        cout<<"F I N"<<endl;
-    }*/  
-
 void imprimirflechas(){
     HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
     //FLECHAS DERECHA
@@ -290,59 +274,121 @@ void imprimirflechas(){
 
 void mostrartablero(Casillas *Tablero){
     system("cls");
-    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // IMPLEMENTACIÓN DE COLORES EN LA TERMINAL
     mostrarCursor();
-    int columnas=5, filas=9;
-    int numero = 1;
+    int columnas = 5, filas = 9;
     bool izquierdaADerecha = true;
-    Casillas *mover=Tablero;
-        for (int i = 0; i < filas; i=i+2) {
-            if (izquierdaADerecha) {
-                for (int j = 0; j < columnas; j=j+1) {
-                    if(mover->id_casillas<10){
-                        gotoxy( (j*6) +5 , i );
-                        cout <<"|0" <<mover->id_casillas<<"|";
-                        color(hConsole,12);
-                        cout<<"->";
-                        color(hConsole,15);
-                    }
-                    else{
-                        gotoxy( (j*6) +5 , i );
-                        cout <<"|" <<mover->id_casillas<<"|";
-                        color(hConsole,12);
-                        cout<<"->";
-                        color(hConsole,15);
-                    }
-                    mover = mover->prox;
-                }
-            }
-            else{
-                for (int j = columnas - 1; j >= 0; j=j-1) {
-                        
-                    if (mover->id_casillas<10){
-                        gotoxy((j * 6)+3, i);
-                        color(hConsole,12);
-                        cout <<"<-";
-                        color(hConsole,15);
-                        cout<<"|0" <<mover->id_casillas<<"|";    
-                    }
-                    else{
-                        gotoxy((j * 6)+3, i);
-                        color(hConsole,12);
-                        cout <<"<-";
-                        color(hConsole,15);
-                        cout <<"|" <<mover->id_casillas<<"|";
-                    }
-                    mover = mover->prox;
-                }
-            }
-            izquierdaADerecha = !izquierdaADerecha;
+    Casillas *mover = Tablero;
 
+    for (int i = 0; i < filas; i += 2) {
+        if (izquierdaADerecha) {
+            for (int j = 0; j < columnas; j++) {
+                if (mover->id_casillas < 10) { // ORDEN IZQUIERDA->DERECHA DE 1 DIGITO
+                    // BOSQUE
+                    if (mover->id_casillas > 0 && mover->id_casillas < 6) {
+                        gotoxy((j * 6) + 5, i);
+                        color(hConsole, 10);
+                        cout << "|0" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    // CIUDAD
+                    if (mover->id_casillas > 10 && mover->id_casillas < 16) {
+                        gotoxy((j * 6) + 5, i);
+                        color(hConsole, 15);
+                        cout << "|0" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    // TUNDRA
+                    if (mover->id_casillas > 20 && mover->id_casillas < 26) {
+                        gotoxy((j * 6) + 5, i);
+                        color(hConsole, 11);
+                        cout << "|0" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                } else { // ORDEN IZQUIERDA->DERECHA DE 2 DIGITOS
+                    // BOSQUE
+                    if (mover->id_casillas > 0 && mover->id_casillas < 6) {
+                        gotoxy((j * 6) + 5, i);
+                        color(hConsole, 10);
+                        cout << "|" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    // CIUDAD
+                    if (mover->id_casillas > 10 && mover->id_casillas < 16) {
+                        gotoxy((j * 6) + 5, i);
+                        color(hConsole, 15);
+                        cout << "|" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    // TUNDRA
+                    if (mover->id_casillas > 20 && mover->id_casillas < 26) {
+                        gotoxy((j * 6) + 5, i);
+                        color(hConsole, 11);
+                        cout << "|" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                }
+                mover = mover->prox;
+            }
+        } else {
+            for (int j = columnas - 1; j >= 0; j--) {
+                if (mover->id_casillas < 10) { // ORDEN DERECHA->IZQUIERDA DE 1 DIGITO
+                    // MARITIMO
+                    if (mover->id_casillas >= 6 && mover->id_casillas <= 10) {
+                        gotoxy((j * 6) + 3, i);
+                        color(hConsole, 12);
+                        cout << "<-";
+                        color(hConsole, 9);
+                        cout << "|0" << mover->id_casillas << "|";
+                    }
+                    // SABANA
+                    if (mover->id_casillas > 15 && mover->id_casillas < 21) {
+                        gotoxy((j * 6) + 3, i);
+                        color(hConsole, 12);
+                        cout << "<-";
+                        color(hConsole, 14);
+                        cout << "|0" << mover->id_casillas << "|";
+                    }
+                } else { // ORDEN DERECHA->IZQUIERDA DE 2 DIGITOS
+                    // MARITIMO
+                    if (mover->id_casillas >= 6 && mover->id_casillas <= 10) {
+                        gotoxy((j * 6) + 3, i);
+                        color(hConsole, 12);
+                        cout << "<-";
+                        color(hConsole, 9);
+                        cout << "|" << mover->id_casillas << "|";
+                    }
+                    // SABANA
+                    if (mover->id_casillas > 15 && mover->id_casillas < 21) {
+                        gotoxy((j * 6) + 3, i);
+                        color(hConsole, 12);
+                        cout << "<-";
+                        color(hConsole, 14);
+                        cout << "|" << mover->id_casillas << "|";
+                    }
+                }
+                mover = mover->prox; // Move to the next cell regardless of the condition
+            }
         }
-        imprimirflechas();
-        gotoxy(36,8);
-        cout<<" F I N"<<endl;
-    }      
+        izquierdaADerecha = !izquierdaADerecha; // Switch the direction
+    }
+    
+    imprimirflechas();
+    gotoxy(36, 8);
+    cout << " F I N" << endl;
+}
 
 void llenado_tablero(Casillas *&Tablero) {
     int i = 1;
