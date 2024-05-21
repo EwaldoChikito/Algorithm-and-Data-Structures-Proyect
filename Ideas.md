@@ -6,11 +6,11 @@
 
 
 BIOMAS
-Bosque
-Maritimo
-Ciudad
-Sabana
-tundra
+Bosque  verde
+Maritimo    aul marino  
+Ciudad  blanco
+Sabana  amarillo
+tundra  cyan
 
     
 
