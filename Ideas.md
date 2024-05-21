@@ -28,9 +28,9 @@ INVESTIGACIONES
 casillas 3,7,12,18,23
 
 TRIVIAS:
-casillas 2,4,
+casillas 4,8,13,17,22->preguntas relacionadas con el boss
 
-RECURSOS:
+RECURSOS:2,6,9,11,14,16,19,21,24
 
 
 SISTEMA DE PUNTOS / RECOMPENSAS
