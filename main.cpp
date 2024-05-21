@@ -108,22 +108,22 @@ Jugadores *CrearJugador(string nombre){
 
 char getch2 (){
    //FUNCIÓN QUE DETECTA LA TECLA PRESIONADA EN EL TECLADO EN TIEMPO REAL
-   
-   char c=0;
-   DWORD modo, contador;
-   HANDLE ih = GetStdHandle(STD_INPUT_HANDLE);
- 
+
+    char c=0;
+    DWORD modo, contador;
+    HANDLE ih = GetStdHandle(STD_INPUT_HANDLE);
+
    // Desactivamos escritura en terminal
-   SetConsoleMode (ih, modo & ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT));
- 
-   ReadConsoleA (ih, &c, 1, &contador, NULL);
- 
-   if (c == 0) {
-      ReadConsoleA (ih, &c, 1, &contador, NULL);
-   }
- 
+    SetConsoleMode (ih, modo & ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT));
+
+    ReadConsoleA (ih, &c, 1, &contador, NULL);
+
+    if (c == 0) {
+        ReadConsoleA (ih, &c, 1, &contador, NULL);
+    }
+
    SetConsoleMode (ih, modo); // Devolvemos control normal
-   return c;
+    return c;
 }
 
 void gotoxy(int x, int y){
@@ -164,10 +164,9 @@ void mostrarCursor(){
 int flechas_menu(const char *opciones[], int n){
     int opcionSeleccionada = 1; 
     HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
- 
     int tecla;
     bool repite = true;
- 
+
     do{
         ocultarCursor();
         system("cls");
@@ -189,39 +188,38 @@ int flechas_menu(const char *opciones[], int n){
             color(hConsole, 7);
             gotoxy(32, 4 + i); cout << i + 1 << ") " << opciones[i];
         }
- 
+
       // Solo permite que se ingrese ARRIBA, ABAJO o ENTER
- 
+
         do {
             ocultarCursor();
             tecla = getch();
         }while (tecla != ARRIBA && tecla != ABAJO && tecla != ENTER);
         
         switch (tecla) {
- 
+
             case ARRIBA:   // En caso que se presione ARRIBA 
                 opcionSeleccionada--;
                 if (opcionSeleccionada < 1) {
                     opcionSeleccionada = n;
                 }
             break;
- 
-         case ABAJO:
+
+        case ABAJO:
             opcionSeleccionada++;
- 
             if (opcionSeleccionada > n) {
-               opcionSeleccionada = 1;
+                opcionSeleccionada = 1;
             }
- 
-            break;
- 
-         case ENTER:
+
+        break;
+
+        case ENTER:
             repite = false;
-            break;
-      }
-   } while (repite);
- 
-   return opcionSeleccionada;
+        break;
+        }
+    } while (repite);
+
+    return opcionSeleccionada;
 }
 
 void imprime_opciones_menu(){
@@ -239,10 +237,10 @@ void imprime_instrucciones(){
 //TABLERO
 
 Casillas* crearCasilla(int valor){
-  Casillas *nuevo = new Casillas;
-  nuevo->id_casillas = valor;
-  nuevo->prox = NULL;
-  return nuevo;
+    Casillas *nuevo = new Casillas;
+    nuevo->id_casillas = valor;
+    nuevo->prox = NULL;
+    return nuevo;
 }//funcion para crear los nodos del tablero(lista)
 
 bool TableroVacio(Casillas *inicio){
@@ -425,13 +423,13 @@ void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero){
 
 void mostrarjugadores(Jugadores *JugadorInicial){
     Jugadores *mover=JugadorInicial;
-      while (mover != NULL){
-           cout <<" | "<< mover->nombre_jugador<<" | " <<"->";
-           mover = mover->prox_jugador;
+        while (mover != NULL){
+            cout <<" | "<< mover->nombre_jugador<<" | " <<"->";
+            mover = mover->prox_jugador;
         }
         cout<<"F I N"<<endl;
-   }
-   
+    }
+
 void mover_jugador(Jugadores *&JugadorInicial, Casillas *&Tablero) {
     Jugadores *Auxiliar = JugadorInicial;
     int opcion;
@@ -481,7 +479,7 @@ void Partida(Casillas **Tablero, Jugadores *lista_jugadores){ //acaba cuando se 
     CrearListadeJugadores(lista_jugadores,*Tablero);
     mover_jugador(lista_jugadores,*Tablero);
     MostrarInventario(lista_jugadores);
-   
+
 
 }
 
