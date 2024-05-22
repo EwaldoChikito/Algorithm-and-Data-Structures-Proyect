@@ -65,16 +65,10 @@ void CrearInventario(Jugadores *&JugadorX){
     NuevoInventario->papel=1;
 }
 
-void MostrarInventario(Jugadores *&JugadorX){
-    int opcion;
-    cout<<" Hola! "<<JugadorX->nombre_jugador<<" desea ver su inventario? "<<endl;
-    cout<<"1- Si "<<endl;
-    cout<<"2- No "<<endl;
-    cin>>opcion;
+void MostrarInventario(Jugadores *&JugadorX,int opcion){
     bool valido=true;
 
     while(valido==true)
-
         if(opcion==1){
             cout<<"El inventario de "<<JugadorX->nombre_jugador<< " es: "<<endl;
             cout<<"Agua: "<<JugadorX->inventario->agua<<endl;
@@ -240,18 +234,6 @@ Casillas* crearCasilla(int valor){
     nuevo->prox = NULL;
     return nuevo;
 }//funcion para crear los nodos del tablero(lista)
-// Casillas *BuscaCasilla(Casillas *Tablero, int numcasilla){
-//     Casillas *aux=NULL;
-
-    
-//     while(Tablero!=NULL){
-//         if(Tablero->id_casillas==numcasilla){
-//             crearCasilla()
-//         } 
-//     }
-    
-//     return xxx;
-// }
 
 void PickUp(Casillas *Tablero, Jugadores **Jugador){
     Casillas *auxiliar=Tablero;
@@ -267,9 +249,9 @@ void PickUp(Casillas *Tablero, Jugadores **Jugador){
 
     }
 
-    MostrarInventario(*Jugador);
+    MostrarInventario(*Jugador,1);
 }
-
+//tonta
 
 bool TableroVacio(Casillas *inicio){
     return inicio==NULL;
@@ -525,13 +507,9 @@ void llenado_tablero(Casillas *&Tablero) {
     }
 }
 
-void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero){
-    int numerodejugadores,opcion_equipo;
-    cout<<"\n\nIndique la cantidad de jugadores: ";
-
+void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero,int numerodejugadores){
+    int opcion_equipo;
     //FALTA IMPLEMENTAR MAXIMO DE JUGADORES ==3
-
-    cin>>numerodejugadores;
     int i=1;
     string nombredejugador; 
     while(i<=numerodejugadores){
@@ -593,40 +571,48 @@ void mostrarjugadores(Jugadores *JugadorInicial){
         cout<<"F I N"<<endl;
     }
 
-void mover_jugador(Jugadores *&JugadorInicial, Casillas *&Tablero) {
-    Jugadores *Auxiliar = JugadorInicial;
+void mover_jugador(Jugadores *&JugadorInicial, Casillas*& Tablero) {
+    Jugadores *Jugador = JugadorInicial;
     int opcion;
     
-    while (Auxiliar != NULL) {
-        system("cls");
-        cout << Auxiliar->nombre_jugador << " quieres moverte una casilla hacia adelante?" << endl;
-        cout << "0- Para permanecer en la casilla actual" << endl;
-        cout << "1- Para moverte una casilla hacia adelante" << endl;
-        cout << "2- Para abrir tu inventario" << endl;
-        cin >> opcion;
+    system("cls");
+    bool valido=false;
 
-        if (opcion == 1) {
-            if (Auxiliar->ubicacion_casilla->prox != NULL) {
-                Auxiliar->ubicacion_casilla = Auxiliar->ubicacion_casilla->prox;
-                Auxiliar->posicion = Auxiliar->ubicacion_casilla->id_casillas;
-                cout << Auxiliar->nombre_jugador << " del equipo " << Auxiliar->nombre_equipo << " se movio a la casilla " << Auxiliar->posicion << endl;
-                PickUp(Tablero,&JugadorInicial);
-            } else {
-                cout << Auxiliar->nombre_jugador << " ha llegado al final del tablero" << endl;
+    while(valido==false){
+            cout<< Jugador->nombre_jugador << " quieres moverte una casilla hacia adelante?" << endl;
+            cout<<"0- Para permanecer en la casilla actual" << endl;
+            cout<<"1- Para moverte una casilla hacia adelante" << endl;
+            cout<<"2- Para abrir tu inventario" << endl;
+            cin>>opcion;
+            if (opcion == 1) {
+                if (Jugador->ubicacion_casilla!=NULL) {
+                    Jugador->ubicacion_casilla=Jugador->ubicacion_casilla->prox;
+                    Jugador->posicion=Jugador->ubicacion_casilla->id_casillas;
+                    cout<<Jugador->nombre_jugador<<" del equipo "<<Jugador->nombre_equipo << " se movio a la casilla "<<Jugador->posicion<<endl;
+                    valido=true;
+                } else {
+                    cout<<Jugador->nombre_jugador<<" ha llegado al final del tablero"<<endl;
+                    valido=true;
+                }
             }
-        } else if (opcion == 0) {
-            cout << Auxiliar->nombre_jugador << " no realizo ningun movimiento, esta ubicado en la casilla: " << Auxiliar->posicion << endl;
-        }else {
-            cout << "Opcion Invalida" << endl;
-        }
 
-        if (opcion == 2) {
-            MostrarInventario(Auxiliar);
-        } 
+            if(opcion==0){
+                cout<< Jugador->nombre_jugador<<" no realizo ningun movimiento, esta ubicado en la casilla:"<<Jugador->posicion<<endl;
+                valido=true;
+            }
+            if(opcion==2){
+                MostrarInventario(Jugador,1);
+                valido=false;
+            }
+            if(opcion<0 || opcion>2){
+                cout<< "Opcion Invalida" << endl;
+                valido=false;
+            }
 
-        Auxiliar = Auxiliar->prox_jugador;
+        system("pause");  // Pausa después de cada turno para que el usuario vea el resultado
     }
 }
+
 //CICLOS MENU/JUEGO/RONDA/TURNO
 
 void Turno(/*parámetros*/){ //acaba cuando el jugador elija su acción
@@ -638,11 +624,11 @@ void Ronda(/*parámetros*/){ //acaba al haber terminado el Turno de cada jugador
 
 void Partida(Casillas **Tablero, Jugadores *lista_jugadores){ //acaba cuando se cumple la condicion de fin de partida, ya sea victoria o salida forzada
     bool fin_partida;
-    
+    int cantidad;//jugadores xd;
     mostrartablero(*Tablero);
-    CrearListadeJugadores(lista_jugadores,*Tablero);
+    CrearListadeJugadores(lista_jugadores,*Tablero,cantidad);
     mover_jugador(lista_jugadores,*Tablero);
-    MostrarInventario(lista_jugadores);
+    
 
 
 }
