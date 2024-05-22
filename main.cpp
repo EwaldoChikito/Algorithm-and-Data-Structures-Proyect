@@ -410,8 +410,7 @@ void llenado_tablero(Casillas *&Tablero) {
         Casillas *CasillaNueva = crearCasilla(i);
         if (TableroVacio(Tablero)) {
             Tablero = CasillaNueva;
-        } 
-        else {
+        }else {
             Casillas *auxiliar_mover = Tablero;
             while (auxiliar_mover->prox != NULL) {
                 auxiliar_mover = auxiliar_mover->prox;
