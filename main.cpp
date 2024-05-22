@@ -10,20 +10,12 @@
 #include <conio.h>
 
 using namespace std;
-//#define ARRIBA 'i'
-//#define ABAJO 'k'
 #define ARRIBA 72
 #define ABAJO 80
 #define ENTER 13
 #define color SetConsoleTextAttribute
 
 //Declaración de Estructuras
-
-struct Recursos{
-    int id_recurso;
-    string nombre_recurso;
-    Recursos *prox_recurso;
-};
 
 struct Inventario{
     int agua;
@@ -34,7 +26,6 @@ struct Inventario{
     int semilla;
     Inventario *prox;
 };
-
 struct Casillas{
     int id_casillas;
     string bioma;
@@ -53,6 +44,7 @@ struct Jugadores{
     Inventario *inventario;
     Jugadores *prox_jugador;
 };
+
 
 void CrearInventario(Jugadores *&JugadorX){
     Inventario *NuevoInventario= new Inventario;
@@ -221,7 +213,7 @@ void imprime_opciones_menu(){
 }
 
 void imprime_instrucciones(){
-
+    cout<<"gabriel marica";
 }
 
 //CONTROL DE ARCHIVOS
@@ -235,23 +227,23 @@ Casillas* crearCasilla(int valor){
     return nuevo;
 }//funcion para crear los nodos del tablero(lista)
 
-void PickUp(Casillas *Tablero, Jugadores **Jugador){
+void PickUp(Casillas *Tablero, Jugadores *&Jugador){
     Casillas *auxiliar=Tablero;
-    while(auxiliar->id_casillas!=(*Jugador)->posicion){
+    while(auxiliar->id_casillas!=Jugador->posicion){
         if(auxiliar->recursoid==1){
-            (*Jugador)->inventario->agua=(*Jugador)->inventario->agua+auxiliar->inventario->agua;
-            (*Jugador)->inventario->madera=(*Jugador)->inventario->madera+auxiliar->inventario->madera;
-            (*Jugador)->inventario->metal=(*Jugador)->inventario->metal+auxiliar->inventario->metal;
-            (*Jugador)->inventario->papel=(*Jugador)->inventario->papel+auxiliar->inventario->papel;
-            (*Jugador)->inventario->piedra=(*Jugador)->inventario->piedra+auxiliar->inventario->piedra;
-            (*Jugador)->inventario->semilla=(*Jugador)->inventario->semilla+auxiliar->inventario->semilla;
+            Jugador->inventario->agua=Jugador->inventario->agua+auxiliar->inventario->agua;
+            Jugador->inventario->madera=Jugador->inventario->madera+auxiliar->inventario->madera;
+            Jugador->inventario->metal=Jugador->inventario->metal+auxiliar->inventario->metal;
+            Jugador->inventario->papel=Jugador->inventario->papel+auxiliar->inventario->papel;
+            Jugador->inventario->piedra=Jugador->inventario->piedra+auxiliar->inventario->piedra;
+            Jugador->inventario->semilla=Jugador->inventario->semilla+auxiliar->inventario->semilla;
         }
 
     }
 
-    MostrarInventario(*Jugador,1);
+    MostrarInventario(Jugador,1);
 }
-//tonta
+
 
 bool TableroVacio(Casillas *inicio){
     return inicio==NULL;
@@ -588,6 +580,7 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas*& Tablero) {
                     Jugador->ubicacion_casilla=Jugador->ubicacion_casilla->prox;
                     Jugador->posicion=Jugador->ubicacion_casilla->id_casillas;
                     cout<<Jugador->nombre_jugador<<" del equipo "<<Jugador->nombre_equipo << " se movio a la casilla "<<Jugador->posicion<<endl;
+                   // PickUp(Tablero,Jugador);
                     valido=true;
                 } else {
                     cout<<Jugador->nombre_jugador<<" ha llegado al final del tablero"<<endl;
@@ -614,19 +607,39 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas*& Tablero) {
 
 //CICLOS MENU/JUEGO/RONDA/TURNO
 
-void Turno(/*parámetros*/){ //acaba cuando el jugador elija su acción
+void Turno(Casillas *&Tablero, Jugadores *&lista_jugadores){ //acaba cuando el jugador elija su acción
+    mover_jugador(lista_jugadores,Tablero);
+    }
+
+void Ronda(Casillas *&Tablero, Jugadores *&lista_jugadores){ //acaba al haber terminado el Turno de cada jugador
+    bool fin_jugadores; 
+    while (/* hasta que llegue al ultimo jugador de la lista de jugadores */fin_jugadores){
+        
+    }
+    
 }
 
-void Ronda(/*parámetros*/){ //acaba al haber terminado el Turno de cada jugador
-
-}
-
-void Partida(Casillas **Tablero, Jugadores *lista_jugadores){ //acaba cuando se cumple la condicion de fin de partida, ya sea victoria o salida forzada
-    bool fin_partida;
-    int cantidad;//jugadores xd;
-    mostrartablero(*Tablero);
-    CrearListadeJugadores(lista_jugadores,*Tablero,cantidad);
-    mover_jugador(lista_jugadores,*Tablero);
+void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores){ //acaba cuando se cumple la condicion de fin de partida, ya sea victoria o salida forzada
+    bool fin_partida,cantidadvalida=false;
+    int cantidad_jugadores;//jugadores xd;
+    system("cls");
+    
+    while(cantidadvalida==false){//while para pedir el numero de jugadores verificando que no sea mayor a 3 ni menores a 0
+        cout<<"Ingrese la cantidad de jugadores de la partida: "<<endl;cin>>cantidad_jugadores;
+        if(cantidad_jugadores<=0 || cantidad_jugadores>3){
+            cout<<"LA CANTIDAD MAXIMA DE JUGADORES ES 3.Intente de nuevo"<<endl;
+            cantidadvalida=false;
+        }else{
+            cantidadvalida=true;
+        }
+        
+    }
+    CrearListadeJugadores(lista_jugadores,Tablero,cantidad_jugadores);
+    mostrartablero(Tablero);
+    mover_jugador(lista_jugadores,Tablero);
+    do{
+        Ronda(Tablero, lista_jugadores);
+    } while (fin_partida);
     
 
 
@@ -642,7 +655,7 @@ void MainMenu(Casillas **Tablero, Jugadores **lista_jugadores){// acaba cuando s
 
         switch (opcion){
             case 1: //INICIA PARTIDA
-                Partida(*&Tablero,*lista_jugadores); //Inicia la partida
+                Partida(*Tablero,*lista_jugadores); //Inicia la partida
             break;
             
             case 2: //INICIA INSTRUCCIONES/REGLAS/TURORIAL
