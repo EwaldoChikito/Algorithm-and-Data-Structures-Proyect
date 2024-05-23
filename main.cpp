@@ -26,6 +26,7 @@ struct Inventario{
     int semilla;
     Inventario *prox;
 };
+
 struct Casillas{
     int id_casillas;
     string bioma;
@@ -45,6 +46,7 @@ struct Jugadores{
     Jugadores *prox_jugador;
 };
 
+//INICIALIZACIÓN DE ESTRUCTURAS
 
 void CrearInventario(Jugadores *&JugadorX){
     Inventario *NuevoInventario= new Inventario;
@@ -56,6 +58,7 @@ void CrearInventario(Jugadores *&JugadorX){
     NuevoInventario->semilla=1;
     NuevoInventario->papel=1;
 }
+
 void CrearInventarioCasillas(Casillas *&Casillitas){
     Inventario *NuevoInventario= new Inventario;
     Casillitas->inventario=NuevoInventario;
@@ -66,6 +69,7 @@ void CrearInventarioCasillas(Casillas *&Casillitas){
     NuevoInventario->semilla=0;
     NuevoInventario->papel=0;
 }
+
 Jugadores *CrearJugador(string nombre){
     Jugadores *NuevoJugador= new Jugadores;
     NuevoJugador->pts=0;
@@ -75,6 +79,7 @@ Jugadores *CrearJugador(string nombre){
     CrearInventario(NuevoJugador);
     return NuevoJugador;
 };
+
 Casillas* crearCasilla(int valor){
     Casillas *nuevo = new Casillas;
     nuevo->id_casillas = valor;
@@ -90,29 +95,6 @@ bool TableroVacio(Casillas *inicio){
 bool JugadoresVacio(Jugadores *inicio){
     return inicio==NULL;
 }
-
-
-void MostrarInventario(Jugadores *&JugadorX,int opcion){
-    bool valido=true;
-
-    while(valido==true)
-        if(opcion==1){
-            cout<<"El inventario de "<<JugadorX->nombre_jugador<< " es: "<<endl;
-            cout<<"Agua: "<<JugadorX->inventario->agua<<endl;
-            cout<<"Metal: "<<JugadorX->inventario->metal<<endl;
-            cout<<"Piedra: "<<JugadorX->inventario->piedra<<endl;
-            cout<<"Madera: "<<JugadorX->inventario->madera<<endl;
-            cout<<"Semilla: "<<JugadorX->inventario->semilla<<endl;
-            cout<<"Papel: "<<JugadorX->inventario->papel<<endl;
-            valido=false;
-        }else if(opcion==2){
-            cout<<"Su inventario no fue abierto "<<JugadorX->nombre_jugador<<endl;
-            valido=false;
-        }else{
-            cout << "Opcion invalida,por favor  seleccione 1 o 2" << endl;
-        }
-        }
-
 
 
 //CONTROL DE GRÁFICOS
@@ -243,10 +225,212 @@ void imprime_instrucciones(){
     cout<<"gabriel marica";
 }
 
+void imprimirflechas(){
+    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
+    //FLECHAS DERECHA
+    color(hConsole,12);
+    gotoxy(34,2);
+    cout<<"|";
+    gotoxy(34,3);
+    cout<<"V";
+    gotoxy(34,6);
+    cout<<"|";
+    gotoxy(34,7);
+    cout<<"V";
+    //FLECHAS IZQUIERDA
+    gotoxy(3,4);
+    cout<<"|";
+    gotoxy(3,5);
+    cout<<"V";
+    gotoxy(3,8);
+    cout<<"|";
+    gotoxy(3,9);
+    cout<<"V";
+    color(hConsole,15);
+}    
+
+void mostrartablero(Casillas *Tablero){
+    system("cls");
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // IMPLEMENTACIÓN DE COLORES EN LA TERMINAL
+    mostrarCursor();
+    int columnas = 5, filas = 10;
+    bool izquierdaADerecha = true;
+    Casillas *mover = Tablero;
+
+    for (int i = 1; i < filas; i += 2) {
+        if (izquierdaADerecha) {
+            for (int j = 0; j < columnas; j++) {
+                if (mover->id_casillas < 10) { // ORDEN IZQUIERDA->DERECHA DE 1 DIGITO
+                    // BOSQUE
+                    if (mover->id_casillas > 0 && mover->id_casillas < 6) {
+                        gotoxy((j * 6) + 5, i);
+                        color(hConsole, 10);
+                        cout << "|0" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    // CIUDAD
+                    if (mover->id_casillas > 10 && mover->id_casillas < 16) {
+                        gotoxy((j * 6) + 5, i);
+                        color(hConsole, 15);
+                        cout << "|0" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    // TUNDRA
+                    if (mover->id_casillas > 20 && mover->id_casillas < 26) {
+                        gotoxy((j * 6) + 5, i);
+                        color(hConsole, 11);
+                        cout << "|0" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                } else { // ORDEN IZQUIERDA->DERECHA DE 2 DIGITOS
+                    // BOSQUE
+                    if (mover->id_casillas > 0 && mover->id_casillas < 6) {
+                        gotoxy((j * 6) + 5, i);
+                        color(hConsole, 10);
+                        cout << "|" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    // CIUDAD
+                    if (mover->id_casillas > 10 && mover->id_casillas < 16) {
+                        gotoxy((j * 6) + 5, i);
+                        color(hConsole, 15);
+                        cout << "|" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    // TUNDRA
+                    if (mover->id_casillas > 20 && mover->id_casillas < 26) {
+                        gotoxy((j * 6) + 5, i);
+                        color(hConsole, 11);
+                        cout << "|" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                }
+                mover = mover->prox;
+            }
+        } else {
+            for (int j = columnas - 1; j >= 0; j--) {
+                if (mover->id_casillas < 10) { // ORDEN DERECHA->IZQUIERDA DE 1 DIGITO
+                    // MARITIMO
+                    if (mover->id_casillas >= 6 && mover->id_casillas <= 10) {
+                        gotoxy((j * 6) + 3, i);
+                        color(hConsole, 12);
+                        cout << "<-";
+                        color(hConsole, 9);
+                        cout << "|0" << mover->id_casillas << "|";
+                    }
+                    // SABANA
+                    if (mover->id_casillas > 15 && mover->id_casillas < 21) {
+                        gotoxy((j * 6) + 3, i);
+                        color(hConsole, 12);
+                        cout << "<-";
+                        color(hConsole, 14);
+                        cout << "|0" << mover->id_casillas << "|";
+                    }
+                } else { // ORDEN DERECHA->IZQUIERDA DE 2 DIGITOS
+                    // MARITIMO
+                    if (mover->id_casillas >= 6 && mover->id_casillas <= 10) {
+                        gotoxy((j * 6) + 3, i);
+                        color(hConsole, 12);
+                        cout << "<-";
+                        color(hConsole, 9);
+                        cout << "|" << mover->id_casillas << "|";
+                    }
+                    // SABANA
+                    if (mover->id_casillas > 15 && mover->id_casillas < 21) {
+                        gotoxy((j * 6) + 3, i);
+                        color(hConsole, 12);
+                        cout << "<-";
+                        color(hConsole, 14);
+                        cout << "|" << mover->id_casillas << "|";
+                    }
+                }
+                mover = mover->prox; // Move to the next cell regardless of the condition
+            }
+        }
+        izquierdaADerecha = !izquierdaADerecha; // Switch the direction
+    }
+    
+    imprimirflechas();
+    gotoxy(36, 9);
+    cout << " F I N" << endl;
+}
+
+void MostrarInventario(Jugadores *&JugadorX,int opcion){
+    bool valido=true;
+    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
+    while(valido==true)
+        if(opcion==1){
+            cout<<"El inventario de "<<JugadorX->nombre_jugador<< " es: "<<endl;
+            color(hConsole,11);
+            cout<<"Agua: "<<JugadorX->inventario->agua<<endl;
+            color(hConsole,13);
+            cout<<"Metal: "<<JugadorX->inventario->metal<<endl;
+            color(hConsole,8);
+            cout<<"Piedra: "<<JugadorX->inventario->piedra<<endl;
+            color(hConsole,14);
+            cout<<"Madera: "<<JugadorX->inventario->madera<<endl;
+            color(hConsole,10);
+            cout<<"Semilla: "<<JugadorX->inventario->semilla<<endl;
+            color(hConsole,15);
+            cout<<"Papel: "<<JugadorX->inventario->papel<<endl;
+            valido=false;
+        }else if(opcion==2){
+            cout<<"Su inventario no fue abierto "<<JugadorX->nombre_jugador<<endl;
+            valido=false;
+
+        }else{
+            cout << "Opcion invalida,por favor  seleccione 1 o 2" << endl;
+        }
+        }
+
+void MostrarJugadores(Jugadores *JugadorInicial){
+    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
+    Jugadores *mover=JugadorInicial;
+        while (mover != NULL){
+            if (mover->equipo==1){
+                cout <<" | "<< mover->nombre_jugador<<" | " <<"->";
+                color(hConsole,12);
+            }
+            if (mover->equipo==2)
+            {
+                color(hConsole,9);
+                cout <<" | "<< mover->nombre_jugador<<" | " <<"->";
+            }
+            if (mover->equipo==3)
+            {
+                color(hConsole,15);
+                cout <<" | "<< mover->nombre_jugador<<" | " <<"->";
+            }
+            cout <<" | "<< mover->nombre_jugador<<" | " <<"->";
+            mover = mover->prox_jugador;
+        }
+        cout<<"FIN"<<endl;
+}
+
+/*void mostrarjugadores(Jugadores *JugadorInicial){
+    Jugadores *mover=JugadorInicial;
+        while (mover != NULL){
+            cout <<" | "<< mover->nombre_jugador<<" | " <<"->";
+            mover = mover->prox_jugador;
+        }
+        cout<<"F I N"<<endl;
+    }*/
+
 //CONTROL DE ARCHIVOS
 
 //TABLERO
-
 
 void llenado_tablero(Casillas *&Tablero) {
     int i = 1;
@@ -369,153 +553,10 @@ void PickUp(Casillas *&Tablero, Jugadores *&Jugador){
     MostrarInventario(Jugador,1);
 }
 
-
-void imprimirflechas(){
-    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
-    //FLECHAS DERECHA
-    color(hConsole,12);
-    gotoxy(34,1);
-    cout<<"|";
-    gotoxy(34,2);
-    cout<<"V";
-    gotoxy(34,5);
-    cout<<"|";
-    gotoxy(34,6);
-    cout<<"V";
-    //FLECHAS IZQUIERDA
-    gotoxy(3,3);
-    cout<<"|";
-    gotoxy(3,4);
-    cout<<"V";
-    gotoxy(3,7);
-    cout<<"|";
-    gotoxy(3,8);
-    cout<<"V";
-    color(hConsole,15);
-}    
-
-void mostrartablero(Casillas *Tablero){
-    system("cls");
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // IMPLEMENTACIÓN DE COLORES EN LA TERMINAL
-    mostrarCursor();
-    int columnas = 5, filas = 9;
-    bool izquierdaADerecha = true;
-    Casillas *mover = Tablero;
-
-    for (int i = 0; i < filas; i += 2) {
-        if (izquierdaADerecha) {
-            for (int j = 0; j < columnas; j++) {
-                if (mover->id_casillas < 10) { // ORDEN IZQUIERDA->DERECHA DE 1 DIGITO
-                    // BOSQUE
-                    if (mover->id_casillas > 0 && mover->id_casillas < 6) {
-                        gotoxy((j * 6) + 5, i);
-                        color(hConsole, 10);
-                        cout << "|0" << mover->id_casillas << "|";
-                        color(hConsole, 12);
-                        cout << "->";
-                        color(hConsole, 15);
-                    }
-                    // CIUDAD
-                    if (mover->id_casillas > 10 && mover->id_casillas < 16) {
-                        gotoxy((j * 6) + 5, i);
-                        color(hConsole, 15);
-                        cout << "|0" << mover->id_casillas << "|";
-                        color(hConsole, 12);
-                        cout << "->";
-                        color(hConsole, 15);
-                    }
-                    // TUNDRA
-                    if (mover->id_casillas > 20 && mover->id_casillas < 26) {
-                        gotoxy((j * 6) + 5, i);
-                        color(hConsole, 11);
-                        cout << "|0" << mover->id_casillas << "|";
-                        color(hConsole, 12);
-                        cout << "->";
-                        color(hConsole, 15);
-                    }
-                } else { // ORDEN IZQUIERDA->DERECHA DE 2 DIGITOS
-                    // BOSQUE
-                    if (mover->id_casillas > 0 && mover->id_casillas < 6) {
-                        gotoxy((j * 6) + 5, i);
-                        color(hConsole, 10);
-                        cout << "|" << mover->id_casillas << "|";
-                        color(hConsole, 12);
-                        cout << "->";
-                        color(hConsole, 15);
-                    }
-                    // CIUDAD
-                    if (mover->id_casillas > 10 && mover->id_casillas < 16) {
-                        gotoxy((j * 6) + 5, i);
-                        color(hConsole, 15);
-                        cout << "|" << mover->id_casillas << "|";
-                        color(hConsole, 12);
-                        cout << "->";
-                        color(hConsole, 15);
-                    }
-                    // TUNDRA
-                    if (mover->id_casillas > 20 && mover->id_casillas < 26) {
-                        gotoxy((j * 6) + 5, i);
-                        color(hConsole, 11);
-                        cout << "|" << mover->id_casillas << "|";
-                        color(hConsole, 12);
-                        cout << "->";
-                        color(hConsole, 15);
-                    }
-                }
-                mover = mover->prox;
-            }
-        } else {
-            for (int j = columnas - 1; j >= 0; j--) {
-                if (mover->id_casillas < 10) { // ORDEN DERECHA->IZQUIERDA DE 1 DIGITO
-                    // MARITIMO
-                    if (mover->id_casillas >= 6 && mover->id_casillas <= 10) {
-                        gotoxy((j * 6) + 3, i);
-                        color(hConsole, 12);
-                        cout << "<-";
-                        color(hConsole, 9);
-                        cout << "|0" << mover->id_casillas << "|";
-                    }
-                    // SABANA
-                    if (mover->id_casillas > 15 && mover->id_casillas < 21) {
-                        gotoxy((j * 6) + 3, i);
-                        color(hConsole, 12);
-                        cout << "<-";
-                        color(hConsole, 14);
-                        cout << "|0" << mover->id_casillas << "|";
-                    }
-                } else { // ORDEN DERECHA->IZQUIERDA DE 2 DIGITOS
-                    // MARITIMO
-                    if (mover->id_casillas >= 6 && mover->id_casillas <= 10) {
-                        gotoxy((j * 6) + 3, i);
-                        color(hConsole, 12);
-                        cout << "<-";
-                        color(hConsole, 9);
-                        cout << "|" << mover->id_casillas << "|";
-                    }
-                    // SABANA
-                    if (mover->id_casillas > 15 && mover->id_casillas < 21) {
-                        gotoxy((j * 6) + 3, i);
-                        color(hConsole, 12);
-                        cout << "<-";
-                        color(hConsole, 14);
-                        cout << "|" << mover->id_casillas << "|";
-                    }
-                }
-                mover = mover->prox; // Move to the next cell regardless of the condition
-            }
-        }
-        izquierdaADerecha = !izquierdaADerecha; // Switch the direction
-    }
-    
-    imprimirflechas();
-    gotoxy(36, 8);
-    cout << " F I N" << endl;
-}
-
-
 void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero,int numerodejugadores){
+    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
+    mostrarCursor();
     int opcion_equipo;
-    //FALTA IMPLEMENTAR MAXIMO DE JUGADORES ==3
     int i=1;
     string nombredejugador; 
     while(i<=numerodejugadores){
@@ -526,9 +567,13 @@ void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero,int nu
         JugadorNuevo->posicion=Tablero->id_casillas;
         do {
             cout<<"Indique a cual equipo quiere pertenecer: "<<endl;
-            cout<<"1. Equipo Rojo,son expertos en el uso de energias renovables"<<endl;
+            color(hConsole,12);
+            cout<<"\n1. Equipo Rojo,son expertos en el uso de energias renovables"<<endl;
+            color(hConsole,9);
             cout<<"2. Equipo Azul,encargados del cuidado de ecosistemas maritimos"<<endl;
+            color(hConsole,10);
             cout<<"3. Equipo Verde,enfocados en la conservacion de la fauna y la deforestacion"<<endl;
+            color(hConsole,15);
             cin>>opcion_equipo;
             if (opcion_equipo<1 || opcion_equipo>3) {
                 cout << "Opcion invalida,por favor  seleccione 1, 2 o 3." << endl;
@@ -568,25 +613,17 @@ void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero,int nu
     }
 }
 
-void mostrarjugadores(Jugadores *JugadorInicial){
-    Jugadores *mover=JugadorInicial;
-        while (mover != NULL){
-            cout <<" | "<< mover->nombre_jugador<<" | " <<"->";
-            mover = mover->prox_jugador;
-        }
-        cout<<"F I N"<<endl;
-    }
-
-void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero) {
+void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, bool fin_partida) {
     Jugadores *Jugador = JugadorInicial;
     int opcion;
     
-    system("cls");
-    bool valido=false;
+    bool valido;
 
     while(valido==false){
-            cout<< Jugador->nombre_jugador << " quieres moverte una casilla hacia adelante?" << endl;
-            cout<<"0- Para permanecer en la casilla actual" << endl;
+            valido=false;
+            gotoxy(3,12);
+            cout<< "''"<<Jugador->nombre_jugador << "'', Que opcion deseas realizar?" << endl;
+            cout<<"\n0- Para permanecer en la casilla actual" << endl;
             cout<<"1- Para moverte una casilla hacia adelante" << endl;
             cout<<"2- Para abrir tu inventario" << endl;
             cin>>opcion;
@@ -599,6 +636,7 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero) {
                     valido=true;
                 } else {
                     cout<<Jugador->nombre_jugador<<" ha llegado al final del tablero"<<endl;
+                    fin_partida=true;
                     valido=true;
                 }
             }
@@ -617,46 +655,59 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero) {
             }
 
         system("pause");  // Pausa después de cada turno para que el usuario vea el resultado
+        system("cls");
+        mostrartablero(Tablero);
     }
 }
 
+
+void Inserta_Ultimo_Jugadores(Jugadores *&ListaLlenar, Jugadores ListaOrigen){
+    ListaLlenar->equipo;
+    //FALTA TERMINAR ESTA FUNCION LLAMADA EN ronda()
+}
+
+
 //CICLOS MENU/JUEGO/RONDA/TURNO
 
-void Turno(Casillas *&Tablero, Jugadores *&lista_jugadores){ //acaba cuando el jugador elija su acción
-    mover_jugador(lista_jugadores,Tablero);
+void Turno(Casillas *&Tablero, Jugadores *&lista_jugadores, bool *fin_partida){ //acaba cuando el jugador elija su acción
+        mover_jugador(lista_jugadores,Tablero,fin_partida);
     }
 
-void Ronda(Casillas *&Tablero, Jugadores *&lista_jugadores){ //acaba al haber terminado el Turno de cada jugador
-    bool fin_jugadores; 
-    while (/* hasta que llegue al ultimo jugador de la lista de jugadores */fin_jugadores){
-        
+void Ronda(Casillas *&Tablero, Jugadores *&lista_jugadores, bool *fin_partida){ //acaba al haber terminado el Turno de cada jugador
+    bool fin_jugadores;
+    Jugadores *avanza_jugadores=lista_jugadores, *devuelve=NULL; 
+    while (avanza_jugadores!=NULL){
+        Turno(Tablero, avanza_jugadores,fin_partida);
+        Inserta_Ultimo_Jugadores(devuelve,*avanza_jugadores);
+        avanza_jugadores=avanza_jugadores->prox_jugador;
     }
+    lista_jugadores=devuelve;
     
 }
 
 void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores){ //acaba cuando se cumple la condicion de fin de partida, ya sea victoria o salida forzada
-    bool fin_partida,cantidadvalida=false;
+    bool fin_partida=false, cantidadvalida=false;
     int cantidad_jugadores;//jugadores xd;
     system("cls");
-    
+    mostrarCursor();
     while(cantidadvalida==false){//while para pedir el numero de jugadores verificando que no sea mayor a 3 ni menores a 0
-        cout<<"Ingrese la cantidad de jugadores de la partida: "<<endl;cin>>cantidad_jugadores;
+        cout<<"Ingrese la cantidad de jugadores de la partida: ";
+        cin>>cantidad_jugadores;
         if(cantidad_jugadores<=0 || cantidad_jugadores>3){
             cout<<"LA CANTIDAD MAXIMA DE JUGADORES ES 3.Intente de nuevo"<<endl;
             cantidadvalida=false;
         }else{
             cantidadvalida=true;
         }
-        
     }
+    //UNA VEZ INGRESADA LA CANTIDAD DE JUGADORES EMPIEZA LA PARTIDA
+
     CrearListadeJugadores(lista_jugadores,Tablero,cantidad_jugadores);
     mostrartablero(Tablero);
-    mover_jugador(lista_jugadores,Tablero);
     do{
-        Ronda(Tablero, lista_jugadores);
+        //Ronda(Tablero, lista_jugadores, fin_partida);
     } while (fin_partida);
-    
-
+    //SALIR DE ESTE CICLO IMPLIA QUE YA NO HAY PARTIDA TRANSCURRIENDO Y TOCA VOLVER AAL MENÚ
 
 }
 
@@ -671,6 +722,7 @@ void MainMenu(Casillas **Tablero, Jugadores **lista_jugadores){// acaba cuando s
         switch (opcion){
             case 1: //INICIA PARTIDA
                 Partida(*Tablero,*lista_jugadores); //Inicia la partida
+                fin_juego=true;
             break;
             
             case 2: //INICIA INSTRUCCIONES/REGLAS/TURORIAL
