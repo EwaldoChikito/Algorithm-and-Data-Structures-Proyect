@@ -56,6 +56,41 @@ void CrearInventario(Jugadores *&JugadorX){
     NuevoInventario->semilla=1;
     NuevoInventario->papel=1;
 }
+void CrearInventarioCasillas(Casillas *&Casillitas){
+    Inventario *NuevoInventario= new Inventario;
+    Casillitas->inventario=NuevoInventario;
+    NuevoInventario->agua=0;
+    NuevoInventario->metal=0;
+    NuevoInventario->piedra=0;
+    NuevoInventario->madera=0;
+    NuevoInventario->semilla=0;
+    NuevoInventario->papel=0;
+}
+Jugadores *CrearJugador(string nombre){
+    Jugadores *NuevoJugador= new Jugadores;
+    NuevoJugador->pts=0;
+    NuevoJugador->nombre_jugador=nombre;
+    NuevoJugador->inventario=NULL;
+    NuevoJugador->prox_jugador=NULL;
+    CrearInventario(NuevoJugador);
+    return NuevoJugador;
+};
+Casillas* crearCasilla(int valor){
+    Casillas *nuevo = new Casillas;
+    nuevo->id_casillas = valor;
+    CrearInventarioCasillas(nuevo);
+    nuevo->prox = NULL;
+    return nuevo;
+}//funcion para crear los nodos del tablero(lista)
+
+bool TableroVacio(Casillas *inicio){
+    return inicio==NULL;
+}
+
+bool JugadoresVacio(Jugadores *inicio){
+    return inicio==NULL;
+}
+
 
 void MostrarInventario(Jugadores *&JugadorX,int opcion){
     bool valido=true;
@@ -78,15 +113,7 @@ void MostrarInventario(Jugadores *&JugadorX,int opcion){
         }
         }
 
-Jugadores *CrearJugador(string nombre){
-    Jugadores *NuevoJugador= new Jugadores;
-    NuevoJugador->pts=0;
-    NuevoJugador->nombre_jugador=nombre;
-    NuevoJugador->inventario=NULL;
-    NuevoJugador->prox_jugador=NULL;
-    CrearInventario(NuevoJugador);
-    return NuevoJugador;
-};
+
 
 //CONTROL DE GRÁFICOS
 
@@ -220,38 +247,128 @@ void imprime_instrucciones(){
 
 //TABLERO
 
-Casillas* crearCasilla(int valor){
-    Casillas *nuevo = new Casillas;
-    nuevo->id_casillas = valor;
-    nuevo->prox = NULL;
-    return nuevo;
-}//funcion para crear los nodos del tablero(lista)
 
-void PickUp(Casillas *Tablero, Jugadores *&Jugador){
-    Casillas *auxiliar=Tablero;
-    while(auxiliar->id_casillas!=Jugador->posicion){
-        if(auxiliar->recursoid==1){
-            Jugador->inventario->agua=Jugador->inventario->agua+auxiliar->inventario->agua;
-            Jugador->inventario->madera=Jugador->inventario->madera+auxiliar->inventario->madera;
-            Jugador->inventario->metal=Jugador->inventario->metal+auxiliar->inventario->metal;
-            Jugador->inventario->papel=Jugador->inventario->papel+auxiliar->inventario->papel;
-            Jugador->inventario->piedra=Jugador->inventario->piedra+auxiliar->inventario->piedra;
-            Jugador->inventario->semilla=Jugador->inventario->semilla+auxiliar->inventario->semilla;
+void llenado_tablero(Casillas *&Tablero) {
+    int i = 1;
+    
+    while (i <= 25) { 
+        Casillas *CasillaNueva = crearCasilla(i);
+        if (TableroVacio(Tablero)) {
+            Tablero = CasillaNueva;
+        }else {
+            Casillas *auxiliar_mover = Tablero;
+            while (auxiliar_mover->prox != NULL) {
+                auxiliar_mover = auxiliar_mover->prox;
+            }
+            auxiliar_mover->prox = CasillaNueva;
         }
-
+        i++;
     }
+    Casillas *auxiliar = Tablero;
+    while(auxiliar!=NULL){
+        if(auxiliar->id_casillas==2){
+            auxiliar->recursoid=1;
+            auxiliar->inventario->agua=5;
+            auxiliar->inventario->semilla=6;
+            auxiliar->inventario->piedra=2;
+            auxiliar->inventario->madera=0;
+            auxiliar->inventario->metal=0;
+            auxiliar->inventario->papel=0;
+        }
+        if(auxiliar->id_casillas==6){
+            auxiliar->recursoid=1;
+            auxiliar->inventario->agua=0;
+            auxiliar->inventario->semilla=3;
+            auxiliar->inventario->piedra=2;
+            auxiliar->inventario->madera=4;
+            auxiliar->inventario->metal=2;
+            auxiliar->inventario->papel=1;
+        }
+        if(auxiliar->id_casillas==9){
+            auxiliar->recursoid=1;
+            auxiliar->inventario->agua=1;
+            auxiliar->inventario->semilla=2;
+            auxiliar->inventario->piedra=1;
+            auxiliar->inventario->madera=2;
+            auxiliar->inventario->metal=0;
+            auxiliar->inventario->papel=0;
+        }
+        if(auxiliar->id_casillas==11){
+            auxiliar->recursoid=1;
+            auxiliar->inventario->agua=0;
+            auxiliar->inventario->semilla=0;
+            auxiliar->inventario->piedra=5;
+            auxiliar->inventario->madera=1;
+            auxiliar->inventario->metal=4;
+            auxiliar->inventario->papel=2;
+        }
+        if(auxiliar->id_casillas==14){
+                auxiliar->recursoid=1;
+                auxiliar->inventario->agua=1;
+                auxiliar->inventario->semilla=0;
+                auxiliar->inventario->piedra=1;
+                auxiliar->inventario->madera=3;
+                auxiliar->inventario->metal=0;
+                auxiliar->inventario->papel=1;
+            }
+        if(auxiliar->id_casillas==16){
+            auxiliar->recursoid=1;
+            auxiliar->inventario->agua=0;
+            auxiliar->inventario->semilla=1;
+            auxiliar->inventario->piedra=1;
+            auxiliar->inventario->madera=2;
+            auxiliar->inventario->metal=2;
+            auxiliar->inventario->papel=0;
+        }
+        if(auxiliar->id_casillas==19){
+            auxiliar->recursoid=1;
+            auxiliar->inventario->agua=2;
+            auxiliar->inventario->semilla=5;
+            auxiliar->inventario->piedra=6;
+            auxiliar->inventario->madera=0;
+            auxiliar->inventario->metal=2;
+            auxiliar->inventario->papel=1;
+        }
+        if(auxiliar->id_casillas==21){
+            auxiliar->recursoid=1;
+            auxiliar->inventario->agua=5;
+            auxiliar->inventario->semilla=2;
+            auxiliar->inventario->piedra=1;
+            auxiliar->inventario->madera=2;
+            auxiliar->inventario->metal=1;
+            auxiliar->inventario->papel=0;
+        }
+        if(auxiliar->id_casillas==24){
+            auxiliar->recursoid=1;
+            auxiliar->inventario->agua=1;
+            auxiliar->inventario->semilla=2;
+            auxiliar->inventario->piedra=1;
+            auxiliar->inventario->madera=2;
+            auxiliar->inventario->metal=1;
+            auxiliar->inventario->papel=2;
+        }
+        auxiliar=auxiliar->prox;
+    }
+}
+
+void PickUp(Casillas *&Tablero, Jugadores *&Jugador){
+    Casillas *auxiliar=Tablero;
+    while(auxiliar!=NULL && auxiliar->id_casillas!=Jugador->posicion){
+        auxiliar=auxiliar->prox;
+    }
+
+    if(auxiliar!=NULL && auxiliar->recursoid==1){
+        Jugador->inventario->agua += auxiliar->inventario->agua;
+        Jugador->inventario->madera += auxiliar->inventario->madera;
+        Jugador->inventario->metal += auxiliar->inventario->metal;
+        Jugador->inventario->papel += auxiliar->inventario->papel;
+        Jugador->inventario->piedra += auxiliar->inventario->piedra;
+        Jugador->inventario->semilla += auxiliar->inventario->semilla;
+        }
 
     MostrarInventario(Jugador,1);
 }
 
-
-bool TableroVacio(Casillas *inicio){
-    return inicio==NULL;
-}
-
-bool JugadoresVacio(Jugadores *inicio){
-    return inicio==NULL;
-}
 
 void imprimirflechas(){
     HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
@@ -395,108 +512,6 @@ void mostrartablero(Casillas *Tablero){
     cout << " F I N" << endl;
 }
 
-void llenado_tablero(Casillas *&Tablero) {
-    int i = 1;
-    Casillas *auxiliar=Tablero;
-    while (i <= 25) { 
-        Casillas *CasillaNueva = crearCasilla(i);
-        if (TableroVacio(Tablero)) {
-            Tablero = CasillaNueva;
-        }else {
-            Casillas *auxiliar_mover = Tablero;
-            while (auxiliar_mover->prox != NULL) {
-                auxiliar_mover = auxiliar_mover->prox;
-            }
-            auxiliar_mover->prox = CasillaNueva;
-        }
-        i++;
-    }
-
-    while(auxiliar!=NULL){
-        if(auxiliar->id_casillas==2){
-            auxiliar->recursoid=1;
-            auxiliar->inventario->agua=5;
-            auxiliar->inventario->semilla=6;
-            auxiliar->inventario->piedra=2;
-            auxiliar->inventario->madera=0;
-            auxiliar->inventario->metal=0;
-            auxiliar->inventario->papel=0;
-        }
-        if(auxiliar->id_casillas==6){
-            auxiliar->recursoid=1;
-            auxiliar->inventario->agua=0;
-            auxiliar->inventario->semilla=3;
-            auxiliar->inventario->piedra=2;
-            auxiliar->inventario->madera=4;
-            auxiliar->inventario->metal=2;
-            auxiliar->inventario->papel=1;
-        }
-        if(auxiliar->id_casillas==9){
-            auxiliar->recursoid=1;
-            auxiliar->inventario->agua=1;
-            auxiliar->inventario->semilla=2;
-            auxiliar->inventario->piedra=1;
-            auxiliar->inventario->madera=2;
-            auxiliar->inventario->metal=0;
-            auxiliar->inventario->papel=0;
-        }
-        if(auxiliar->id_casillas==11){
-            auxiliar->recursoid=1;
-            auxiliar->inventario->agua=0;
-            auxiliar->inventario->semilla=0;
-            auxiliar->inventario->piedra=5;
-            auxiliar->inventario->madera=1;
-            auxiliar->inventario->metal=4;
-            auxiliar->inventario->papel=2;
-        }
-        if(auxiliar->id_casillas==14){
-                auxiliar->recursoid=1;
-                auxiliar->inventario->agua=1;
-                auxiliar->inventario->semilla=0;
-                auxiliar->inventario->piedra=1;
-                auxiliar->inventario->madera=3;
-                auxiliar->inventario->metal=0;
-                auxiliar->inventario->papel=1;
-            }
-        if(auxiliar->id_casillas==16){
-            auxiliar->recursoid=1;
-            auxiliar->inventario->agua=0;
-            auxiliar->inventario->semilla=1;
-            auxiliar->inventario->piedra=1;
-            auxiliar->inventario->madera=2;
-            auxiliar->inventario->metal=2;
-            auxiliar->inventario->papel=0;
-        }
-        if(auxiliar->id_casillas==19){
-            auxiliar->recursoid=1;
-            auxiliar->inventario->agua=2;
-            auxiliar->inventario->semilla=5;
-            auxiliar->inventario->piedra=6;
-            auxiliar->inventario->madera=0;
-            auxiliar->inventario->metal=2;
-            auxiliar->inventario->papel=1;
-        }
-        if(auxiliar->id_casillas==21){
-            auxiliar->recursoid=1;
-            auxiliar->inventario->agua=5;
-            auxiliar->inventario->semilla=2;
-            auxiliar->inventario->piedra=1;
-            auxiliar->inventario->madera=2;
-            auxiliar->inventario->metal=1;
-            auxiliar->inventario->papel=0;
-        }
-        if(auxiliar->id_casillas==24){
-            auxiliar->recursoid=1;
-            auxiliar->inventario->agua=1;
-            auxiliar->inventario->semilla=2;
-            auxiliar->inventario->piedra=1;
-            auxiliar->inventario->madera=2;
-            auxiliar->inventario->metal=1;
-            auxiliar->inventario->papel=2;
-        }
-        auxiliar=auxiliar->prox;
-    }
-}
 
 void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero,int numerodejugadores){
     int opcion_equipo;
@@ -562,7 +577,7 @@ void mostrarjugadores(Jugadores *JugadorInicial){
         cout<<"F I N"<<endl;
     }
 
-void mover_jugador(Jugadores *&JugadorInicial, Casillas*& Tablero) {
+void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero) {
     Jugadores *Jugador = JugadorInicial;
     int opcion;
     
@@ -580,7 +595,7 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas*& Tablero) {
                     Jugador->ubicacion_casilla=Jugador->ubicacion_casilla->prox;
                     Jugador->posicion=Jugador->ubicacion_casilla->id_casillas;
                     cout<<Jugador->nombre_jugador<<" del equipo "<<Jugador->nombre_equipo << " se movio a la casilla "<<Jugador->posicion<<endl;
-                   // PickUp(Tablero,Jugador);
+                    PickUp(Tablero,Jugador);
                     valido=true;
                 } else {
                     cout<<Jugador->nombre_jugador<<" ha llegado al final del tablero"<<endl;
