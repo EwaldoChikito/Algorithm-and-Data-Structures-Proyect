@@ -1024,50 +1024,50 @@ void Jefes(Jugadores *&Jugador){
         cout<<"Quieres invertir tus recursos en la solucion?"<<endl;
         cout<<"1. Si"<<endl;
         cout<<"2. No"<<endl;
-        bool aceptar=true;
-        while(aceptar==true){
+        bool aceptar2=true;
+        while(aceptar2==true){
                 cin>>opcion2;
                 if(opcion2==1){
-                    bool nocuenta=false;
+                    bool nocuenta2=false;
                     if(verificarmetal(Jugador,3)==true){
                         Jugador->inventario->metal=Jugador->inventario->metal-3;
                         cout<<Jugador->nombre_jugador<<" ha donado 3 metales"<<endl;
                     }else{
                         cout<<"No cuenta con los recursos necesarios"<<endl;
-                        nocuenta=true;
+                        nocuenta2=true;
                     }
                     if(verificarpapel(Jugador,1)==true){
                         Jugador->inventario->papel=Jugador->inventario->papel-1;
                         cout<<Jugador->nombre_jugador<<" ha donado 1 papel"<<endl;
                     }else{
                         cout<<"No cuenta con los recursos necesarios"<<endl;
-                        nocuenta=true;
+                        nocuenta2=true;
                     }
                     if(verificaragua(Jugador,1)==true){
                         Jugador->inventario->agua=Jugador->inventario->agua-1;
                         cout<<Jugador->nombre_jugador<<" ha donado 1 agua"<<endl;
                     }else{
                         cout<<"No cuenta con los recursos necesarios"<<endl;
-                        nocuenta=true;
+                        nocuenta2=true;
                     }
                     if(verificarsemillas(Jugador,2)==true){
                         Jugador->inventario->semilla=Jugador->inventario->semilla-2;
-                        cout<<Jugador->nombre_jugador<<" ha donado 2 piedras"<<endl;
+                        cout<<Jugador->nombre_jugador<<" ha donado 2 semillas"<<endl;
                     }else{
                         cout<<"No cuenta con los recursos necesarios"<<endl;
-                        nocuenta=true;
+                        nocuenta2=true;
                     }
 
-                    if(nocuenta=true){
+                    if(nocuenta2=true){
                         cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con uno de los recursos,por lo tanto no podra ayudar";
-                        aceptar=false;
+                        aceptar2=false;
                     }
 
-                    if(nocuenta=false){
+                    if(nocuenta2=false){
                         cout<<"Gracias a la ayuda de "<<Jugador->nombre_jugador<<" se logro eliminar la nube que estaba contaminando y poner a salvo la ciudad"<<endl;
                         cout<<"Ya se puede respirar con normalidad"<<endl;
                         bonificacionequipo(Jugador);
-                        aceptar=false;
+                        aceptar2=false;
                     }
 
                     
@@ -1079,12 +1079,74 @@ void Jefes(Jugadores *&Jugador){
                     cout<<"A raiz de que el jugador "<<Jugador->nombre_jugador<<" no ayudo a la ciudad, el perdio su trofeo [SUAVIZADO DE NUBES], su bonificacion de equipo y 2 piedras";
                     Jugador->inventario->piedra=Jugador->inventario->piedra-2;
                     MostrarInventario(Jugador,1);
-                    aceptar=false;
+                    aceptar2=false;
                 }
             }
     }
     if(Jugador->posicion==15){
-        
+        int opcion3; 
+        cout<<Jugador->nombre_jugador<<" SE ENCUENTRA EN EL JEFE DE LA ZONA [TUNDRA]"<<endl;
+        cout<<"----------------------------------------------"<<endl;
+        cout<<"Te encuentras llegando al final de la tundra, donde deberias sentir un frio atroz,sin embargo cuando estas a punto de salir sientes un calor poco comun,al desviar tu vista hacia abajo te percatas de que "<<endl;
+        cout<<"el hielo y permafrost se encuentra en su mayoria derretido y en poca densidad, esto es debido al calentamiento global producido por acciones humanas. "<<endl;
+        cout<<"Necesitas tomar accion en este caso para detener la perdida de hielo en la zona y evitar consecuencias mayores."<<endl;
+        cout<<"Utilizando los siguientes recursos solucionarias esta situacion: "<<endl;
+        cout<<"----------------------------------------------"<<endl;
+        cout<<"Se necesitan 2 madera,1 metal y 2 agua para construir [CONGELADOR DE AGUA] para ayudar a enfriar la zona"<<endl;
+        cout<<"Quieres invertir tus recursos en la solucion?"<<endl;
+        cout<<"1. Si"<<endl;
+        cout<<"2. No"<<endl;
+        bool aceptar3=true;
+        while(aceptar3==true){
+                cin>>opcion3;
+                if(opcion3==1){
+                    bool nocuenta3=false;
+                    if(verificarmetal(Jugador,1)==true){
+                        Jugador->inventario->metal=Jugador->inventario->metal-1;
+                        cout<<Jugador->nombre_jugador<<" ha donado 1 metal"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta3=true;
+                    }
+                    if(verificaragua(Jugador,2)==true){
+                        Jugador->inventario->agua=Jugador->inventario->agua-2;
+                        cout<<Jugador->nombre_jugador<<" ha donado 2 aguas"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta3=true;
+                    }
+                    if(verificarmadera(Jugador,2)==true){
+                        Jugador->inventario->madera=Jugador->inventario->madera-2;
+                        cout<<Jugador->nombre_jugador<<" ha donado 2 madera"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta3=true;
+                    }
+
+                    if(nocuenta3=true){
+                        cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con uno de los recursos,por lo tanto no podra ayudar";
+                        aceptar3=false;
+                    }
+
+                    if(nocuenta3=false){
+                        cout<<"Gracias a la ayuda de "<<Jugador->nombre_jugador<<" se logro enfriar la tundra y recuperar su hielo"<<endl;
+                        cout<<"El frio volvio a ser el habitual en este ecosistema"<<endl;
+                        bonificacionequipo(Jugador);
+                        aceptar3=false;
+                    }
+
+                    
+
+                }else if(opcion3<1 ||opcion3>2) {
+                    cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
+                }else{
+                    cout<<Jugador->nombre_jugador<<" decidio no donar sus recursos"<<endl;
+                    cout<<"A raiz de que el jugador "<<Jugador->nombre_jugador<<" no ayudo a la tundra, el perdio su trofeo [FRIO COMO PINGUINO], su bonificacion de equipo y 10 puntos";
+                    Jugador->pts=Jugador->pts-10;
+                    puntosnegativos(Jugador);
+                    aceptar3=false;
+                }
+            }
     }
     if(Jugador->posicion==20){
         
