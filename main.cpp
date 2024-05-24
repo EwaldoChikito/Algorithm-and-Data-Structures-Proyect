@@ -80,10 +80,6 @@ Jugadores *CrearJugador(string nombre){
     return NuevoJugador;
 };
 
-Jugadores *CreaJugadorEspecifico(){
-
-}
-
 Casillas* crearCasilla(int valor){
     Casillas *nuevo = new Casillas;
     nuevo->id_casillas = valor;
@@ -834,6 +830,35 @@ void Trivias(Jugadores *&Jugador){
 }
 
 //procedimientos para verificar si hay cantidad de recursos necesarios para los jefes
+void bonificacionequipo(Jugadores *&Jugador){
+    if(Jugador->equipo==1){
+        cout<<Jugador->nombre_jugador<<"supero el reto, y al ser del [EQUIPO ROJO] obtuvo un X4 de sus puntos actuales";
+        Jugador->pts=Jugador->pts*4;
+        cout<<Jugador->nombre_jugador<<"tus puntos ahora son: "<<Jugador->pts;
+
+    }//equipo rojo
+    if(Jugador->equipo==2){
+        cout<<Jugador->nombre_jugador<<"supero el reto, y al ser del [EQUIPO AZUL] obtuvo 10 aguas y X3 de sus puntos actuales";
+        Jugador->pts=Jugador->pts*3;
+        cout<<Jugador->nombre_jugador<<"tus puntos ahora son: "<<Jugador->pts;
+        Jugador->inventario->agua=Jugador->inventario->agua+10;
+        MostrarInventario(Jugador,1);
+
+    }//equipo azul
+    if(Jugador->equipo==3){
+        cout<<Jugador->nombre_jugador<<"supero el reto, y al ser del [EQUIPO VERDE] obtuvo un X2 de sus puntos actuales y un X2 en los recursos [PIEDRA],[METAL],[SEMILLAS],[MADERA]";
+        Jugador->pts=Jugador->pts*2;
+        cout<<Jugador->nombre_jugador<<"tus puntos ahora son: "<<Jugador->pts;
+        Jugador->inventario->piedra=Jugador->inventario->piedra*2;
+        Jugador->inventario->semilla=Jugador->inventario->semilla*2;
+        Jugador->inventario->metal=Jugador->inventario->metal*2;
+        Jugador->inventario->madera=Jugador->inventario->madera*2;
+        MostrarInventario(Jugador,1);
+
+    }//equipo verde
+
+}
+
 bool verificaragua(Jugadores *&Jugador,int cantidadnecesaria){
     bool sihay=false;
     if(Jugador->inventario->agua>=cantidadnecesaria){
@@ -911,10 +936,10 @@ void Jefes(Jugadores *&Jugador){
     if(Jugador->posicion==5){
         //boss jefe final
         int opcion1; 
-        cout<<Jugador->nombre_jugador<<" SE ENCUENTRA EN EL JEFE DE ZONA"<<endl;
+        cout<<Jugador->nombre_jugador<<" SE ENCUENTRA EN EL JEFE DE LA ZONA [BOSQUE]"<<endl;
         cout<<"----------------------------------------------"<<endl;
         cout<<"Te encuentras al final del bosque, sientes la vista pesada y te empieza a costar respirar, al seguir caminando te encuentras"<<endl;
-        cout<<" con un escenario desolador, un INCENDIO FORESTAL,que esta acabando con la zona.Necesitas tomar una accion inmediata que pueda ayudar en la zona con los recursos necesarios"<<endl;
+        cout<<" con un escenario desolador, un [INCENDIO FORESTAL],que esta acabando con la zona.Necesitas tomar una accion inmediata que pueda ayudar en la zona con los recursos necesarios"<<endl;
         cout<<"----------------------------------------------"<<endl;
         cout<<"Se necesitan 2 maderas y 2 metales para construir [BARRERAS IGNIFUGAS]"<<endl;
         cout<<"Se necesita 2 aguas para extingir las llamas"<<endl;
@@ -957,7 +982,13 @@ void Jefes(Jugadores *&Jugador){
                     }
 
                     if(nocuenta=true){
-                        cout<<"El jugador "<<Jugador->nombre_equipo<<" no cuenta con uno de los recursos,por lo tanto no podra ayudar";
+                        cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con uno de los recursos,por lo tanto no podra ayudar";
+                        aceptar=false;
+                    }
+                    if(nocuenta=false){
+                        cout<<"Gracias a la ayuda de "<<Jugador->nombre_jugador<<" se logro calmar el incendio y poner a salvo la fauna del bosque"<<endl;
+                        cout<<"Después de extinguir el incendio, se uso la [PALA] para cavar y sembrar las semillas de árbol"<<endl;
+                        bonificacionequipo(Jugador);
                         aceptar=false;
                     }
 
@@ -967,19 +998,90 @@ void Jefes(Jugadores *&Jugador){
                     cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
                 }else{
                     cout<<Jugador->nombre_jugador<<" decidio no donar sus recursos"<<endl;
-                    cout<<"A raiz de que el jugador "<<Jugador->nombre_jugador<<" no ayudo al bosque, el perdio su trofeo [APAGUE EL FUEGO] y su bonificacion de equipo";
+                    cout<<"A raiz de que el jugador "<<Jugador->nombre_jugador<<" no ayudo al bosque, el perdio su trofeo [APAGUE EL FUEGO], su bonificacion de equipo, 2 semillas y 1 agua";
                     Jugador->inventario->semilla=Jugador->inventario->semilla-2;
                     Jugador->inventario->agua=Jugador->inventario->agua-1;
                     MostrarInventario(Jugador,1);
                     aceptar=false;
                 }
             }
-        cout<<"Después de extinguir el incendio, usaremos la [PALA] para cavar y sembrar las semillas de árbol"<<endl;
+        
     }
 
     
     if(Jugador->posicion==10){
-        
+        //boss jefe final
+        int opcion2; 
+        cout<<Jugador->nombre_jugador<<" SE ENCUENTRA EN EL JEFE DE LA ZONA [CIUDAD]"<<endl;
+        cout<<"----------------------------------------------"<<endl;
+        cout<<"Notas que al proseguir caminando por la ciudad el aire se empieza a espesar, el ambiente se vuelve tenso y tu vista empieza a ser cegada por el humo. "<<endl;
+        cout<<"El jugador "<<Jugador->nombre_jugador<<" logra abrir los ojos y al visualizar encima de el se encuentra con una nube gigante producida por la contaminacion de C02 de las empresas contaminantes y la autopista "<<endl;
+        cout<<"Necesitas tomar una accion decisiva para neutralizar la nube y detener la contaminacion del aire en la ciudad."<<endl;
+        cout<<"Utilizando los siguientes recursos podrias superar este problema: "<<endl;
+        cout<<"----------------------------------------------"<<endl;
+        cout<<"Se necesitan 3 metales y 1 papel para construir [ASPIRADORA DE CO2]"<<endl;
+        cout<<"Se necesita 1 agua y 2 semillas para plantar nuevos arboles en la zona y mantenerla a salvo"<<endl;
+        cout<<"Quieres invertir tus recursos en la solucion?"<<endl;
+        cout<<"1. Si"<<endl;
+        cout<<"2. No"<<endl;
+        bool aceptar=true;
+        while(aceptar==true){
+                cin>>opcion2;
+                if(opcion2==1){
+                    bool nocuenta=false;
+                    if(verificarmetal(Jugador,3)==true){
+                        Jugador->inventario->metal=Jugador->inventario->metal-3;
+                        cout<<Jugador->nombre_jugador<<" ha donado 3 metales"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta=true;
+                    }
+                    if(verificarpapel(Jugador,1)==true){
+                        Jugador->inventario->papel=Jugador->inventario->papel-1;
+                        cout<<Jugador->nombre_jugador<<" ha donado 1 papel"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta=true;
+                    }
+                    if(verificaragua(Jugador,1)==true){
+                        Jugador->inventario->agua=Jugador->inventario->agua-1;
+                        cout<<Jugador->nombre_jugador<<" ha donado 1 agua"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta=true;
+                    }
+                    if(verificarsemillas(Jugador,2)==true){
+                        Jugador->inventario->semilla=Jugador->inventario->semilla-2;
+                        cout<<Jugador->nombre_jugador<<" ha donado 2 piedras"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta=true;
+                    }
+
+                    if(nocuenta=true){
+                        cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con uno de los recursos,por lo tanto no podra ayudar";
+                        aceptar=false;
+                    }
+
+                    if(nocuenta=false){
+                        cout<<"Gracias a la ayuda de "<<Jugador->nombre_jugador<<" se logro eliminar la nube que estaba contaminando y poner a salvo la ciudad"<<endl;
+                        cout<<"Ya se puede respirar con normalidad"<<endl;
+                        bonificacionequipo(Jugador);
+                        aceptar=false;
+                    }
+
+                    
+
+                }else if(opcion2<1 ||opcion2>2) {
+                    cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
+                }else{
+                    cout<<Jugador->nombre_jugador<<" decidio no donar sus recursos"<<endl;
+                    cout<<"A raiz de que el jugador "<<Jugador->nombre_jugador<<" no ayudo a la ciudad, el perdio su trofeo [SUAVIZADO DE NUBES], su bonificacion de equipo y 2 piedras";
+                    Jugador->inventario->piedra=Jugador->inventario->piedra-2;
+                    MostrarInventario(Jugador,1);
+                    aceptar=false;
+                }
+            }
     }
     if(Jugador->posicion==15){
         
@@ -1041,7 +1143,7 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, bool fin_par
 }
 
 void Inserta_Ultimo_Jugadores(Jugadores *&ListaLlenar, Jugadores *ListaOrigen){
-    Jugadores *aux=ListaLlenar;
+    Jugadores *aux=new Jugadores;
     
     if(JugadoresVacio(aux)){
         aux->pts=ListaOrigen->pts;
@@ -1096,7 +1198,6 @@ void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores){ //acaba cuando se
         cin>>cantidad_jugadores;
         if(cantidad_jugadores<=0 || cantidad_jugadores>3){
             cout<<"LA CANTIDAD MAXIMA DE JUGADORES ES 3.Intente de nuevo"<<endl;
-            cantidadvalida=false;
         }else{
             cantidadvalida=true;
         }
@@ -1106,7 +1207,7 @@ void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores){ //acaba cuando se
     CrearListadeJugadores(lista_jugadores,Tablero,cantidad_jugadores);
     mostrartablero(Tablero);
     do{
-        //Ronda(Tablero, lista_jugadores, fin_partida);
+        Ronda(Tablero, lista_jugadores, &fin_partida);
     } while (fin_partida);
     //SALIR DE ESTE CICLO IMPLIA QUE YA NO HAY PARTIDA TRANSCURRIENDO Y TOCA VOLVER AAL MENÚ
 
