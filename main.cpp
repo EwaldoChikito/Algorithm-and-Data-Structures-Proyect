@@ -80,6 +80,10 @@ Jugadores *CrearJugador(string nombre){
     return NuevoJugador;
 };
 
+Jugadores *CreaJugadorEspecifico(){
+
+}
+
 Casillas* crearCasilla(int valor){
     Casillas *nuevo = new Casillas;
     nuevo->id_casillas = valor;
@@ -393,7 +397,7 @@ void MostrarInventario(Jugadores *&JugadorX,int opcion){
         }else{
             cout << "Opcion invalida,por favor  seleccione 1 o 2" << endl;
         }
-        }
+}
 
 void MostrarJugadores(Jugadores *JugadorInicial){
     HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
@@ -546,13 +550,13 @@ void llenado_tablero(Casillas *&Tablero) {
             auxiliar->inventario->papel=2;
         }
         if(auxiliar->id_casillas==14){
-                auxiliar->recursoid=1;
-                auxiliar->inventario->agua=1;
-                auxiliar->inventario->semilla=0;
-                auxiliar->inventario->piedra=1;
-                auxiliar->inventario->madera=3;
-                auxiliar->inventario->metal=0;
-                auxiliar->inventario->papel=1;
+            auxiliar->recursoid=1;
+            auxiliar->inventario->agua=1;
+            auxiliar->inventario->semilla=0;
+            auxiliar->inventario->piedra=1;
+            auxiliar->inventario->madera=3;
+            auxiliar->inventario->metal=0;
+            auxiliar->inventario->papel=1;
             }
         if(auxiliar->id_casillas==16){
             auxiliar->recursoid=1;
@@ -611,6 +615,7 @@ void PickUp(Casillas *&Tablero, Jugadores *&Jugador){
 
     MostrarInventario(Jugador,1);
 }
+
 void puntosnegativos(Jugadores *&Jugador){
     if(Jugador->pts<0){
         cout<<"Los puntos de "<<Jugador->nombre_jugador<<" no pueden disminuir mas"<<endl;
@@ -618,6 +623,7 @@ void puntosnegativos(Jugadores *&Jugador){
     }
     
 }
+
 void recursosnegativos(Jugadores *&Jugador){
     if(Jugador->inventario->agua<0){
         cout<<"El agua de "<<Jugador->nombre_jugador<<" no puede disminuir mas"<<endl;
@@ -644,13 +650,13 @@ void recursosnegativos(Jugadores *&Jugador){
         Jugador->inventario->piedra=0;
     }
 }
+
 void Trivias(Jugadores *&Jugador){
     int casilladeljugador;
     casilladeljugador=Jugador->posicion;
-    
         // trivia pre boss es incendio forestal
         if(Jugador->posicion==4){
-            cout<<Jugador->nombre_jugador<< "ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
+            cout<<Jugador->nombre_jugador<< " ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
             cout<<" Te estas adentrando al final del bosque, en lo que entras te encuentras con un arbol empezando a quemarse";
             cout<<",que crees que deberias hacer?"<<endl;
             cout<<"1.Ver como empieza un incendio"<<endl;
@@ -682,10 +688,9 @@ void Trivias(Jugadores *&Jugador){
             }
 
         }
-
         // trivia pre boss es contaminacion por co2
         if(Jugador->posicion==8){
-            cout<<Jugador->nombre_jugador<< "ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
+            cout<<Jugador->nombre_jugador<< " ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
             cout<<" Estás caminando cerca de una  ciudad grande y notas que la calidad del aire es muy mala, ¿a que crees que se deba esto?"<<endl;
             cout<<"1.Contaminacion de CO2 producidas de fabricas, combustibles y transportes"<<endl;
             cout<<"2.La atmosfera se encuentra triste"<<endl;
@@ -719,17 +724,272 @@ void Trivias(Jugadores *&Jugador){
                 }
                 }
         }
-   
-       //case 13:// trivia pre boss es deshielo por el calentamiento global
+          // trivia pre boss es deshielo por el calentamiento global
+        if(Jugador->posicion==13){
+            cout<<Jugador->nombre_jugador<< " ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
+            cout<<"Estás explorando una tundra ártica y te das cuenta de que el hielo se están derritiendo rápidamente debido al calentamiento global, que opcion es mas adecuada para resolver este caso?"<<endl;
+            cout<<"1.Encender un aire acondicionado en la tundra"<<endl;
+            cout<<"2.Hacer edificios para aprovechar el terreno"<<endl;
+            cout<<"3.Reducir el uso de combustibles fósiles y promover fuentes de energía renovable"<<endl;
+            int opcion3;
+            bool correcto3=true;
+            while(correcto3==true){
+                cin>>opcion3;
+                if(opcion3==3){
+                    cout<<"¡Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
+                    cout<<Jugador->nombre_jugador<<" gano 10 puntos,3 maderas,2 aguas y 4 piedras"<<endl;
+                    Jugador->pts=Jugador->pts+10;
+                    cout<<"Ahora tienes : "<<Jugador->pts<<" puntos"<<endl;
+                    Jugador->inventario->agua=Jugador->inventario->agua+2;
+                    Jugador->inventario->piedra=Jugador->inventario->piedra+4;
+                    Jugador->inventario->madera=Jugador->inventario->madera+3;
+                    MostrarInventario(Jugador,1);
+                    correcto3=false;
+                }else if(opcion3<1 ||opcion3>3) {
+                    cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
+                }else{
+                    cout<<"Respuesta incorrecta, ha perdido 3 piedras y 5 puntos"<<endl;
+                    Jugador->pts=Jugador->pts-5;
+                    puntosnegativos(Jugador);
+                    cout<<"Ahora tienes: "<<Jugador->pts<<endl;
+                    Jugador->inventario->piedra=Jugador->inventario->piedra-3;
+                    recursosnegativos(Jugador);
+                    MostrarInventario(Jugador,1);
+                    correcto3=false;
+                }
+                }
+        }
+        if(Jugador->posicion==17){
+       // trivia pre boss contaminacion de las aguas
+            cout<<Jugador->nombre_jugador<< " ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
+            cout<<"Te encuentras en una bella costa paradisiaca, donde se realizan diversas actividades recreativas,pero tambien donde se encuentras muchos residuos toxicos para el ecosistema maritimo, que haras para resolver esto?"<<endl;
+            cout<<"1.No sumergirme al agua "<<endl;
+            cout<<"2.Implementar programas de limpieza y recogida de residuos en la costa y en áreas submarinas."<<endl;
+            cout<<"3.Limpiar el mar con una cubeta"<<endl;
+            int opcion4;
+            bool correcto4=true;
+            while(correcto4==true){
+                cin>>opcion4;
+                if(opcion4==2){
+                    cout<<"¡Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
+                    cout<<Jugador->nombre_jugador<<" gano 20 puntos,5 aguas, y 2 piedras"<<endl;
+                    Jugador->pts=Jugador->pts+20;
+                    cout<<"Ahora tienes : "<<Jugador->pts<<" puntos"<<endl;
+                    Jugador->inventario->agua=Jugador->inventario->agua+5;
+                    Jugador->inventario->piedra=Jugador->inventario->piedra+2;
+                    MostrarInventario(Jugador,1);
+                    correcto4=false;
+                }else if(opcion4<1 ||opcion4>3) {
+                    cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
+                }else{
+                    cout<<"Respuesta incorrecta, ha perdido 2 aguas y 10 puntos"<<endl;
+                    Jugador->pts=Jugador->pts-10;
+                    puntosnegativos(Jugador);
+                    cout<<"Ahora tienes: "<<Jugador->pts<<endl;
+                    Jugador->inventario->agua=Jugador->inventario->agua-2;
+                    recursosnegativos(Jugador);
+                    MostrarInventario(Jugador,1);
+                    correcto4=false;
+                }
+                }
 
-       //    break;
-       //case 17:// trivia pre boss contaminacion de las aguas
+        }
 
-       //    break;
-       //case 23:// trivia pre boss es perdida de biodiversidad tanto fauna como flora
-
-       //    break;
+        if(Jugador->posicion==23){
+        //trivia pre boss perdida dezfauna y flora en la sabana
+            cout<<Jugador->nombre_jugador<< " ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
+            cout<<"LLegaste a una zona nueva en la sabana, segun registros anteriores era una zona con mucha fauna y flora, pero en la actualidad no se encuentra asi,a que se debe?"<<endl;
+            cout<<"1.A la inflacion "<<endl;
+            cout<<"2.Omar"<<endl;
+            cout<<"3.Caza furtiva y deforestacion para hallar especies y terrenos"<<endl;
+            int opcion5;
+            bool correcto5=true;
+            while(correcto5==true){
+                cin>>opcion5;
+                if(opcion5==3){
+                    cout<<"¡Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
+                    cout<<Jugador->nombre_jugador<<" gano 10 puntos,10 maderas,2 semillas y 3 piedras"<<endl;
+                    Jugador->pts=Jugador->pts+10;
+                    cout<<"Ahora tienes : "<<Jugador->pts<<" puntos"<<endl;
+                    Jugador->inventario->semilla=Jugador->inventario->semilla+2;
+                    Jugador->inventario->madera=Jugador->inventario->madera+10;
+                    Jugador->inventario->piedra=Jugador->inventario->piedra+3;
+                    MostrarInventario(Jugador,1);
+                    correcto5=false;
+                }else if(opcion5<1 ||opcion5>3) {
+                    cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
+                }else{
+                    cout<<"Respuesta incorrecta, ha perdido 2 aguas y 10 puntos"<<endl;
+                    Jugador->pts=Jugador->pts-10; 
+                    puntosnegativos(Jugador);
+                    cout<<"Ahora tienes: "<<Jugador->pts<<endl;
+                    Jugador->inventario->agua=Jugador->inventario->agua-2;
+                    recursosnegativos(Jugador);
+                    MostrarInventario(Jugador,1);
+                    correcto5=false;
+                }
+                }
+        }
     
+}
+
+//procedimientos para verificar si hay cantidad de recursos necesarios para los jefes
+bool verificaragua(Jugadores *&Jugador,int cantidadnecesaria){
+    bool sihay=false;
+    if(Jugador->inventario->agua>=cantidadnecesaria){
+        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios";
+        sihay=true;
+        return true;
+    }else{
+        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios";
+        return false;
+    }
+}
+
+bool verificarmetal(Jugadores *&Jugador,int cantidadnecesaria){
+    bool sihay=false;
+    if(Jugador->inventario->metal>=cantidadnecesaria){
+        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios";
+        sihay=true;
+        return true;
+    }else{
+        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios";
+        return false;
+    }
+}
+
+bool verificarmadera(Jugadores *&Jugador,int cantidadnecesaria){
+    bool sihay=false;
+    if(Jugador->inventario->madera>=cantidadnecesaria){
+        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios";
+        sihay=true;
+        return true;
+    }else{
+        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios";
+        return false;
+    }
+}
+
+bool verificarpiedra(Jugadores *&Jugador,int cantidadnecesaria){
+    bool sihay=false;
+    if(Jugador->inventario->madera>=cantidadnecesaria){
+        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios";
+        sihay=true;
+        return true;
+    }else{
+        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios";
+        return false;
+    }
+}
+
+bool verificarpapel(Jugadores *&Jugador,int cantidadnecesaria){
+    bool sihay=false;
+    if(Jugador->inventario->papel>=cantidadnecesaria){
+        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios";
+        sihay=true;
+        return true;
+    }else{
+        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios";
+        return false;
+    }
+}
+
+bool verificarsemillas(Jugadores *&Jugador,int cantidadnecesaria){
+    bool sihay=false;
+    if(Jugador->inventario->semilla>=cantidadnecesaria){
+        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios";
+        sihay=true;
+        return true;
+    }else{
+        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios";
+        return false;
+    }
+}
+
+
+void Jefes(Jugadores *&Jugador){
+    if(Jugador->posicion==5){
+        //boss jefe final
+        int opcion1; 
+        cout<<Jugador->nombre_jugador<<" SE ENCUENTRA EN EL JEFE DE ZONA"<<endl;
+        cout<<"----------------------------------------------"<<endl;
+        cout<<"Te encuentras al final del bosque, sientes la vista pesada y te empieza a costar respirar, al seguir caminando te encuentras"<<endl;
+        cout<<" con un escenario desolador, un INCENDIO FORESTAL,que esta acabando con la zona.Necesitas tomar una accion inmediata que pueda ayudar en la zona con los recursos necesarios"<<endl;
+        cout<<"----------------------------------------------"<<endl;
+        cout<<"Se necesitan 2 maderas y 2 metales para construir [BARRERAS IGNIFUGAS]"<<endl;
+        cout<<"Se necesita 2 aguas para extingir las llamas"<<endl;
+        cout<<"Se necesita 2 piedras y 1 madera para construir una [PALA]"<<endl;
+        cout<<"Quieres invertir tus recursos en la solucion?"<<endl;
+        cout<<"1. Si"<<endl;
+        cout<<"2. No"<<endl;
+        bool aceptar=true;
+        while(aceptar==true){
+                cin>>opcion1;
+                if(opcion1==1){
+                    bool nocuenta=false;
+                    if(verificaragua(Jugador,2)==true){
+                        Jugador->inventario->agua=Jugador->inventario->agua-2;
+                        cout<<Jugador->nombre_jugador<<" ha donado 2 aguas"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta=true;
+                    }
+                    if(verificarmadera(Jugador,3)==true){
+                        Jugador->inventario->madera=Jugador->inventario->madera-3;
+                        cout<<Jugador->nombre_jugador<<" ha donado 3 maderas"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta=true;
+                    }
+                    if(verificarmetal(Jugador,2)==true){
+                        Jugador->inventario->metal=Jugador->inventario->metal-2;
+                        cout<<Jugador->nombre_jugador<<" ha donado 2 metales"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta=true;
+                    }
+                    if(verificarpiedra(Jugador,2)==true){
+                        Jugador->inventario->piedra=Jugador->inventario->piedra-2;
+                        cout<<Jugador->nombre_jugador<<" ha donado 2 piedras"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta=true;
+                    }
+
+                    if(nocuenta=true){
+                        cout<<"El jugador "<<Jugador->nombre_equipo<<" no cuenta con uno de los recursos,por lo tanto no podra ayudar";
+                        aceptar=false;
+                    }
+
+                    
+
+                }else if(opcion1<1 ||opcion1>2) {
+                    cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
+                }else{
+                    cout<<Jugador->nombre_jugador<<" decidio no donar sus recursos"<<endl;
+                    cout<<"A raiz de que el jugador "<<Jugador->nombre_jugador<<" no ayudo al bosque, el perdio su trofeo [APAGUE EL FUEGO] y su bonificacion de equipo";
+                    Jugador->inventario->semilla=Jugador->inventario->semilla-2;
+                    Jugador->inventario->agua=Jugador->inventario->agua-1;
+                    MostrarInventario(Jugador,1);
+                    aceptar=false;
+                }
+            }
+        cout<<"Después de extinguir el incendio, usaremos la [PALA] para cavar y sembrar las semillas de árbol"<<endl;
+    }
+
+    
+    if(Jugador->posicion==10){
+        
+    }
+    if(Jugador->posicion==15){
+        
+    }
+    if(Jugador->posicion==20){
+        
+    }
+    if(Jugador->posicion==25){
+        
+    }
 }
 
 void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, bool fin_partida) {
@@ -780,10 +1040,31 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, bool fin_par
     }
 }
 
-
-void Inserta_Ultimo_Jugadores(Jugadores *&ListaLlenar, Jugadores ListaOrigen){
-    ListaLlenar->equipo;
-    //FALTA TERMINAR ESTA FUNCION LLAMADA EN ronda()
+void Inserta_Ultimo_Jugadores(Jugadores *&ListaLlenar, Jugadores *ListaOrigen){
+    Jugadores *aux=ListaLlenar;
+    
+    if(JugadoresVacio(aux)){
+        aux->pts=ListaOrigen->pts;
+        aux->equipo=ListaOrigen->equipo;
+        aux->posicion=ListaOrigen->posicion;
+        aux->ubicacion_casilla=ListaOrigen->ubicacion_casilla;
+        aux->nombre_equipo=ListaOrigen->nombre_equipo;
+        aux->nombre_jugador=ListaOrigen->nombre_jugador;
+        aux->inventario=ListaOrigen->inventario;
+        aux->prox_jugador=NULL;
+    }else{
+        while (aux->prox_jugador!=NULL){
+            aux=aux->prox_jugador;
+        }
+        aux->prox_jugador->pts=ListaOrigen->pts;
+        aux->prox_jugador->equipo=ListaOrigen->equipo;
+        aux->prox_jugador->posicion=ListaOrigen->posicion;
+        aux->prox_jugador->ubicacion_casilla=ListaOrigen->ubicacion_casilla;
+        aux->prox_jugador->nombre_equipo=ListaOrigen->nombre_equipo;
+        aux->prox_jugador->nombre_jugador=ListaOrigen->nombre_jugador;
+        aux->prox_jugador->inventario=ListaOrigen->inventario;
+        aux->prox_jugador->prox_jugador=NULL;    
+    }
 }
 
 
@@ -791,14 +1072,14 @@ void Inserta_Ultimo_Jugadores(Jugadores *&ListaLlenar, Jugadores ListaOrigen){
 
 void Turno(Casillas *&Tablero, Jugadores *&lista_jugadores, bool *fin_partida){ //acaba cuando el jugador elija su acción
         mover_jugador(lista_jugadores,Tablero,fin_partida);
-    }
+}
 
 void Ronda(Casillas *&Tablero, Jugadores *&lista_jugadores, bool *fin_partida){ //acaba al haber terminado el Turno de cada jugador
     bool fin_jugadores;
     Jugadores *avanza_jugadores=lista_jugadores, *devuelve=NULL; 
     while (avanza_jugadores!=NULL){
         Turno(Tablero, avanza_jugadores,fin_partida);
-        Inserta_Ultimo_Jugadores(devuelve,*avanza_jugadores);
+        Inserta_Ultimo_Jugadores(devuelve,avanza_jugadores);
         avanza_jugadores=avanza_jugadores->prox_jugador;
     }
     lista_jugadores=devuelve;
@@ -855,7 +1136,7 @@ void MainMenu(Casillas **Tablero, Jugadores **lista_jugadores){// acaba cuando s
                 fin_juego=true;
             break;   
             default:
-                cout<<"Opcion Inválida..."<<endl;
+                cout<<"Opcion Invalida..."<<endl;   
             break;
         }
     }
