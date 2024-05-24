@@ -1157,7 +1157,7 @@ void Jefes(Jugadores *&Jugador){
         cout<<"Necesitas tomar accion en este caso para detener la perdida de flora y fauna marina"<<endl;
         cout<<"Utilizando los siguientes recursos solucionarias esta situacion: "<<endl;
         cout<<"----------------------------------------------"<<endl;
-        cout<<"Se necesitan 2 semillas y 2 maderas para construir [] para ayudar a enfriar la zona"<<endl;
+        cout<<"Se necesitan 2 semillas y 2 maderas para construir [VIVERO ACUATICO] para ayudar a enfriar la zona"<<endl;
         cout<<"Quieres invertir tus recursos en la solucion?"<<endl;
         cout<<"1. Si"<<endl;
         cout<<"2. No"<<endl;
@@ -1186,7 +1186,7 @@ void Jefes(Jugadores *&Jugador){
                     }
 
                     if(nocuenta4=false){
-                        cout<<"Gracias a la ayuda de "<<Jugador->nombre_jugador<<" se logro limpiar el mar y volverlo a su estado natural"<<endl;
+                        cout<<"Gracias a la ayuda de "<<Jugador->nombre_jugador<<" se logro limpiar el mar con ayuda del vivero limpiador y volverlo a su estado natural"<<endl;
                         cout<<"El mar volvio a su color habitual"<<endl;
                         bonificacionequipo(Jugador);
                         aceptar4=false;
@@ -1205,12 +1205,80 @@ void Jefes(Jugadores *&Jugador){
                 }
             }
     }
+
     if(Jugador->posicion==25){
-        
+        int opcion5; 
+        cout<<Jugador->nombre_jugador<<" SE ENCUENTRA EN EL JEFE DE LA ZONA [SABANA]"<<endl;
+        cout<<"----------------------------------------------"<<endl;
+        cout<<"En una ultima parada,te encuentras paseando por la sabana, donde te percatas de la poca fauna que hay en el lugar."<<endl;
+        cout<<"Despues de un breve recorrido te encuentras a la distancia un grupo de cazadores,los cuales estan acabando con el habitat y las especies de la sabana "<<endl;
+        cout<<"Necesitas tomar accion en este caso para detener el deterioro de este ecosistema"<<endl;
+        cout<<"Utilizando los siguientes recursos solucionarias esta situacion: "<<endl;
+        cout<<"----------------------------------------------"<<endl;
+        cout<<"Se necesitan 4 metales,2 maderas,1 agua,2 semillas para construir [REFUGIO DE LA VIDA SALVAJE] para ayudar a enfriar la zona"<<endl;
+        cout<<"Quieres invertir tus recursos en la solucion?"<<endl;
+        cout<<"1. Si"<<endl;
+        cout<<"2. No"<<endl;
+        bool aceptar5=true;
+        while(aceptar5==true){
+                cin>>opcion5;
+                if(opcion5==1){
+                    bool nocuenta5=false;
+                    if(verificarsemillas(Jugador,2)==true){
+                        Jugador->inventario->semilla=Jugador->inventario->semilla-2;
+                        cout<<Jugador->nombre_jugador<<" ha donado 1 metal"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta5=true;
+                    }
+                    if(verificarmadera(Jugador,2)==true){
+                        Jugador->inventario->madera=Jugador->inventario->madera-2;
+                        cout<<Jugador->nombre_jugador<<" ha donado 2 madera"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta5=true;
+                    }
+                    if(verificarmetal(Jugador,4)==true){
+                        Jugador->inventario->metal=Jugador->inventario->metal-4;
+                        cout<<Jugador->nombre_jugador<<" ha donado 4 metales"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta5=true;
+                        }
+                    if(verificaragua(Jugador,1)==true){
+                        Jugador->inventario->agua=Jugador->inventario->agua-1;
+                        cout<<Jugador->nombre_jugador<<" ha donado 1 metales"<<endl;
+                        }else{
+                            cout<<"No cuenta con los recursos necesarios"<<endl;
+                            nocuenta5=true;
+                        }
+
+                        if(nocuenta5=true){
+                            cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con uno de los recursos,por lo tanto no podra ayudar";
+                            aceptar5=false;
+                        }
+
+                        if(nocuenta5=false){
+                            cout<<"Gracias a la ayuda de "<<Jugador->nombre_jugador<<" se logro salvar las especies restantes,conservando su vida y procurando su desarollo gracias al refugio"<<endl;
+                            cout<<"Los cazadores abandonaron la zona luego de esto"<<endl;
+                            bonificacionequipo(Jugador);
+                            aceptar5=false;
+                    }
+                }else if(opcion5<1 ||opcion5>2) {
+                    cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
+                }else{
+                    cout<<Jugador->nombre_jugador<<" decidio no donar sus recursos"<<endl;
+                    cout<<"A raiz de que el jugador "<<Jugador->nombre_jugador<<" no ayudo a la sabana, perdio su trofeo [MASCOTAS], su bonificacion de equipo y 20 puntos";
+                    Jugador->pts=Jugador->pts-20;
+                    puntosnegativos(Jugador);
+                    aceptar5=false;
+                }
+            }
     }
 }
 
-void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, bool fin_partida) {
+
+void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, bool fin_partida){
     Jugadores *Jugador = JugadorInicial;
     int opcion;
     
@@ -1231,6 +1299,7 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, bool fin_par
                     cout<<Jugador->nombre_jugador<<" del equipo "<<Jugador->nombre_equipo << " se movio a la casilla "<<Jugador->posicion<<endl;
                     PickUp(Tablero,Jugador);
                     Trivias(Jugador);
+                    Jefes(Jugador);
                     valido=true;
                 } else {
                     cout<<Jugador->nombre_jugador<<" ha llegado al final del tablero"<<endl;
