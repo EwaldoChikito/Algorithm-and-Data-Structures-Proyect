@@ -72,7 +72,7 @@ void CrearInventarioCasillas(Casillas *&Casillitas){
 
 Jugadores *CrearJugador(string nombre){
     Jugadores *NuevoJugador= new Jugadores;
-    NuevoJugador->pts=0;
+    NuevoJugador->pts=5;
     NuevoJugador->nombre_jugador=nombre;
     NuevoJugador->inventario=NULL;
     NuevoJugador->prox_jugador=NULL;
@@ -431,6 +431,65 @@ void MostrarJugadores(Jugadores *JugadorInicial){
 //CONTROL DE ARCHIVOS
 
 //TABLERO
+void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero,int numerodejugadores){
+    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
+    mostrarCursor();
+    int opcion_equipo;
+    int i=1;
+    string nombredejugador; 
+    while(i<=numerodejugadores){
+        cout<<"Indique el nombre del jugador numero "<<i<<" aqui: ";
+        cin>>nombredejugador;
+        Jugadores *JugadorNuevo=CrearJugador(nombredejugador);
+        JugadorNuevo->ubicacion_casilla=Tablero;
+        JugadorNuevo->posicion=Tablero->id_casillas;
+        do {
+            cout<<"Indique a cual equipo quiere pertenecer: "<<endl;
+            color(hConsole,12);
+            cout<<"\n1. Equipo Rojo,son expertos en el uso de energias renovables"<<endl;
+            color(hConsole,9);
+            cout<<"2. Equipo Azul,encargados del cuidado de ecosistemas maritimos"<<endl;
+            color(hConsole,10);
+            cout<<"3. Equipo Verde,enfocados en la conservacion de la fauna y la deforestacion"<<endl;
+            color(hConsole,15);
+            cin>>opcion_equipo;
+            if (opcion_equipo<1 || opcion_equipo>3) {
+                cout << "Opcion invalida,por favor  seleccione 1, 2 o 3." << endl;
+            }
+        }while(opcion_equipo < 1 || opcion_equipo > 3);
+        
+        switch(opcion_equipo){
+            case 1:
+                cout<<"Bienvenido al Equipo Rojo, "<<nombredejugador<<endl;
+                JugadorNuevo->nombre_equipo="Equipo Rojo";
+                JugadorNuevo->equipo=1;
+            break;
+            
+            case 2:
+                cout<<"Bienvenido al Equipo Azul, "<<nombredejugador<<endl;
+                JugadorNuevo->nombre_equipo="Equipo Azul";
+                JugadorNuevo->equipo=2;
+            break;
+            
+            case 3:
+                cout<<"Bienvenido al Equipo Verde, "<<nombredejugador<<endl;
+                JugadorNuevo->nombre_equipo="Equipo Verde";
+                JugadorNuevo->equipo=3;
+            break;
+        }
+        if(JugadoresVacio(JugadorInicial)){
+            JugadorInicial=JugadorNuevo;
+        }
+        else{
+            Jugadores *auxiliar=JugadorInicial;
+            while(auxiliar->prox_jugador != NULL){
+                auxiliar=auxiliar->prox_jugador;
+            }
+            auxiliar->prox_jugador=JugadorNuevo;
+        }   
+        i++;
+    }
+}
 
 void llenado_tablero(Casillas *&Tablero) {
     int i = 1;
@@ -552,65 +611,125 @@ void PickUp(Casillas *&Tablero, Jugadores *&Jugador){
 
     MostrarInventario(Jugador,1);
 }
-
-void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero,int numerodejugadores){
-    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
-    mostrarCursor();
-    int opcion_equipo;
-    int i=1;
-    string nombredejugador; 
-    while(i<=numerodejugadores){
-        cout<<"Indique el nombre del jugador numero "<<i<<" aqui: ";
-        cin>>nombredejugador;
-        Jugadores *JugadorNuevo=CrearJugador(nombredejugador);
-        JugadorNuevo->ubicacion_casilla=Tablero;
-        JugadorNuevo->posicion=Tablero->id_casillas;
-        do {
-            cout<<"Indique a cual equipo quiere pertenecer: "<<endl;
-            color(hConsole,12);
-            cout<<"\n1. Equipo Rojo,son expertos en el uso de energias renovables"<<endl;
-            color(hConsole,9);
-            cout<<"2. Equipo Azul,encargados del cuidado de ecosistemas maritimos"<<endl;
-            color(hConsole,10);
-            cout<<"3. Equipo Verde,enfocados en la conservacion de la fauna y la deforestacion"<<endl;
-            color(hConsole,15);
-            cin>>opcion_equipo;
-            if (opcion_equipo<1 || opcion_equipo>3) {
-                cout << "Opcion invalida,por favor  seleccione 1, 2 o 3." << endl;
-            }
-        }while(opcion_equipo < 1 || opcion_equipo > 3);
-        
-        switch(opcion_equipo){
-            case 1:
-                cout<<"Bienvenido al Equipo Rojo, "<<nombredejugador<<endl;
-                JugadorNuevo->nombre_equipo="Equipo Rojo";
-                JugadorNuevo->equipo=1;
-            break;
-            
-            case 2:
-                cout<<"Bienvenido al Equipo Azul, "<<nombredejugador<<endl;
-                JugadorNuevo->nombre_equipo="Equipo Azul";
-                JugadorNuevo->equipo=2;
-            break;
-            
-            case 3:
-                cout<<"Bienvenido al Equipo Verde, "<<nombredejugador<<endl;
-                JugadorNuevo->nombre_equipo="Equipo Verde";
-                JugadorNuevo->equipo=3;
-            break;
-        }
-        if(JugadoresVacio(JugadorInicial)){
-            JugadorInicial=JugadorNuevo;
-        }
-        else{
-            Jugadores *auxiliar=JugadorInicial;
-            while(auxiliar->prox_jugador != NULL){
-                auxiliar=auxiliar->prox_jugador;
-            }
-            auxiliar->prox_jugador=JugadorNuevo;
-        }   
-        i++;
+void puntosnegativos(Jugadores *&Jugador){
+    if(Jugador->pts<0){
+        cout<<"Los puntos de "<<Jugador->nombre_jugador<<" no pueden disminuir mas"<<endl;
+        Jugador->pts=0;
     }
+    
+}
+void recursosnegativos(Jugadores *&Jugador){
+    if(Jugador->inventario->agua<0){
+        cout<<"El agua de "<<Jugador->nombre_jugador<<" no puede disminuir mas"<<endl;
+        Jugador->inventario->agua=0;
+    }
+    if(Jugador->inventario->metal<0){
+        cout<<"El metal de "<<Jugador->nombre_jugador<<" no puede disminuir mas"<<endl;
+        Jugador->inventario->metal=0;
+    }
+    if(Jugador->inventario->semilla<0){
+        cout<<"Las semillas de "<<Jugador->nombre_jugador<<" no puede disminuir mas"<<endl;
+        Jugador->inventario->semilla=0;
+    }
+    if(Jugador->inventario->papel<0){
+        cout<<"El papel de "<<Jugador->nombre_jugador<<" no puede disminuir mas"<<endl;
+        Jugador->inventario->papel=0;
+    }
+    if(Jugador->inventario->madera<0){
+        cout<<"La madera de "<<Jugador->nombre_jugador<<" no puede disminuir mas"<<endl;
+        Jugador->inventario->madera=0;
+    }
+    if(Jugador->inventario->piedra<0){
+        cout<<"La piedra de "<<Jugador->nombre_jugador<<" no puede disminuir mas"<<endl;
+        Jugador->inventario->piedra=0;
+    }
+}
+void Trivias(Jugadores *&Jugador){
+    int casilladeljugador;
+    casilladeljugador=Jugador->posicion;
+    
+        // trivia pre boss es incendio forestal
+        if(Jugador->posicion==4){
+            cout<<Jugador->nombre_jugador<< "ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
+            cout<<" Te estas adentrando al final del bosque, en lo que entras te encuentras con un arbol empezando a quemarse";
+            cout<<",que crees que deberias hacer?"<<endl;
+            cout<<"1.Ver como empieza un incendio"<<endl;
+            cout<<"2.Intentar apagar la pequena llama con un poco de agua"<<endl;
+            cout<<"3.Tomarle una foto y enviarla a redes sociales"<<endl;
+            int opcion1;
+            bool correcto=true;
+            while(correcto==true){
+                cin>>opcion1;
+                if(opcion1==2){
+                    cout<<"¡Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
+                    cout<<Jugador->nombre_jugador<<" gano 10 puntos y 5 semillas"<<endl;
+                    Jugador->pts=Jugador->pts+10;
+                    cout<<"Ahora tienes : "<<Jugador->pts<<" puntos"<<endl;
+                    Jugador->inventario->semilla=Jugador->inventario->semilla+5;
+                    MostrarInventario(Jugador,1);
+                    correcto=false;
+                }else if(opcion1<1 ||opcion1>3) {
+                    cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
+                }else{
+                    cout<<"Respuesta incorrecta, ha perdido 2 semillas y 1 agua"<<endl;
+                    Jugador->inventario->semilla=Jugador->inventario->semilla-2;
+                    Jugador->inventario->agua=Jugador->inventario->agua-1;
+                    MostrarInventario(Jugador,1);
+                    correcto=false;
+
+                }
+
+            }
+
+        }
+
+        // trivia pre boss es contaminacion por co2
+        if(Jugador->posicion==8){
+            cout<<Jugador->nombre_jugador<< "ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
+            cout<<" Estás caminando cerca de una  ciudad grande y notas que la calidad del aire es muy mala, ¿a que crees que se deba esto?"<<endl;
+            cout<<"1.Contaminacion de CO2 producidas de fabricas, combustibles y transportes"<<endl;
+            cout<<"2.La atmosfera se encuentra triste"<<endl;
+            cout<<"3.El espacio esta generando calor que afecta directamente al aire que respiramos"<<endl;
+            int opcion2;
+            bool correcto2=true;
+            while(correcto2==true){
+                cin>>opcion2;
+                if(opcion2==1){
+                    cout<<"¡Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
+                    cout<<Jugador->nombre_jugador<<" gano 15 puntos,2 semillas,1 papel y 3 metales"<<endl;
+                    Jugador->pts=Jugador->pts+15;
+                    cout<<"Ahora tienes : "<<Jugador->pts<<" puntos"<<endl;
+                    Jugador->inventario->semilla=Jugador->inventario->semilla+2;
+                    Jugador->inventario->papel=Jugador->inventario->papel+1;
+                    Jugador->inventario->metal=Jugador->inventario->metal+3;
+                    MostrarInventario(Jugador,1);
+                    correcto2=false;
+                }else if(opcion2<1 ||opcion2>3) {
+                    cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
+                }else{
+                    cout<<"Respuesta incorrecta, ha perdido 1 semilla, 1 metal y 5 puntos"<<endl;
+                    Jugador->pts=Jugador->pts-5;
+                    puntosnegativos(Jugador);
+                    cout<<"Ahora tienes: "<<Jugador->pts<<endl;
+                    Jugador->inventario->semilla=Jugador->inventario->semilla-2;
+                    Jugador->inventario->agua=Jugador->inventario->agua-1;
+                    recursosnegativos(Jugador);
+                    MostrarInventario(Jugador,1);
+                    correcto2=false;
+                }
+                }
+        }
+   
+       //case 13:// trivia pre boss es deshielo por el calentamiento global
+
+       //    break;
+       //case 17:// trivia pre boss contaminacion de las aguas
+
+       //    break;
+       //case 23:// trivia pre boss es perdida de biodiversidad tanto fauna como flora
+
+       //    break;
+    
 }
 
 void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, bool fin_partida) {
@@ -633,6 +752,7 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, bool fin_par
                     Jugador->posicion=Jugador->ubicacion_casilla->id_casillas;
                     cout<<Jugador->nombre_jugador<<" del equipo "<<Jugador->nombre_equipo << " se movio a la casilla "<<Jugador->posicion<<endl;
                     PickUp(Tablero,Jugador);
+                    Trivias(Jugador);
                     valido=true;
                 } else {
                     cout<<Jugador->nombre_jugador<<" ha llegado al final del tablero"<<endl;
