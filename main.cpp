@@ -1149,7 +1149,61 @@ void Jefes(Jugadores *&Jugador){
             }
     }
     if(Jugador->posicion==20){
-        
+        int opcion4; 
+        cout<<Jugador->nombre_jugador<<" SE ENCUENTRA EN EL JEFE DE LA ZONA [MARITIMA]"<<endl;
+        cout<<"----------------------------------------------"<<endl;
+        cout<<"Te encuentras saliendo del profundo y lejano mar, donde a poca distancia ves tierra firme, pero un fuerte movimiento te despierta,te das cuenta que tu barco se ha detenido porque te encuentras atrapado entre basura y residuos"<<endl;
+        cout<<".La contaminacion por plasticos,petroleo y basura ha llegado a un punto critico. "<<endl;
+        cout<<"Necesitas tomar accion en este caso para detener la perdida de flora y fauna marina"<<endl;
+        cout<<"Utilizando los siguientes recursos solucionarias esta situacion: "<<endl;
+        cout<<"----------------------------------------------"<<endl;
+        cout<<"Se necesitan 2 semillas y 2 maderas para construir [] para ayudar a enfriar la zona"<<endl;
+        cout<<"Quieres invertir tus recursos en la solucion?"<<endl;
+        cout<<"1. Si"<<endl;
+        cout<<"2. No"<<endl;
+        bool aceptar4=true;
+        while(aceptar4==true){
+                cin>>opcion4;
+                if(opcion4==1){
+                    bool nocuenta4=false;
+                    if(verificarsemillas(Jugador,2)==true){
+                        Jugador->inventario->semilla=Jugador->inventario->semilla-2;
+                        cout<<Jugador->nombre_jugador<<" ha donado 1 metal"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta4=true;
+                    }
+                    if(verificarmadera(Jugador,2)==true){
+                        Jugador->inventario->madera=Jugador->inventario->madera-2;
+                        cout<<Jugador->nombre_jugador<<" ha donado 2 madera"<<endl;
+                    }else{
+                        cout<<"No cuenta con los recursos necesarios"<<endl;
+                        nocuenta4=true;
+                    }
+                    if(nocuenta4=true){
+                        cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con uno de los recursos,por lo tanto no podra ayudar";
+                        aceptar4=false;
+                    }
+
+                    if(nocuenta4=false){
+                        cout<<"Gracias a la ayuda de "<<Jugador->nombre_jugador<<" se logro limpiar el mar y volverlo a su estado natural"<<endl;
+                        cout<<"El mar volvio a su color habitual"<<endl;
+                        bonificacionequipo(Jugador);
+                        aceptar4=false;
+                    }
+
+                    
+
+                }else if(opcion4<1 ||opcion4>2) {
+                    cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
+                }else{
+                    cout<<Jugador->nombre_jugador<<" decidio no donar sus recursos"<<endl;
+                    cout<<"A raiz de que el jugador "<<Jugador->nombre_jugador<<" no ayudo al espacio maritimo, perdio su trofeo [TRAPEANDO EL MAR], su bonificacion de equipo y 1 papel";
+                    Jugador->inventario->papel=Jugador->inventario->papel-1;
+                    puntosnegativos(Jugador);
+                    aceptar4=false;
+                }
+            }
     }
     if(Jugador->posicion==25){
         
