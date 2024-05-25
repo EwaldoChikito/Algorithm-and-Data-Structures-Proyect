@@ -24,7 +24,7 @@ casillas 5,10,15,20,25
 
 
 
-INVESTIGACIONES
+INVESTIGACIONES/acciones de conservacion
 casillas 3,7,12,18,23
 
 TRIVIAS:

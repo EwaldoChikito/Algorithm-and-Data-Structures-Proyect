@@ -356,10 +356,10 @@ void mostrartablero(Casillas *Tablero){
                         cout << "|" << mover->id_casillas << "|";
                     }
                 }
-                mover = mover->prox; // Move to the next cell regardless of the condition
+                mover = mover->prox;
             }
         }
-        izquierdaADerecha = !izquierdaADerecha; // Switch the direction
+        izquierdaADerecha = !izquierdaADerecha; 
     }
     
     imprimirflechas();
@@ -372,7 +372,7 @@ void MostrarInventario(Jugadores *&JugadorX,int opcion){
     HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
     while(valido==true)
         if(opcion==1){
-            cout<<"El inventario de "<<JugadorX->nombre_jugador<< " es: "<<endl;
+            cout<<"el inventario de "<<JugadorX->nombre_jugador<< " es: "<<endl;
             color(hConsole,11);
             cout<<"Agua: "<<JugadorX->inventario->agua<<endl;
             color(hConsole,13);
@@ -601,12 +601,12 @@ void PickUp(Casillas *&Tablero, Jugadores *&Jugador){
     }
 
     if(auxiliar!=NULL && auxiliar->recursoid==1){
-        Jugador->inventario->agua += auxiliar->inventario->agua;
-        Jugador->inventario->madera += auxiliar->inventario->madera;
-        Jugador->inventario->metal += auxiliar->inventario->metal;
-        Jugador->inventario->papel += auxiliar->inventario->papel;
-        Jugador->inventario->piedra += auxiliar->inventario->piedra;
-        Jugador->inventario->semilla += auxiliar->inventario->semilla;
+        Jugador->inventario->agua=Jugador->inventario->agua + auxiliar->inventario->agua;
+        Jugador->inventario->madera=Jugador->inventario->madera + auxiliar->inventario->madera;
+        Jugador->inventario->metal=Jugador->inventario->metal+auxiliar->inventario->metal;
+        Jugador->inventario->papel=Jugador->inventario->papel+ auxiliar->inventario->papel;
+        Jugador->inventario->piedra=Jugador->inventario->piedra+ auxiliar->inventario->piedra;
+        Jugador->inventario->semilla =Jugador->inventario->semilla+ auxiliar->inventario->semilla;
         cout<<"Has caido en una casilla con recursos, ahora ";
         MostrarInventario(Jugador,1);
         }
@@ -646,6 +646,193 @@ void recursosnegativos(Jugadores *&Jugador){
         Jugador->inventario->piedra=0;
     }
 }
+void AccionesC_Investigacion(Jugadores *&Jugador){
+    if(Jugador->posicion==3){
+        int opcion1;
+        system("cls");
+        cout<<Jugador->nombre_jugador<<" has entrado en una zona de conservacion"<<endl;
+        cout<<"Te encuentras ubicado en un claro del bosque, donde se tiene un amplio terreno donde trabajar, al girar a tu izquierda te encuentras con una bolsa de semillas y una regadera,"<<endl;
+        cout<<"encima de esto hay un cartel que dice [SI LLEGASTE A ESTA ZONA,POR FAVOR AYUDA A SEMBRAR ESTOS ARBOLES]"<<endl;
+        cout<<"Que decidiras?"<<endl;
+        cout<<"1.Reforestar el claro"<<endl;
+        cout<<"2.Seguir de largo"<<endl;
+        bool decision=true;
+        while(decision==true){
+            cin>>opcion1;
+            if(opcion1==1){
+                system("cls");
+                cout<<"Has empezado con la labor de reforestar este claro,con ayuda de tu regadera y las semillas que ya estaban en el lugar comienzas a plantarlas"<<endl;
+                cout<<"Despues de unos minutos de arduo trabajo, la totalidad de la zona se encuentra con nuevas semillas plantadas y regadas"<<endl;
+                cout<<"Gracias a tu accion se lograra recuperar esta zona del bosque, ademas has ganado un x2 de todos tus recursos actuales"<<endl;
+                Jugador->inventario->agua=Jugador->inventario->agua*2;
+                Jugador->inventario->madera=Jugador->inventario->madera*2;
+                Jugador->inventario->metal=Jugador->inventario->metal*2;
+                Jugador->inventario->papel=Jugador->inventario->papel*2;
+                Jugador->inventario->piedra=Jugador->inventario->piedra*2;
+                Jugador->inventario->semilla =Jugador->inventario->semilla*2;
+                cout<<"Has duplicado tus recursos, ahora ";
+                MostrarInventario(Jugador,1);
+                decision=false;
+            }else if(opcion1<1 || opcion1>3){
+                cout<<"Por favor ingrese una opcion valida"<<endl;
+            }else{
+                system("cls");
+                cout<<"Seguiras de largo y continuaras tu camino,reflexiona lo importante que es tener arboles en nuestro ecosistema, recuerda que son los capaces de purificar el aire que respiramos y nutren de alimentos a diversas especies."<<endl;
+                decision=false;
+            }
+        }
+    }   
+    if(Jugador->posicion==7){
+        int opcion2;
+        system("cls");
+        cout<<Jugador->nombre_jugador<<" has entrado en una zona de investigacion"<<endl;
+        cout<<"Al entrar en la ciudad encuentras una manifestacion pacifica en contra del uso de combustibles contaminantes,planteando la implementacion de combustibles no contaminantes. Se te acerca el lider de este grupo promocionando su idea y te pregunta "<<endl;
+        cout<<" [DESEAS COLABORAR ECONOMICAMENTE PARA LA FABRICACION DE COMBUSTIBLES NO CONTAMINANTES]"<<endl;
+        cout<<"Que decidiras?"<<endl;
+        cout<<"1.Donar 5 puntos, y adicionalmente 2 aguas"<<endl;
+        cout<<"2.Seguir con tu camino"<<endl;
+        bool decision2=true;
+        while(decision2==true){
+            cin>>opcion2;
+            if(opcion2==1){
+                system("cls");
+                cout<<"Aceptas la propuesta del lider, decides contribuir economicamente a su causa"<<endl;
+                Jugador->pts=Jugador->pts-5;
+                Jugador->inventario->agua=Jugador->inventario->agua-2;
+                cout<<"Te enteras que gracias a tu colaboracion ya pueden terminar la produccion de su nuevo combustible no contaminante, hecho en base a productos naturales y cierto tipo de energia"<<endl;
+                cout<<"Gracias a tu accion se logro avanzar en el desarrollo en contra de la contaminacion por C02, seras recompensado con 25 puntos y un x2 de  tus recursos [PIEDRA],[AGUA],[MADERA]"<<endl;
+                Jugador->inventario->agua=Jugador->inventario->agua*2;
+                Jugador->inventario->madera=Jugador->inventario->madera*2;
+                Jugador->inventario->piedra=Jugador->inventario->piedra*2;
+                Jugador->pts=Jugador->pts+25;
+                cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts;
+                cout<<"Has duplicado tus recursos, ahora ";
+                MostrarInventario(Jugador,1);
+                decision2=false;
+            }else if(opcion2<1 || opcion2>3){
+                cout<<"Por favor ingrese una opcion valida"<<endl;
+            }else{
+                system("cls");
+                cout<<"Seguiras de largo, pero ten en cuenta que al no aportar seguiran produciendo y utilizando combustibles que poco a poco acabaran con nuestro ecosistema"<<endl;
+                decision2=false;
+            }
+        }
+        
+    }
+
+    if(Jugador->posicion==12){
+        int opcion3;
+        system("cls");
+        cout<<Jugador->nombre_jugador<<" has entrado en una zona de investigacion"<<endl;
+        cout<<"En tu camino por la tundra entras en un CIA(Centro de Investigacion Ambiental), donde te proponen invertir en un proyecto, ";
+        cout<<"el cual se trata de una [ACADEMIA DE CUIDADO AMBIENTAL],donde ademas de cursar la carga academica corriente, se anadirian varios modulos con respecto al cuidado ambiental, tales como: "<<endl;
+        cout<<"El reciclaje y sus beneficios, energias no contaminantes, produccion agricola sostenible, entre otros diversos temas."<<endl;
+        cout<<"Que decidiras?"<<endl;
+        cout<<"1.Donar 5 puntos, y  3 papeles para los libros"<<endl;
+        cout<<"2.Seguir con tu camino"<<endl;
+        bool decision3=true;
+        while(decision3==true){
+            cin>>opcion3;
+            if(opcion3==1){
+                system("cls");
+                cout<<"Aceptas el proyecto, y donas lo necesario"<<endl;
+                Jugador->pts=Jugador->pts-5;
+                Jugador->inventario->papel=Jugador->inventario->papel-3;
+                cout<<"Debido a tu solidaridad con este nuevo proyecto muchos ninos y adolescentes aprenderan sobre el tema y se podra tener un mejor futuro"<<endl;
+                cout<<"Gracias a tu accion se logro progresar academicamente, seras recompensado con x2 en tus puntos "<<endl;
+                Jugador->pts=Jugador->pts*2;
+                cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts;
+                decision3=false;
+            }else if(opcion3<1 || opcion3>3){
+                cout<<"Por favor ingrese una opcion valida"<<endl;
+            }else{
+                system("cls");
+                cout<<"Seguiras de largo y continuaras tu camino,recuerda que es importante siempre ayudar y aportar conocimiento a los mas jovenes. El conocimiento es poder, y el poder se traduce en buenas acciones al medio ambiente"<<endl;
+                decision3=false;
+            }
+        }
+    }
+    if(Jugador->posicion==18){
+        int opcion4;
+        system("cls");
+        cout<<Jugador->nombre_jugador<<" has entrado en una zona de conservacion"<<endl;
+        cout<<"Al entrar en la playa te encuentras con un cumulo de desechos, sobretodo de productos fabricados por plastico,podrias seguir tu camino o usando tus recursos podrias ingeniarte una solucion"<<endl;
+        cout<<"Si tuvieses 1 madera y 1 de metal podrias elaborar un [RECOLECTOR DE PAPELES] "<<endl;
+        cout<<"Que decidiras?"<<endl;
+        cout<<"1.Invertir tiempo y recursos en limpiar la zona"<<endl;
+        cout<<"2.Seguir de largo"<<endl;
+        bool decision4=true;
+        while(decision4==true){
+            cin>>opcion4;
+            if(opcion4==1){
+                system("cls");
+                cout<<"Con tus recursos logras obtener un [RECOLECTOR DE PAPELES],con el cual empiezas a retirar los desechos de la playa."<<endl;
+                Jugador->inventario->madera=Jugador->inventario->madera-1;
+                Jugador->inventario->metal=Jugador->inventario->metal-1;
+                cout<<"Despues de un tiempo, la totalidad de la playa se encuentra limpia"<<endl;
+                cout<<"Gracias a tu accion se logro salvar esta zona, has ganado un x2 de todos tus recursos actuales y 5 puntos"<<endl;
+                Jugador->inventario->agua=Jugador->inventario->agua*2;
+                Jugador->inventario->madera=Jugador->inventario->madera*2;
+                Jugador->inventario->metal=Jugador->inventario->metal*2;
+                Jugador->inventario->papel=Jugador->inventario->papel*2;
+                Jugador->inventario->piedra=Jugador->inventario->piedra*2;
+                Jugador->inventario->semilla =Jugador->inventario->semilla*2;
+                Jugador->pts=Jugador->equipo+5;
+                cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts;
+                cout<<"Has duplicado tus recursos, ahora ";
+                MostrarInventario(Jugador,1);
+                decision4=false;
+            }else if(opcion4<1 || opcion4>3){
+                cout<<"Por favor ingrese una opcion valida"<<endl;
+            }else{
+                system("cls");
+                cout<<"Seguiras de largo,pero recuerda que debido a la contaminacion por plasticos y desechos es que la vida maritima se encuentra en peligro,considera tus acciones."<<endl;
+                decision4=false;
+            }
+        }
+        
+    }
+    if(Jugador->posicion==22){
+        int opcion5;
+        system("cls");
+        cout<<Jugador->nombre_jugador<<" has entrado en una zona de investigacion"<<endl;
+        cout<<"Te contacta un cientifico, el cual te propone invertir en un refugio para la cria y cuidado de especies en peligro extincion, lo cual traeria enormes beneficios a los ecosistemas donde ya no se encuentran"<<endl;
+        cout<<"Que decidiras?"<<endl;
+        cout<<"1.Invertir 10 puntos, 1 agua,1 metal,1 madera en la construccion del refugio"<<endl;
+        cout<<"2.Seguir de largo"<<endl;
+        bool decision5=true;
+        while(decision5==true){
+            cin>>opcion5;
+            if(opcion5==1){
+                system("cls");
+                cout<<"Con tus recursos logras construir [REFUGIO DE ESPECIES EN PELIGRO DE EXTINCION],con el cual especies como la nutria,el jaguar, el caiman podran vivir tranquilos"<<endl;
+                Jugador->inventario->madera=Jugador->inventario->madera-1;
+                Jugador->inventario->metal=Jugador->inventario->metal-1;
+                Jugador->inventario->agua=Jugador->inventario->agua-1;
+                cout<<"El cientifico te da las gracias por salvar a diversas especies"<<endl;
+                cout<<"Gracias a tu accion se logro salvar esta zona, has ganado un x4 en tus puntos y un +3 en recursos"<<endl;
+                Jugador->inventario->agua=Jugador->inventario->agua+2;
+                Jugador->inventario->madera=Jugador->inventario->madera+2;
+                Jugador->inventario->metal=Jugador->inventario->metal+2;
+                Jugador->inventario->papel=Jugador->inventario->papel+2;
+                Jugador->inventario->piedra=Jugador->inventario->piedra+2;
+                Jugador->inventario->semilla =Jugador->inventario->semilla+2;
+                Jugador->pts=Jugador->equipo*4;
+                cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts;
+                cout<<"Han aumentado tus recursos, ahora ";
+                MostrarInventario(Jugador,1);
+                decision5=false;
+            }else if(opcion5<1 || opcion5>3){
+                cout<<"Por favor ingrese una opcion valida"<<endl;
+            }else{
+                system("cls");
+                cout<<"Seguiras de largo,pero recuerda que debido a la contaminacion por plasticos y desechos es que la vida maritima se encuentra en peligro,considera tus acciones."<<endl;
+                decision5=false;
+            }
+        }
+    }
+}
+
 
 void Trivias(Jugadores *&Jugador){
     int casilladeljugador;
@@ -687,6 +874,7 @@ void Trivias(Jugadores *&Jugador){
             }
 
         }
+
         // trivia pre boss es contaminacion por co2
         if(Jugador->posicion==8){
             system("cls");
@@ -1322,6 +1510,7 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero){
                     PickUp(Tablero,Jugador);
                     Trivias(Jugador);
                     Jefes(Jugador);
+                    AccionesC_Investigacion(Jugador);
                     valido=true;
                 } else {
                     cout<<Jugador->nombre_jugador<<" ha llegado al final del tablero"<<endl;
