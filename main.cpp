@@ -1541,6 +1541,9 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero){
 
 void Turno(Casillas *&Tablero, Jugadores *&jugador) {
     mover_jugador(jugador, Tablero);
+    if(jugador->posicion==25){
+        cout<<"FELICIDADES "<<jugador->nombre_jugador<<" has llegado al final del juego, sigue cuidando el ambiente y aprendiendo de el!"<<endl;
+    }
 }
 
 void Ronda(Casillas *&Tablero, Jugadores *&lista_jugadores) {
@@ -1579,6 +1582,7 @@ void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores) {
         cout <<"Desea continuar la partida?"<<endl;
         cout<<"1. Si"<<endl;
         cout<<"2. No"<<endl;
+        
         cin >> respuesta;
         if(respuesta==1){
             fin_partida=false;
