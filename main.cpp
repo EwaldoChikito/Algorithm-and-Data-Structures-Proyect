@@ -879,7 +879,7 @@ void Trivias(Jugadores *&Jugador){
         if(Jugador->posicion==8){
             system("cls");
             cout<<Jugador->nombre_jugador<< " ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
-            cout<<" Estás caminando cerca de una  ciudad grande y notas que la calidad del aire es muy mala, ¿a que crees que se deba esto?"<<endl;
+            cout<<" Estas caminando cerca de una  ciudad grande y notas que la calidad del aire es muy mala, ¿a que crees que se deba esto?"<<endl;
             cout<<"1.Contaminacion de CO2 producidas de fabricas, combustibles y transportes"<<endl;
             cout<<"2.La atmosfera se encuentra triste"<<endl;
             cout<<"3.El espacio esta generando calor que afecta directamente al aire que respiramos"<<endl;
@@ -1582,7 +1582,7 @@ void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores) {
         cout <<"Desea continuar la partida?"<<endl;
         cout<<"1. Si"<<endl;
         cout<<"2. No"<<endl;
-        
+
         cin >> respuesta;
         if(respuesta==1){
             fin_partida=false;
