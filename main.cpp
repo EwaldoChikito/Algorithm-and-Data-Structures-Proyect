@@ -513,33 +513,33 @@ void llenado_tablero(Casillas *&Tablero) {
             auxiliar->recursoid=1;
             auxiliar->inventario->agua=5;
             auxiliar->inventario->semilla=6;
-            auxiliar->inventario->piedra=2;
-            auxiliar->inventario->madera=0;
-            auxiliar->inventario->metal=0;
-            auxiliar->inventario->papel=0;
+            auxiliar->inventario->piedra=4;
+            auxiliar->inventario->madera=4;
+            auxiliar->inventario->metal=4;
+            auxiliar->inventario->papel=3;
         }
         if(auxiliar->id_casillas==6){
             auxiliar->recursoid=1;
-            auxiliar->inventario->agua=0;
-            auxiliar->inventario->semilla=3;
+            auxiliar->inventario->agua=3;
+            auxiliar->inventario->semilla=4;
             auxiliar->inventario->piedra=2;
-            auxiliar->inventario->madera=4;
-            auxiliar->inventario->metal=2;
-            auxiliar->inventario->papel=1;
+            auxiliar->inventario->madera=6;
+            auxiliar->inventario->metal=8;
+            auxiliar->inventario->papel=2;
         }
         if(auxiliar->id_casillas==9){
             auxiliar->recursoid=1;
-            auxiliar->inventario->agua=1;
+            auxiliar->inventario->agua=5;
             auxiliar->inventario->semilla=2;
             auxiliar->inventario->piedra=1;
             auxiliar->inventario->madera=2;
-            auxiliar->inventario->metal=0;
+            auxiliar->inventario->metal=3;
             auxiliar->inventario->papel=0;
         }
         if(auxiliar->id_casillas==11){
             auxiliar->recursoid=1;
-            auxiliar->inventario->agua=0;
-            auxiliar->inventario->semilla=0;
+            auxiliar->inventario->agua=4;
+            auxiliar->inventario->semilla=4;
             auxiliar->inventario->piedra=5;
             auxiliar->inventario->madera=1;
             auxiliar->inventario->metal=4;
@@ -548,10 +548,10 @@ void llenado_tablero(Casillas *&Tablero) {
         if(auxiliar->id_casillas==14){
             auxiliar->recursoid=1;
             auxiliar->inventario->agua=1;
-            auxiliar->inventario->semilla=0;
+            auxiliar->inventario->semilla=4;
             auxiliar->inventario->piedra=1;
             auxiliar->inventario->madera=3;
-            auxiliar->inventario->metal=0;
+            auxiliar->inventario->metal=4;
             auxiliar->inventario->papel=1;
             }
         if(auxiliar->id_casillas==16){
@@ -607,9 +607,9 @@ void PickUp(Casillas *&Tablero, Jugadores *&Jugador){
         Jugador->inventario->papel += auxiliar->inventario->papel;
         Jugador->inventario->piedra += auxiliar->inventario->piedra;
         Jugador->inventario->semilla += auxiliar->inventario->semilla;
+        cout<<"Has caido en una casilla con recursos, ahora ";
+        MostrarInventario(Jugador,1);
         }
-
-    MostrarInventario(Jugador,1);
 }
 
 void puntosnegativos(Jugadores *&Jugador){
@@ -652,6 +652,7 @@ void Trivias(Jugadores *&Jugador){
     casilladeljugador=Jugador->posicion;
         // trivia pre boss es incendio forestal
         if(Jugador->posicion==4){
+            system("cls");
             cout<<Jugador->nombre_jugador<< " ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
             cout<<" Te estas adentrando al final del bosque, en lo que entras te encuentras con un arbol empezando a quemarse";
             cout<<",que crees que deberias hacer?"<<endl;
@@ -663,7 +664,8 @@ void Trivias(Jugadores *&Jugador){
             while(correcto==true){
                 cin>>opcion1;
                 if(opcion1==2){
-                    cout<<"¡Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
+                    system("cls");
+                    cout<<"Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
                     cout<<Jugador->nombre_jugador<<" gano 10 puntos y 5 semillas"<<endl;
                     Jugador->pts=Jugador->pts+10;
                     cout<<"Ahora tienes : "<<Jugador->pts<<" puntos"<<endl;
@@ -673,6 +675,7 @@ void Trivias(Jugadores *&Jugador){
                 }else if(opcion1<1 ||opcion1>3) {
                     cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
                 }else{
+                    system("cls");
                     cout<<"Respuesta incorrecta, ha perdido 2 semillas y 1 agua"<<endl;
                     Jugador->inventario->semilla=Jugador->inventario->semilla-2;
                     Jugador->inventario->agua=Jugador->inventario->agua-1;
@@ -686,6 +689,7 @@ void Trivias(Jugadores *&Jugador){
         }
         // trivia pre boss es contaminacion por co2
         if(Jugador->posicion==8){
+            system("cls");
             cout<<Jugador->nombre_jugador<< " ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
             cout<<" Estás caminando cerca de una  ciudad grande y notas que la calidad del aire es muy mala, ¿a que crees que se deba esto?"<<endl;
             cout<<"1.Contaminacion de CO2 producidas de fabricas, combustibles y transportes"<<endl;
@@ -696,7 +700,8 @@ void Trivias(Jugadores *&Jugador){
             while(correcto2==true){
                 cin>>opcion2;
                 if(opcion2==1){
-                    cout<<"¡Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
+                    system("cls");
+                    cout<<"Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
                     cout<<Jugador->nombre_jugador<<" gano 15 puntos,2 semillas,1 papel y 3 metales"<<endl;
                     Jugador->pts=Jugador->pts+15;
                     cout<<"Ahora tienes : "<<Jugador->pts<<" puntos"<<endl;
@@ -708,6 +713,7 @@ void Trivias(Jugadores *&Jugador){
                 }else if(opcion2<1 ||opcion2>3) {
                     cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
                 }else{
+                    system("cls");
                     cout<<"Respuesta incorrecta, ha perdido 1 semilla, 1 metal y 5 puntos"<<endl;
                     Jugador->pts=Jugador->pts-5;
                     puntosnegativos(Jugador);
@@ -722,6 +728,7 @@ void Trivias(Jugadores *&Jugador){
         }
           // trivia pre boss es deshielo por el calentamiento global
         if(Jugador->posicion==13){
+            system("cls");
             cout<<Jugador->nombre_jugador<< " ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
             cout<<"Estás explorando una tundra ártica y te das cuenta de que el hielo se están derritiendo rápidamente debido al calentamiento global, que opcion es mas adecuada para resolver este caso?"<<endl;
             cout<<"1.Encender un aire acondicionado en la tundra"<<endl;
@@ -732,7 +739,8 @@ void Trivias(Jugadores *&Jugador){
             while(correcto3==true){
                 cin>>opcion3;
                 if(opcion3==3){
-                    cout<<"¡Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
+                    system("cls");
+                    cout<<"Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
                     cout<<Jugador->nombre_jugador<<" gano 10 puntos,3 maderas,2 aguas y 4 piedras"<<endl;
                     Jugador->pts=Jugador->pts+10;
                     cout<<"Ahora tienes : "<<Jugador->pts<<" puntos"<<endl;
@@ -744,6 +752,7 @@ void Trivias(Jugadores *&Jugador){
                 }else if(opcion3<1 ||opcion3>3) {
                     cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
                 }else{
+                    system("cls");
                     cout<<"Respuesta incorrecta, ha perdido 3 piedras y 5 puntos"<<endl;
                     Jugador->pts=Jugador->pts-5;
                     puntosnegativos(Jugador);
@@ -756,7 +765,8 @@ void Trivias(Jugadores *&Jugador){
                 }
         }
         if(Jugador->posicion==17){
-       // trivia pre boss contaminacion de las aguas
+            // trivia pre boss contaminacion de las aguas
+            system("cls");
             cout<<Jugador->nombre_jugador<< " ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
             cout<<"Te encuentras en una bella costa paradisiaca, donde se realizan diversas actividades recreativas,pero tambien donde se encuentras muchos residuos toxicos para el ecosistema maritimo, que haras para resolver esto?"<<endl;
             cout<<"1.No sumergirme al agua "<<endl;
@@ -767,7 +777,8 @@ void Trivias(Jugadores *&Jugador){
             while(correcto4==true){
                 cin>>opcion4;
                 if(opcion4==2){
-                    cout<<"¡Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
+                    system("cls");
+                    cout<<"Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
                     cout<<Jugador->nombre_jugador<<" gano 20 puntos,5 aguas, y 2 piedras"<<endl;
                     Jugador->pts=Jugador->pts+20;
                     cout<<"Ahora tienes : "<<Jugador->pts<<" puntos"<<endl;
@@ -778,6 +789,7 @@ void Trivias(Jugadores *&Jugador){
                 }else if(opcion4<1 ||opcion4>3) {
                     cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
                 }else{
+                    system("cls");
                     cout<<"Respuesta incorrecta, ha perdido 2 aguas y 10 puntos"<<endl;
                     Jugador->pts=Jugador->pts-10;
                     puntosnegativos(Jugador);
@@ -792,7 +804,8 @@ void Trivias(Jugadores *&Jugador){
         }
 
         if(Jugador->posicion==23){
-        //trivia pre boss perdida dezfauna y flora en la sabana
+            //trivia pre boss perdida desfauna y flora en la sabana
+            system("cls");
             cout<<Jugador->nombre_jugador<< " ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
             cout<<"LLegaste a una zona nueva en la sabana, segun registros anteriores era una zona con mucha fauna y flora, pero en la actualidad no se encuentra asi,a que se debe?"<<endl;
             cout<<"1.A la inflacion "<<endl;
@@ -803,7 +816,8 @@ void Trivias(Jugadores *&Jugador){
             while(correcto5==true){
                 cin>>opcion5;
                 if(opcion5==3){
-                    cout<<"¡Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
+                    system("cls");
+                    cout<<"Felicidades "<<Jugador->nombre_jugador<<" tu respuesta fue correcta!"<<endl;
                     cout<<Jugador->nombre_jugador<<" gano 10 puntos,10 maderas,2 semillas y 3 piedras"<<endl;
                     Jugador->pts=Jugador->pts+10;
                     cout<<"Ahora tienes : "<<Jugador->pts<<" puntos"<<endl;
@@ -815,6 +829,7 @@ void Trivias(Jugadores *&Jugador){
                 }else if(opcion5<1 ||opcion5>3) {
                     cout<<"Opcion invalida, vuelva a intentarlo: "<<endl;
                 }else{
+                    system("cls");
                     cout<<"Respuesta incorrecta, ha perdido 2 aguas y 10 puntos"<<endl;
                     Jugador->pts=Jugador->pts-10; 
                     puntosnegativos(Jugador);
@@ -832,23 +847,23 @@ void Trivias(Jugadores *&Jugador){
 //procedimientos para verificar si hay cantidad de recursos necesarios para los jefes
 void bonificacionequipo(Jugadores *&Jugador){
     if(Jugador->equipo==1){
-        cout<<Jugador->nombre_jugador<<"supero el reto, y al ser del [EQUIPO ROJO] obtuvo un X4 de sus puntos actuales";
+        cout<<Jugador->nombre_jugador<<" supero el reto, y al ser del [EQUIPO ROJO] obtuvo un X4 de sus puntos actuales"<<endl;
         Jugador->pts=Jugador->pts*4;
-        cout<<Jugador->nombre_jugador<<"tus puntos ahora son: "<<Jugador->pts;
+        cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts;
 
     }//equipo rojo
     if(Jugador->equipo==2){
-        cout<<Jugador->nombre_jugador<<"supero el reto, y al ser del [EQUIPO AZUL] obtuvo 10 aguas y X3 de sus puntos actuales";
+        cout<<Jugador->nombre_jugador<<" supero el reto, y al ser del [EQUIPO AZUL] obtuvo 10 aguas y X3 de sus puntos actuales"<<endl;
         Jugador->pts=Jugador->pts*3;
-        cout<<Jugador->nombre_jugador<<"tus puntos ahora son: "<<Jugador->pts;
+        cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts<<endl;
         Jugador->inventario->agua=Jugador->inventario->agua+10;
         MostrarInventario(Jugador,1);
 
     }//equipo azul
     if(Jugador->equipo==3){
-        cout<<Jugador->nombre_jugador<<"supero el reto, y al ser del [EQUIPO VERDE] obtuvo un X2 de sus puntos actuales y un X2 en los recursos [PIEDRA],[METAL],[SEMILLAS],[MADERA]";
+        cout<<Jugador->nombre_jugador<<" supero el reto, y al ser del [EQUIPO VERDE] obtuvo un X2 de sus puntos actuales y un X2 en los recursos [PIEDRA],[METAL],[SEMILLAS],[MADERA]"<<endl;
         Jugador->pts=Jugador->pts*2;
-        cout<<Jugador->nombre_jugador<<"tus puntos ahora son: "<<Jugador->pts;
+        cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts<<endl;
         Jugador->inventario->piedra=Jugador->inventario->piedra*2;
         Jugador->inventario->semilla=Jugador->inventario->semilla*2;
         Jugador->inventario->metal=Jugador->inventario->metal*2;
@@ -862,11 +877,11 @@ void bonificacionequipo(Jugadores *&Jugador){
 bool verificaragua(Jugadores *&Jugador,int cantidadnecesaria){
     bool sihay=false;
     if(Jugador->inventario->agua>=cantidadnecesaria){
-        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios";
+        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios"<<endl;
         sihay=true;
         return true;
     }else{
-        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios";
+        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios"<<endl;
         return false;
     }
 }
@@ -874,11 +889,11 @@ bool verificaragua(Jugadores *&Jugador,int cantidadnecesaria){
 bool verificarmetal(Jugadores *&Jugador,int cantidadnecesaria){
     bool sihay=false;
     if(Jugador->inventario->metal>=cantidadnecesaria){
-        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios";
+        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios"<<endl;
         sihay=true;
         return true;
     }else{
-        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios";
+        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios"<<endl;
         return false;
     }
 }
@@ -886,11 +901,11 @@ bool verificarmetal(Jugadores *&Jugador,int cantidadnecesaria){
 bool verificarmadera(Jugadores *&Jugador,int cantidadnecesaria){
     bool sihay=false;
     if(Jugador->inventario->madera>=cantidadnecesaria){
-        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios";
+        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios"<<endl;
         sihay=true;
         return true;
     }else{
-        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios";
+        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios"<<endl;
         return false;
     }
 }
@@ -898,11 +913,11 @@ bool verificarmadera(Jugadores *&Jugador,int cantidadnecesaria){
 bool verificarpiedra(Jugadores *&Jugador,int cantidadnecesaria){
     bool sihay=false;
     if(Jugador->inventario->madera>=cantidadnecesaria){
-        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios";
+        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios"<<endl;
         sihay=true;
         return true;
     }else{
-        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios";
+        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios"<<endl;
         return false;
     }
 }
@@ -910,11 +925,11 @@ bool verificarpiedra(Jugadores *&Jugador,int cantidadnecesaria){
 bool verificarpapel(Jugadores *&Jugador,int cantidadnecesaria){
     bool sihay=false;
     if(Jugador->inventario->papel>=cantidadnecesaria){
-        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios";
+        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios"<<endl;
         sihay=true;
         return true;
     }else{
-        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios";
+        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios"<<endl;
         return false;
     }
 }
@@ -922,11 +937,11 @@ bool verificarpapel(Jugadores *&Jugador,int cantidadnecesaria){
 bool verificarsemillas(Jugadores *&Jugador,int cantidadnecesaria){
     bool sihay=false;
     if(Jugador->inventario->semilla>=cantidadnecesaria){
-        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios";
+        cout<<Jugador->nombre_jugador<<" posee los recursos necesarios"<<endl;
         sihay=true;
         return true;
     }else{
-        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios";
+        cout<<Jugador->nombre_jugador<<" no posee los recursos necesarios"<<endl;
         return false;
     }
 }
@@ -935,6 +950,7 @@ bool verificarsemillas(Jugadores *&Jugador,int cantidadnecesaria){
 void Jefes(Jugadores *&Jugador){
     if(Jugador->posicion==5){
         //boss jefe final
+        system("cls");
         int opcion1; 
         cout<<Jugador->nombre_jugador<<" SE ENCUENTRA EN EL JEFE DE LA ZONA [BOSQUE]"<<endl;
         cout<<"----------------------------------------------"<<endl;
@@ -981,13 +997,14 @@ void Jefes(Jugadores *&Jugador){
                         nocuenta=true;
                     }
 
-                    if(nocuenta=true){
+                    if(nocuenta==true){
                         cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con uno de los recursos,por lo tanto no podra ayudar";
                         aceptar=false;
                     }
-                    if(nocuenta=false){
+
+                    if(nocuenta==false){
                         cout<<"Gracias a la ayuda de "<<Jugador->nombre_jugador<<" se logro calmar el incendio y poner a salvo la fauna del bosque"<<endl;
-                        cout<<"Después de extinguir el incendio, se uso la [PALA] para cavar y sembrar las semillas de árbol"<<endl;
+                        cout<<"Despues de extinguir el incendio, se uso la [PALA] para cavar y sembrar las semillas de arbol"<<endl;
                         bonificacionequipo(Jugador);
                         aceptar=false;
                     }
@@ -1011,6 +1028,7 @@ void Jefes(Jugadores *&Jugador){
     
     if(Jugador->posicion==10){
         //boss jefe final
+        system("cls");
         int opcion2; 
         cout<<Jugador->nombre_jugador<<" SE ENCUENTRA EN EL JEFE DE LA ZONA [CIUDAD]"<<endl;
         cout<<"----------------------------------------------"<<endl;
@@ -1058,12 +1076,12 @@ void Jefes(Jugadores *&Jugador){
                         nocuenta2=true;
                     }
 
-                    if(nocuenta2=true){
+                    if(nocuenta2==true){
                         cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con uno de los recursos,por lo tanto no podra ayudar";
                         aceptar2=false;
                     }
 
-                    if(nocuenta2=false){
+                    if(nocuenta2==false){
                         cout<<"Gracias a la ayuda de "<<Jugador->nombre_jugador<<" se logro eliminar la nube que estaba contaminando y poner a salvo la ciudad"<<endl;
                         cout<<"Ya se puede respirar con normalidad"<<endl;
                         bonificacionequipo(Jugador);
@@ -1084,6 +1102,7 @@ void Jefes(Jugadores *&Jugador){
             }
     }
     if(Jugador->posicion==15){
+        system("cls");
         int opcion3; 
         cout<<Jugador->nombre_jugador<<" SE ENCUENTRA EN EL JEFE DE LA ZONA [TUNDRA]"<<endl;
         cout<<"----------------------------------------------"<<endl;
@@ -1123,12 +1142,12 @@ void Jefes(Jugadores *&Jugador){
                         nocuenta3=true;
                     }
 
-                    if(nocuenta3=true){
+                    if(nocuenta3==true){
                         cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con uno de los recursos,por lo tanto no podra ayudar";
                         aceptar3=false;
                     }
 
-                    if(nocuenta3=false){
+                    if(nocuenta3==false){
                         cout<<"Gracias a la ayuda de "<<Jugador->nombre_jugador<<" se logro enfriar la tundra y recuperar su hielo"<<endl;
                         cout<<"El frio volvio a ser el habitual en este ecosistema"<<endl;
                         bonificacionequipo(Jugador);
@@ -1149,6 +1168,7 @@ void Jefes(Jugadores *&Jugador){
             }
     }
     if(Jugador->posicion==20){
+        system("cls");
         int opcion4; 
         cout<<Jugador->nombre_jugador<<" SE ENCUENTRA EN EL JEFE DE LA ZONA [MARITIMA]"<<endl;
         cout<<"----------------------------------------------"<<endl;
@@ -1180,12 +1200,12 @@ void Jefes(Jugadores *&Jugador){
                         cout<<"No cuenta con los recursos necesarios"<<endl;
                         nocuenta4=true;
                     }
-                    if(nocuenta4=true){
+                    if(nocuenta4==true){
                         cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con uno de los recursos,por lo tanto no podra ayudar";
                         aceptar4=false;
                     }
 
-                    if(nocuenta4=false){
+                    if(nocuenta4==false){
                         cout<<"Gracias a la ayuda de "<<Jugador->nombre_jugador<<" se logro limpiar el mar con ayuda del vivero limpiador y volverlo a su estado natural"<<endl;
                         cout<<"El mar volvio a su color habitual"<<endl;
                         bonificacionequipo(Jugador);
@@ -1207,6 +1227,7 @@ void Jefes(Jugadores *&Jugador){
     }
 
     if(Jugador->posicion==25){
+        system("cls");
         int opcion5; 
         cout<<Jugador->nombre_jugador<<" SE ENCUENTRA EN EL JEFE DE LA ZONA [SABANA]"<<endl;
         cout<<"----------------------------------------------"<<endl;
@@ -1253,12 +1274,12 @@ void Jefes(Jugadores *&Jugador){
                             nocuenta5=true;
                         }
 
-                        if(nocuenta5=true){
+                        if(nocuenta5==true){
                             cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con uno de los recursos,por lo tanto no podra ayudar";
                             aceptar5=false;
                         }
 
-                        if(nocuenta5=false){
+                        if(nocuenta5==false){
                             cout<<"Gracias a la ayuda de "<<Jugador->nombre_jugador<<" se logro salvar las especies restantes,conservando su vida y procurando su desarollo gracias al refugio"<<endl;
                             cout<<"Los cazadores abandonaron la zona luego de esto"<<endl;
                             bonificacionequipo(Jugador);
@@ -1278,14 +1299,15 @@ void Jefes(Jugadores *&Jugador){
 }
 
 
-void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, bool fin_partida){
+void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero){
     Jugadores *Jugador = JugadorInicial;
     int opcion;
     
     bool valido;
-
+    valido=false;
     while(valido==false){
-            valido=false;
+            system("cls");
+            mostrartablero(Tablero);
             gotoxy(3,12);
             cout<< "''"<<Jugador->nombre_jugador << "'', Que opcion deseas realizar?" << endl;
             cout<<"\n0- Para permanecer en la casilla actual" << endl;
@@ -1303,7 +1325,6 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, bool fin_par
                     valido=true;
                 } else {
                     cout<<Jugador->nombre_jugador<<" ha llegado al final del tablero"<<endl;
-                    fin_partida=true;
                     valido=true;
                 }
             }
@@ -1322,80 +1343,65 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, bool fin_par
             }
 
         system("pause");  // Pausa después de cada turno para que el usuario vea el resultado
-        system("cls");
         mostrartablero(Tablero);
-    }
-}
-
-void Inserta_Ultimo_Jugadores(Jugadores *&ListaLlenar, Jugadores *ListaOrigen){
-    Jugadores *aux=new Jugadores;
-    
-    if(JugadoresVacio(aux)){
-        aux->pts=ListaOrigen->pts;
-        aux->equipo=ListaOrigen->equipo;
-        aux->posicion=ListaOrigen->posicion;
-        aux->ubicacion_casilla=ListaOrigen->ubicacion_casilla;
-        aux->nombre_equipo=ListaOrigen->nombre_equipo;
-        aux->nombre_jugador=ListaOrigen->nombre_jugador;
-        aux->inventario=ListaOrigen->inventario;
-        aux->prox_jugador=NULL;
-    }else{
-        while (aux->prox_jugador!=NULL){
-            aux=aux->prox_jugador;
-        }
-        aux->prox_jugador->pts=ListaOrigen->pts;
-        aux->prox_jugador->equipo=ListaOrigen->equipo;
-        aux->prox_jugador->posicion=ListaOrigen->posicion;
-        aux->prox_jugador->ubicacion_casilla=ListaOrigen->ubicacion_casilla;
-        aux->prox_jugador->nombre_equipo=ListaOrigen->nombre_equipo;
-        aux->prox_jugador->nombre_jugador=ListaOrigen->nombre_jugador;
-        aux->prox_jugador->inventario=ListaOrigen->inventario;
-        aux->prox_jugador->prox_jugador=NULL;    
     }
 }
 
 
 //CICLOS MENU/JUEGO/RONDA/TURNO
 
-void Turno(Casillas *&Tablero, Jugadores *&lista_jugadores, bool *fin_partida){ //acaba cuando el jugador elija su acción
-        mover_jugador(lista_jugadores,Tablero,fin_partida);
+void Turno(Casillas *&Tablero, Jugadores *&jugador) {
+    mover_jugador(jugador, Tablero);
 }
 
-void Ronda(Casillas *&Tablero, Jugadores *&lista_jugadores, bool *fin_partida){ //acaba al haber terminado el Turno de cada jugador
-    bool fin_jugadores;
-    Jugadores *avanza_jugadores=lista_jugadores, *devuelve=NULL; 
-    while (avanza_jugadores!=NULL){
-        Turno(Tablero, avanza_jugadores,fin_partida);
-        Inserta_Ultimo_Jugadores(devuelve,avanza_jugadores);
-        avanza_jugadores=avanza_jugadores->prox_jugador;
+void Ronda(Casillas *&Tablero, Jugadores *&lista_jugadores) {
+    Jugadores *auxiliar_jugadores = lista_jugadores;
+    while (auxiliar_jugadores != NULL) {
+        Turno(Tablero, auxiliar_jugadores);
+        auxiliar_jugadores = auxiliar_jugadores->prox_jugador; // Avanzar al siguiente jugador
     }
-    lista_jugadores=devuelve;
-    
 }
 
-void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores){ //acaba cuando se cumple la condicion de fin de partida, ya sea victoria o salida forzada
-    bool fin_partida=false, cantidadvalida=false;
-    int cantidad_jugadores;//jugadores xd;
+void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores) {
+    bool fin_partida=false;
+    bool cantidadvalida=false;
+    int cantidad_jugadores;
     system("cls");
-    mostrarCursor();
-    while(cantidadvalida==false){//while para pedir el numero de jugadores verificando que no sea mayor a 3 ni menores a 0
-        cout<<"Ingrese la cantidad de jugadores de la partida: ";
-        cin>>cantidad_jugadores;
-        if(cantidad_jugadores<=0 || cantidad_jugadores>3){
-            cout<<"LA CANTIDAD MAXIMA DE JUGADORES ES 3.Intente de nuevo"<<endl;
-        }else{
+    while(cantidadvalida==false) {
+        cout<< "Ingrese la cantidad de jugadores de la partida: ";
+        cin >> cantidad_jugadores;
+        if (cantidad_jugadores <= 0 || cantidad_jugadores > 3) {
+            cout<<"La cantidad maxima de jugadores es de 3,intente de nuevo"<<endl;
+            cantidadvalida=false;
+        } else {
             cantidadvalida=true;
         }
     }
-    //UNA VEZ INGRESADA LA CANTIDAD DE JUGADORES EMPIEZA LA PARTIDA
-
-    CrearListadeJugadores(lista_jugadores,Tablero,cantidad_jugadores);
+    CrearListadeJugadores(lista_jugadores, Tablero, cantidad_jugadores);
     mostrartablero(Tablero);
-    do{
-        Ronda(Tablero, lista_jugadores, &fin_partida);
-    } while (fin_partida);
-    //SALIR DE ESTE CICLO IMPLIA QUE YA NO HAY PARTIDA TRANSCURRIENDO Y TOCA VOLVER AAL MENÚ
 
+    int ronda_contador=1;
+    
+    do {
+        system("cls");
+        cout<<"INICIO DE LA RONDA:"<<ronda_contador<<",BUENA SUERTE!"<<endl;
+        Ronda(Tablero,lista_jugadores);
+        int respuesta;
+        cout <<"Desea continuar la partida?"<<endl;
+        cout<<"1. Si"<<endl;
+        cout<<"2. No"<<endl;
+        cin >> respuesta;
+        if(respuesta==1){
+            fin_partida=false;
+        }else if(respuesta==2) {
+            fin_partida=true;
+        }else{
+            cout<<"Ingrese una opcion valida"<<endl;
+        }
+        ronda_contador++;
+    } while(fin_partida==false);
+    
+    cout<<"La partida ha terminado"<<endl;
 }
 
 void MainMenu(Casillas **Tablero, Jugadores **lista_jugadores){// acaba cuando se decida cerrar el juego(programa) por completo
