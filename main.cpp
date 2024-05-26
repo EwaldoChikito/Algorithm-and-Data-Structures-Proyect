@@ -646,6 +646,7 @@ void recursosnegativos(Jugadores *&Jugador){
         Jugador->inventario->piedra=0;
     }
 }
+
 void AccionesC_Investigacion(Jugadores *&Jugador){
     if(Jugador->posicion==3){
         int opcion1;
@@ -833,7 +834,6 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
     }
 }
 
-
 void Trivias(Jugadores *&Jugador){
     int casilladeljugador;
     casilladeljugador=Jugador->posicion;
@@ -997,7 +997,7 @@ void Trivias(Jugadores *&Jugador){
             cout<<Jugador->nombre_jugador<< " ha caido en una TRIVIA,responda bien la siguiente situacion y se le asignaran recursos y puntos "<<endl;
             cout<<"LLegaste a una zona nueva en la sabana, segun registros anteriores era una zona con mucha fauna y flora, pero en la actualidad no se encuentra asi,a que se debe?"<<endl;
             cout<<"1.A la inflacion "<<endl;
-            cout<<"2.Omar"<<endl;
+            cout<<"2.Todo es culpa del profesor Omar"<<endl;
             cout<<"3.Caza furtiva y deforestacion para hallar especies y terrenos"<<endl;
             int opcion5;
             bool correcto5=true;
@@ -1032,7 +1032,7 @@ void Trivias(Jugadores *&Jugador){
     
 }
 
-//procedimientos para verificar si hay cantidad de recursos necesarios para los jefes
+//===============VERIFICACION DE RECURSOS===============
 void bonificacionequipo(Jugadores *&Jugador){
     if(Jugador->equipo==1){
         cout<<Jugador->nombre_jugador<<" supero el reto, y al ser del [EQUIPO ROJO] obtuvo un X4 de sus puntos actuales"<<endl;
@@ -1134,6 +1134,7 @@ bool verificarsemillas(Jugadores *&Jugador,int cantidadnecesaria){
     }
 }
 
+//======================================================
 
 void Jefes(Jugadores *&Jugador){
     if(Jugador->posicion==5){
@@ -1486,129 +1487,124 @@ void Jefes(Jugadores *&Jugador){
     }
 }
 
-
 void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero){
     Jugadores *Jugador = JugadorInicial;
     int opcion;
     
-    bool valido;
-    valido=false;
-    while(valido==false){
-            system("cls");
-            mostrartablero(Tablero);
-            gotoxy(3,12);
-            cout<< "''"<<Jugador->nombre_jugador << "'', Que opcion deseas realizar?" << endl;
-            cout<<"\n0- Para permanecer en la casilla actual" << endl;
-            cout<<"1- Para moverte una casilla hacia adelante" << endl;
-            cout<<"2- Para abrir tu inventario" << endl;
-            cin>>opcion;
-            if (opcion == 1) {
-                if (Jugador->ubicacion_casilla!=NULL) {
-                    Jugador->ubicacion_casilla=Jugador->ubicacion_casilla->prox;
-                    Jugador->posicion=Jugador->ubicacion_casilla->id_casillas;
-                    cout<<Jugador->nombre_jugador<<" del equipo "<<Jugador->nombre_equipo << " se movio a la casilla "<<Jugador->posicion<<endl;
-                    PickUp(Tablero,Jugador);
-                    Trivias(Jugador);
-                    Jefes(Jugador);
-                    AccionesC_Investigacion(Jugador);
-                    valido=true;
-                } else {
-                    cout<<Jugador->nombre_jugador<<" ha llegado al final del tablero"<<endl;
-                    valido=true;
-                }
-            }
+    bool valido = false;
+    while(valido == false){
+        system("cls");
+        mostrartablero(Tablero);
+        gotoxy(3,12);
+        cout << "''" << Jugador->nombre_jugador << "'', Que opcion deseas realizar?" << endl;
+        cout << "\n0- Para permanecer en la casilla actual" << endl;
+        cout << "1- Para moverte una casilla hacia adelante" << endl;
+        cout << "2- Para abrir tu inventario" << endl;
+        cin >> opcion;
 
-            if(opcion==0){
-                cout<< Jugador->nombre_jugador<<" no realizo ningun movimiento, esta ubicado en la casilla:"<<Jugador->posicion<<endl;
-                valido=true;
+        if (opcion == 1) {
+            if (Jugador->ubicacion_casilla != NULL) {
+                Jugador->ubicacion_casilla = Jugador->ubicacion_casilla->prox;
+                Jugador->posicion = Jugador->ubicacion_casilla->id_casillas;
+                cout << Jugador->nombre_jugador << " del equipo " << Jugador->nombre_equipo << " se movio a la casilla " << Jugador->posicion << endl;
+                PickUp(Tablero, Jugador);
+                Trivias(Jugador);
+                Jefes(Jugador);
+                AccionesC_Investigacion(Jugador);
+                valido = true;
+            } else {
+                cout << Jugador->nombre_jugador << " ha llegado al final del tablero" << endl;
+                valido = true;
             }
-            if(opcion==2){
-                MostrarInventario(Jugador,1);
-                valido=false;
-            }
-            if(opcion<0 || opcion>2){
-                cout<< "Opcion Invalida" << endl;
-                valido=false;
-            }
+        } else if (opcion == 0) {
+            cout << Jugador->nombre_jugador << " no realizo ningun movimiento, esta ubicado en la casilla:" << Jugador->posicion << endl;
+            valido = true;
+        } else if (opcion == 2) {
+            MostrarInventario(Jugador, 1);
+            valido = false;
+        } else {
+            cout << "Opcion Invalida" << endl;
+            valido = false;
+        }
 
         system("pause");  // Pausa después de cada turno para que el usuario vea el resultado
         mostrartablero(Tablero);
     }
 }
 
-
 //CICLOS MENU/JUEGO/RONDA/TURNO
 
-void Turno(Casillas *&Tablero, Jugadores *&jugador) {
+void Turno(Casillas *&Tablero, Jugadores *&jugador, bool *fin_partida) {
     mover_jugador(jugador, Tablero);
-    if(jugador->posicion==25){
-        cout<<"FELICIDADES "<<jugador->nombre_jugador<<" has llegado al final del juego, sigue cuidando el ambiente y aprendiendo de el!"<<endl;
+    if (jugador->posicion == 25) {
+        cout << "FELICIDADES " << jugador->nombre_jugador << " has llegado al final del juego, sigue cuidando el ambiente y aprendiendo de el!" << endl;
+        *fin_partida = true;  // Asignación correcta
     }
 }
 
-void Ronda(Casillas *&Tablero, Jugadores *&lista_jugadores) {
+void Ronda(Casillas *&Tablero, Jugadores *&lista_jugadores, bool *fin_partida) {
     Jugadores *auxiliar_jugadores = lista_jugadores;
-    while (auxiliar_jugadores != NULL) {
-        Turno(Tablero, auxiliar_jugadores);
+    while (auxiliar_jugadores != NULL && *fin_partida == false) {
+        Turno(Tablero, auxiliar_jugadores, fin_partida);
         auxiliar_jugadores = auxiliar_jugadores->prox_jugador; // Avanzar al siguiente jugador
     }
 }
 
 void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores) {
-    bool fin_partida=false;
-    bool cantidadvalida=false;
+    bool fin_partida = false;
+    bool cantidadvalida = false;
     int cantidad_jugadores;
     system("cls");
-    while(cantidadvalida==false) {
-        cout<< "Ingrese la cantidad de jugadores de la partida: ";
+    while (cantidadvalida == false) {
+        cout << "Ingrese la cantidad de jugadores de la partida: ";
         cin >> cantidad_jugadores;
         if (cantidad_jugadores <= 0 || cantidad_jugadores > 3) {
-            cout<<"La cantidad maxima de jugadores es de 3,intente de nuevo"<<endl;
-            cantidadvalida=false;
+            cout << "La cantidad maxima de jugadores es de 3, intente de nuevo" << endl;
+            cantidadvalida = false;
         } else {
-            cantidadvalida=true;
+            cantidadvalida = true;
         }
     }
     CrearListadeJugadores(lista_jugadores, Tablero, cantidad_jugadores);
     mostrartablero(Tablero);
 
-    int ronda_contador=1;
+    int ronda_contador = 1;
     
     do {
         system("cls");
-        cout<<"INICIO DE LA RONDA:"<<ronda_contador<<",BUENA SUERTE!"<<endl;
-        Ronda(Tablero,lista_jugadores);
+        cout << "INICIO DE LA RONDA:" << ronda_contador << ", BUENA SUERTE!" << endl;
+        Ronda(Tablero, lista_jugadores, &fin_partida);
+        if (fin_partida) break;  // Salir del bucle si fin_partida es true
+        
         int respuesta;
-        cout <<"Desea continuar la partida?"<<endl;
-        cout<<"1. Si"<<endl;
-        cout<<"2. No"<<endl;
-
+        cout << "Desea continuar la partida?" << endl;
+        cout << "1. Si" << endl;
+        cout << "2. No" << endl;
         cin >> respuesta;
-        if(respuesta==1){
-            fin_partida=false;
-        }else if(respuesta==2) {
-            fin_partida=true;
-        }else{
-            cout<<"Ingrese una opcion valida"<<endl;
+        if (respuesta == 1) {
+            fin_partida = false;
+        } else if (respuesta == 2) {
+            fin_partida = true;
+        } else {
+            cout << "Ingrese una opcion valida" << endl;
         }
         ronda_contador++;
-    } while(fin_partida==false);
+    } while (fin_partida == false);
     
-    cout<<"La partida ha terminado"<<endl;
+    cout << "La partida ha terminado" << endl;
 }
 
 void MainMenu(Casillas **Tablero, Jugadores **lista_jugadores){// acaba cuando se decida cerrar el juego(programa) por completo
-    bool fin_juego=false;
+    bool fin_menu=false;
     int opcion;
     int n=3; //numero de opciones del Menú
     const char *opciones[] = {"INICIAR PARTIDA", "REGLAS/TUTORIAL", "SALIR DEL JUEGO"};
     opcion=flechas_menu(opciones,n);
-    while(fin_juego!=true){
+    while(fin_menu!=true){
 
         switch (opcion){
             case 1: //INICIA PARTIDA
                 Partida(*Tablero,*lista_jugadores); //Inicia la partida
-                fin_juego=true;
             break;
             
             case 2: //INICIA INSTRUCCIONES/REGLAS/TURORIAL
@@ -1618,7 +1614,7 @@ void MainMenu(Casillas **Tablero, Jugadores **lista_jugadores){// acaba cuando s
             case 3:
                 system("cls");
                 gotoxy(15,2);cout<<"\n\nHa Salido con exito del Juego, Hasta luego!"<<endl;
-                fin_juego=true;
+                fin_menu=true;
             break;   
             default:
                 cout<<"Opcion Invalida..."<<endl;   
