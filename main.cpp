@@ -49,12 +49,6 @@ struct Jugadores{
     Jugadores *prox_jugador;
 };
 
-struct TopTen {
-    int pts;
-    string nombre_jugador;
-    TopTen *prox;
-};
-
 //INICIALIZACIÓN DE ESTRUCTURAS
 
 void CrearInventario(Jugadores *&JugadorX){
@@ -847,7 +841,7 @@ void ordenarJugadoresPorPuntos(Jugadores *&lista_jugadores) {
         Jugadores *maxJugador = actual;
         Jugadores *siguiente = actual->prox_jugador;
 
-        while (siguiente) {
+        while (siguiente!=NULL) {
             if (siguiente->pts > maxJugador->pts) {
                 maxJugador = siguiente;
             }
@@ -855,7 +849,6 @@ void ordenarJugadoresPorPuntos(Jugadores *&lista_jugadores) {
         }
 
         if (maxJugador != actual) {
-            // Intercambio manual de todos los atributos
             int tempPts = maxJugador->pts;
             maxJugador->pts = actual->pts;
             actual->pts = tempPts;
