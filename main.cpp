@@ -2,8 +2,9 @@
 //MADE BY: RICARDO MEJIA & EDUARDO ROJAS
 
 //CONSTANTES Y LIBRERIAS
-#include <stdio.h>
 #include <iostream>
+#include <stdio.h>
+#include <fstream>
 #include <cstdlib>
 #include <string> 
 #include <windows.h>
@@ -11,11 +12,11 @@
 #include <ctime>
 #include <time.h>
 
-using namespace std;
 #define ARRIBA 72
 #define ABAJO 80
 #define ENTER 13
 #define color SetConsoleTextAttribute
+using namespace std;
 
 //Declaración de Estructuras
 
@@ -46,6 +47,12 @@ struct Jugadores{
     string nombre_jugador;
     Inventario *inventario;
     Jugadores *prox_jugador;
+};
+
+struct TopTen {
+    int pts;
+    string nombre_jugador;
+    TopTen *prox;
 };
 
 //INICIALIZACIÓN DE ESTRUCTURAS
@@ -178,8 +185,9 @@ int flechas_menu(const char *opciones[], int n){
         color(hConsole, 6);
         gotoxy(29, 11); cout << "BIENVENIDO AL JUEGO AMBIENTAL"; //Hay que encontrar un mejor nombre
         color(hConsole, 8);
-        gotoxy(10,19); cout<<"Usar las Teclas de las ''FLECHAS DIRECCIONALES'' para moverse por el menu";
-        gotoxy(21,20); cout<<"Presione enter para seleccionar alguna opcion";
+        gotoxy(8,19); cout<<"-Usar las Teclas de las ''FLECHAS DIRECCIONALES'' para moverse por el menu";
+        gotoxy(20,20); cout<<"-Presione enter para seleccionar alguna opcion";
+        gotoxy(12,21); cout<<"-Se recomienda aumentar el tamano de la ventana del compilador";
         // Imprime las opciones del menú
 
         for (int i = 0; i < n; ++i) {
@@ -228,7 +236,83 @@ void imprime_opciones_menu(){
 }
 
 void imprime_instrucciones(){
-    cout<<"gabriel marica"<<endl;
+    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
+    cout<<"REGLAS PARA JUGAR"<<endl;
+    color(hConsole,13);
+    cout<<"1.Jugabilidad"<<endl;
+    color(hConsole,10);
+    cout<<"2.Recursos"<<endl;
+    color(hConsole,11);
+    cout<<"3.Obstaculos"<<endl;
+    color(hConsole,12);
+    cout<<"4.Tipos de casillas"<<endl;
+    color(hConsole,14);
+    cout<<"5.Volver al menu";
+    int opcion;bool valido=false;
+    cout<<"Indique que apartado desea ver"<<endl;
+    while(valido==false){
+        cin>>opcion;
+        system("cls");
+        switch(opcion){
+            case 1:
+                system("cls");
+                cout<<"J U G A B I L I D A D"<<endl;
+                color(hConsole,8);
+                cout<<"1.La cantidad maxima de jugadores por partida es de 3"<<endl;
+                cout<<"2.Cada jugador cuenta con la opcion de elegir su propio equipo, el cual cuenta con interacciones especiales en el enfrentamiento contra jefes"<<endl;
+                cout<<"3.El juego se encuentra dividido en turnos y rondas, al terminar las rondas el jugador tendra la opcion de elegir si quiere seguir jugando o no"<<endl;
+                cout<<"4.En cada turno se le preguntara al jugador si desea moverse o no, de querer hacerlo avanzara una casilla, de lo contrario se pasa al turno del siguiente jugador"<<endl;
+                cout<<"5.El juego cuenta con 5 biomas, representado por colores, en el siguiente orden: [BOSQUE]->[CIUDAD]->[TUNDRA]->[MARITIMO]->[SABANA]"<<endl;
+                cout<<"6.Existen 4 tipos de casillas: [CASILLA DE RECURSOS],[CASILLA DE TRIVIAS],[CASILLA DE INVESTIGACION/ACCION],[CASILLA DE JEFES]"<<endl;
+                cout<<"7.Al superar jefes,trivias o investigaciones se obtendran recursos, bonificaciones o puntos"<<endl;
+                cout<<"8.La partida finalizara en el momento que uno de los 3 jugadores llegue a la casilla 25"<<endl;
+                cout<<"9.Si un jugador decide que ya no quiere seguir jugando la partida terminara para todos"<<endl;
+                valido=true;
+            break;
+            case 2:
+                system("cls");
+                cout<<"R E C U R S O S"<<endl;
+                color(hConsole,8);
+                cout<<"1.El juego cuenta con 6 recursos: [AGUA],[METAL],[PAPEL],[SEMILLAS],[MADERA],[PIEDRA]"<<endl;
+                cout<<"2.Todos los jugadores empiezan la partida con una unidad de cada recurso existente"<<endl;
+                cout<<"3.Los jugadores podran completar diversos desafios para obtener recursos o multiplicadores de ellos"<<endl;
+                cout<<"4.Los jugadores pueden obtener recursos gratis de ciertas casillas"<<endl;
+                cout<<"5.Los puntos cuentan como la moneda del juego, es decir, si quieres invertir en algun proyecto o investigacion deberas donar puntos."<<endl;
+                valido=true;
+            break;
+            case 3:
+                system("cls");
+                cout<<"O B S T A C U L O S"<<endl;
+                color(hConsole,8);
+                cout<<"1.El juego cuenta con jefes de zona/bioma, al llegar a las casillas que sean multiplo de 5 hasta el 25 se tendran que enfrentar a un jefe"<<endl;
+                cout<<"a.JEFE BOSQUE= Incendio Forestal"<<endl;
+                cout<<"b.JEFE CIUDAD= Contaminacion por C02"<<endl;
+                cout<<"c.JEFE TUNDRA= Calentamiento global"<<endl;
+                cout<<"d.JEFE MARITIMO= Contaminacion por residuos y desechos"<<endl;
+                cout<<"e.JEFE SABANA= Perdida de biodiversidad (fauna y flora)"<<endl;
+                cout<<"2.Si se vence al jefe de manera correcta, el jugador recibira recompensas(puntos,bonificaciones por equipo,recursos,logros), de lo contrario perdera puntos y recursos"<<endl;
+                valido=true;
+            break;
+            case 4:
+                system("cls");
+                cout<<"T I P O S   D E   C A S I L L A S"<<endl;
+                color(hConsole,8);
+                cout<<"1.[CASILLA DE RECURSOS]= 2,6,9,11,14,16,19,21,24. En estas casillas el jugador obtendra de manera rapida recursos"<<endl;
+                cout<<"2.[CASILLA DE TRIVIAS]= 4,8,13,17,22.En estas casillas el jugador debera responder una pregunta o situacion planteada, donde se dara una pista del jefe de zona y se podra ganar o perder recursos/puntos."<<endl;
+                cout<<"3.[CASILLA DE JEFES]=5,10,15,20,25"<<endl;
+                cout<<"4.[CASILLA DE INVESTIGACION/ACCION]=3,7,12,18,22"<<endl;
+                valido=true;
+
+            break;
+            case 5:
+            cout<<"Volviendo al menu"<<endl;
+            valido=true;
+            break;
+            default:
+            cout<<"Opcion invalida, ingrese de nuevo su opcion"<<endl;
+            break;
+        }
+    }
     system("pause");
 }
 
@@ -270,19 +354,318 @@ void MostrarJugadores(Jugadores *listajugadores){
     while (mover!=NULL){  //CICLO QUE APLICA COLOR A CADA PUNTO DE CADA JUGADOR
         if (mover->equipo==1){
             color(hConsole,12);
-
-        }
-        if (mover->equipo==2){
-            color(hConsole,9);
-
-        }
-        if (mover->equipo==3){
-            color(hConsole,10);
-
+            if (mover->posicion==1){
+                gotoxy( 24+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==2){
+                gotoxy( 30+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==3){
+                gotoxy( 36+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==4){
+                gotoxy( 42+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==5){
+                gotoxy( 48+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==6){
+                gotoxy( 48+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==7){
+                gotoxy( 42+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==8){
+                gotoxy( 36+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==9){
+                gotoxy( 30+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==10){
+                gotoxy( 24+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==11){
+                gotoxy( 24+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==12){
+                gotoxy( 30+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==13){
+                gotoxy( 36+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==14){
+                gotoxy( 42+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==15){
+                gotoxy( 48+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==16){
+                gotoxy( 48+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==17){
+                gotoxy( 42+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==18){
+                gotoxy( 36+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==19){
+                gotoxy( 30+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==20){
+                gotoxy( 24+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==21){
+                gotoxy( 24+mover->equipo,14 );
+                cout<<"*";
+            }
+            if (mover->posicion==22){
+                gotoxy( 30+mover->equipo,14 );
+                cout<<"*";
+            }
+            if (mover->posicion==23){
+                gotoxy( 36+mover->equipo,14 );
+                cout<<"*";
+            }
+            if (mover->posicion==24){
+                gotoxy( 42+mover->equipo,14 );
+                cout<<"*";
+            }
+            if (mover->posicion==25){
+                gotoxy( 48+mover->equipo,14 );
+                cout<<"*";
+            }
         }
         
+        if (mover->equipo==2){
+            color(hConsole,9);
+            if (mover->posicion==1){
+                gotoxy( 24+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==2){
+                gotoxy( 30+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==3){
+                gotoxy( 36+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==4){
+                gotoxy( 42+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==5){
+                gotoxy( 48+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==6){
+                gotoxy( 48+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==7){
+                gotoxy( 42+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==8){
+                gotoxy( 36+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==9){
+                gotoxy( 30+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==10){
+                gotoxy( 24+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==11){
+                gotoxy( 24+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==12){
+                gotoxy( 30+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==13){
+                gotoxy( 36+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==14){
+                gotoxy( 42+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==15){
+                gotoxy( 48+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==16){
+                gotoxy( 48+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==17){
+                gotoxy( 42+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==18){
+                gotoxy( 36+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==19){
+                gotoxy( 30+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==20){
+                gotoxy( 24+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==21){
+                gotoxy( 24+mover->equipo,14 );
+                cout<<"*";
+            }
+            if (mover->posicion==22){
+                gotoxy( 30+mover->equipo,14 );
+                cout<<"*";
+            }
+            if (mover->posicion==23){
+                gotoxy( 36+mover->equipo,14 );
+                cout<<"*";
+            }
+            if (mover->posicion==24){
+                gotoxy( 42+mover->equipo,14 );
+                cout<<"*";
+            }
+            if (mover->posicion==25){
+                gotoxy( 48+mover->equipo,14 );
+                cout<<"*";
+            }
+        }
+        
+        if (mover->equipo==3){
+            color(hConsole,10);
+            if (mover->posicion==1){
+                gotoxy( 24+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==2){
+                gotoxy( 30+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==3){
+                gotoxy( 36+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==4){
+                gotoxy( 42+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==5){
+                gotoxy( 48+mover->equipo,2 );
+                cout<<"*";
+            }
+            if (mover->posicion==6){
+                gotoxy( 48+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==7){
+                gotoxy( 42+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==8){
+                gotoxy( 36+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==9){
+                gotoxy( 30+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==10){
+                gotoxy( 24+mover->equipo,5 );
+                cout<<"*";
+            }
+            if (mover->posicion==11){
+                gotoxy( 24+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==12){
+                gotoxy( 30+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==13){
+                gotoxy( 36+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==14){
+                gotoxy( 42+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==15){
+                gotoxy( 48+mover->equipo,8 );
+                cout<<"*";
+            }
+            if (mover->posicion==16){
+                gotoxy( 48+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==17){
+                gotoxy( 42+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==18){
+                gotoxy( 36+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==19){
+                gotoxy( 30+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==20){
+                gotoxy( 24+mover->equipo,11 );
+                cout<<"*";
+            }
+            if (mover->posicion==21){
+                gotoxy( 24+mover->equipo,14 );
+                cout<<"*";
+            }
+            if (mover->posicion==22){
+                gotoxy( 30+mover->equipo,14 );
+                cout<<"*";
+            }
+            if (mover->posicion==23){
+                gotoxy( 36+mover->equipo,14 );
+                cout<<"*";
+            }
+            if (mover->posicion==24){
+                gotoxy( 42+mover->equipo,14 );
+                cout<<"*";
+            }
+            if (mover->posicion==25){
+                gotoxy( 48+mover->equipo,14 );
+                cout<<"*";
+            }
+        }
         mover=mover->prox_jugador;
     }
+    color(hConsole,15);
 }
 
 void mostrartablero(Casillas *Tablero){
@@ -455,6 +838,77 @@ void MostrarInventario(Jugadores *&JugadorX){
     }*/
 
 //CONTROL DE ARCHIVOS
+
+void ordenarJugadoresPorPuntos(Jugadores *&lista_jugadores) {
+    if (!lista_jugadores) return;
+
+    Jugadores *actual = lista_jugadores;
+    while (actual) {
+        Jugadores *maxJugador = actual;
+        Jugadores *siguiente = actual->prox_jugador;
+
+        while (siguiente) {
+            if (siguiente->pts > maxJugador->pts) {
+                maxJugador = siguiente;
+            }
+            siguiente = siguiente->prox_jugador;
+        }
+
+        if (maxJugador != actual) {
+            // Intercambio manual de todos los atributos
+            int tempPts = maxJugador->pts;
+            maxJugador->pts = actual->pts;
+            actual->pts = tempPts;
+
+            int tempEquipo = maxJugador->equipo;
+            maxJugador->equipo = actual->equipo;
+            actual->equipo = tempEquipo;
+
+            int tempPosicion = maxJugador->posicion;
+            maxJugador->posicion = actual->posicion;
+            actual->posicion = tempPosicion;
+
+            Casillas *tempUbicacionCasilla = maxJugador->ubicacion_casilla;
+            maxJugador->ubicacion_casilla = actual->ubicacion_casilla;
+            actual->ubicacion_casilla = tempUbicacionCasilla;
+
+            string tempNombreEquipo = maxJugador->nombre_equipo;
+            maxJugador->nombre_equipo = actual->nombre_equipo;
+            actual->nombre_equipo = tempNombreEquipo;
+
+            string tempNombreJugador = maxJugador->nombre_jugador;
+            maxJugador->nombre_jugador = actual->nombre_jugador;
+            actual->nombre_jugador = tempNombreJugador;
+
+            Inventario *tempInventario = maxJugador->inventario;
+            maxJugador->inventario = actual->inventario;
+            actual->inventario = tempInventario;
+        }
+
+        actual = actual->prox_jugador;
+    }
+}
+
+void guardarTop(Jugadores *lista_jugadores) {
+    ordenarJugadoresPorPuntos(lista_jugadores);
+
+    ofstream archivo("top_ten.txt");
+    if (archivo.is_open()) {
+        archivo << "TOP MEJORES JUGADORES\n";
+        archivo << "====================\n";
+
+        Jugadores *actual = lista_jugadores;
+        int contador = 0;
+        while (actual && contador < 10) {
+            archivo << contador + 1 << ". " << actual->nombre_jugador << " - Puntos: " << actual->pts << "\n";
+            actual = actual->prox_jugador;
+            contador++;
+        }
+        archivo.close();
+    } else {
+        cout << "No se pudo abrir el archivo para escribir el top 10.\n";
+    }
+}
 
 //TABLERO
 void CrearListadeJugadores(Jugadores *&JugadorInicial, Casillas *&Tablero,int numerodejugadores){
@@ -653,6 +1107,7 @@ void llenado_tablero(Casillas *&Tablero) {
 }
 
 void PickUp(Casillas *&Tablero, Jugadores *&Jugador){
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // IMPLEMENTACIÓN DE COLORES EN LA TERMINAL
     Casillas *auxiliar=Tablero;
     while(auxiliar!=NULL && auxiliar->id_casillas!=Jugador->posicion){
         auxiliar=auxiliar->prox;
@@ -680,6 +1135,7 @@ void puntosnegativos(Jugadores *&Jugador){
 }
 
 void recursosnegativos(Jugadores *&Jugador){
+    
     if(Jugador->inventario->agua<0){
         cout<<"El agua de "<<Jugador->nombre_jugador<<" no puede disminuir mas"<<endl;
         Jugador->inventario->agua=0;
@@ -707,34 +1163,55 @@ void recursosnegativos(Jugadores *&Jugador){
 }
 
 void AccionesC_Investigacion(Jugadores *&Jugador){
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // IMPLEMENTACIÓN DE COLORES EN LA TERMINAL
     if(Jugador->posicion==3){
         int opcion1;
         system("cls");
+        gotoxy(30,9);
         cout<<Jugador->nombre_jugador<<" has entrado en una zona de conservacion"<<endl;
-        cout<<"Te encuentras ubicado en un claro del bosque, donde se tiene un amplio terreno donde trabajar, al girar a tu izquierda te encuentras con una bolsa de semillas y una regadera,"<<endl;
-        cout<<"encima de esto hay un cartel que dice [SI LLEGASTE A ESTA ZONA,POR FAVOR AYUDA A SEMBRAR ESTOS ARBOLES]"<<endl;
+        gotoxy(23,10);
+        cout<<"Te encuentras ubicado en un claro del bosque, donde se tiene un";
+        gotoxy(26,11);
+        cout<<"amplio terreno donde trabajar, al girar a tu izquierda";
+        gotoxy(25,12);
+        cout<<"te encuentras con una bolsa de semillas y una regadera.";
+        gotoxy(33,13);
+        cout<<"Sobre esto hay un cartel que dice:";
+        gotoxy(23,14);
+        cout<<"[SI LLEGASTE A ESTA ZONA,POR FAVOR AYUDA A SEMBRAR ESTOS ARBOLES]"<<endl;
+        gotoxy(46,15);
         cout<<"Que decidiras?"<<endl;
+        gotoxy(1,17);
         cout<<"1.Reforestar el claro"<<endl;
+        gotoxy(1,18);
         cout<<"2.Seguir de largo"<<endl;
         bool decision=true;
         while(decision==true){
             cin>>opcion1;
             if(opcion1==1){
                 system("cls");
-                cout<<"Has empezado con la labor de reforestar este claro,con ayuda de tu regadera y las semillas que ya estaban en el lugar comienzas a plantarlas"<<endl;
-                cout<<"Despues de unos minutos de arduo trabajo, la totalidad de la zona se encuentra con nuevas semillas plantadas y regadas"<<endl;
-                cout<<"Gracias a tu accion se lograra recuperar esta zona del bosque, ademas has ganado un x2 de todos tus recursos actuales"<<endl;
                 Jugador->inventario->agua=Jugador->inventario->agua*2;
                 Jugador->inventario->madera=Jugador->inventario->madera*2;
                 Jugador->inventario->metal=Jugador->inventario->metal*2;
                 Jugador->inventario->papel=Jugador->inventario->papel*2;
                 Jugador->inventario->piedra=Jugador->inventario->piedra*2;
                 Jugador->inventario->semilla =Jugador->inventario->semilla*2;
+                gotoxy(1,7);
+                cout<<"Has empezado con la labor de reforestar este claro,con ayuda de tu regadera y las semillas que ya estaban en el lugar comienzas a plantarlas"<<endl;
+                gotoxy(1,8);
+                cout<<"Despues de unos minutos de arduo trabajo, la totalidad de la zona se encuentra con nuevas semillas plantadas y regadas"<<endl;
+                gotoxy(1,9);
+                cout<<"Gracias a tu accion se lograra recuperar esta zona del bosque, ademas has ganado un x2 de todos tus recursos actuales"<<endl;
+                gotoxy(38,10);
                 cout<<"Has duplicado tus recursos, ahora ";
                 MostrarInventario(Jugador);
                 decision=false;
             }else if(opcion1<1 || opcion1>3){
-                cout<<"Por favor ingrese una opcion valida"<<endl;
+                system("cls");
+                gotoxy(30,20);
+                color(hConsole,12);
+                cout<< "Opcion Invalida" << endl;
+                color(hConsole,15);
             }else{
                 system("cls");
                 cout<<"Seguiras de largo y continuaras tu camino,reflexiona lo importante que es tener arboles en nuestro ecosistema, recuerda que son los capaces de purificar el aire que respiramos y nutren de alimentos a diversas especies."<<endl;
@@ -744,33 +1221,47 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
     }   
     if(Jugador->posicion==7){
         int opcion2;
-        system("cls");
         cout<<Jugador->nombre_jugador<<" has entrado en una zona de investigacion"<<endl;
+        system("cls");
+        gotoxy(1,1);
         cout<<"Al entrar en la ciudad encuentras una manifestacion pacifica en contra del uso de combustibles contaminantes,planteando la implementacion de combustibles no contaminantes. Se te acerca el lider de este grupo promocionando su idea y te pregunta "<<endl;
+        gotoxy(1,1);
         cout<<" [DESEAS COLABORAR ECONOMICAMENTE PARA LA FABRICACION DE COMBUSTIBLES NO CONTAMINANTES]"<<endl;
+        gotoxy(1,1);
         cout<<"Que decidiras?"<<endl;
+        gotoxy(1,1);
         cout<<"1.Donar 5 puntos, y adicionalmente 2 aguas"<<endl;
+        gotoxy(1,1);
         cout<<"2.Seguir con tu camino"<<endl;
         bool decision2=true;
         while(decision2==true){
             cin>>opcion2;
             if(opcion2==1){
                 system("cls");
-                cout<<"Aceptas la propuesta del lider, decides contribuir economicamente a su causa"<<endl;
                 Jugador->pts=Jugador->pts-5;
                 Jugador->inventario->agua=Jugador->inventario->agua-2;
-                cout<<"Te enteras que gracias a tu colaboracion ya pueden terminar la produccion de su nuevo combustible no contaminante, hecho en base a productos naturales y cierto tipo de energia"<<endl;
-                cout<<"Gracias a tu accion se logro avanzar en el desarrollo en contra de la contaminacion por C02, seras recompensado con 25 puntos y un x2 de  tus recursos [PIEDRA],[AGUA],[MADERA]"<<endl;
                 Jugador->inventario->agua=Jugador->inventario->agua*2;
                 Jugador->inventario->madera=Jugador->inventario->madera*2;
                 Jugador->inventario->piedra=Jugador->inventario->piedra*2;
                 Jugador->pts=Jugador->pts+25;
+                gotoxy(1,6);
+                cout<<"Aceptas la propuesta del lider, decides contribuir economicamente a su causa"<<endl;
+                gotoxy(1,7);
+                cout<<"Te enteras que gracias a tu colaboracion ya pueden terminar la produccion de su nuevo combustible no contaminante, hecho en base a productos naturales y cierto tipo de energia"<<endl;
+                gotoxy(1,8);
+                cout<<"Gracias a tu accion se logro avanzar en el desarrollo en contra de la contaminacion por C02, seras recompensado con 25 puntos y un x2 de  tus recursos [PIEDRA],[AGUA],[MADERA]"<<endl;
+                gotoxy(1,9);
                 cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts;
+                gotoxy(38,10);
                 cout<<"Has duplicado tus recursos, ahora ";
                 MostrarInventario(Jugador);
                 decision2=false;
             }else if(opcion2<1 || opcion2>3){
-                cout<<"Por favor ingrese una opcion valida"<<endl;
+                system("cls");
+                gotoxy(30,20);
+                color(hConsole,12);
+                cout<< "Opcion Invalida" << endl;
+                color(hConsole,15);
             }else{
                 system("cls");
                 cout<<"Seguiras de largo, pero ten en cuenta que al no aportar seguiran produciendo y utilizando combustibles que poco a poco acabaran con nuestro ecosistema"<<endl;
@@ -783,28 +1274,43 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
     if(Jugador->posicion==12){
         int opcion3;
         system("cls");
+        gotoxy(1,1);
         cout<<Jugador->nombre_jugador<<" has entrado en una zona de investigacion"<<endl;
+        gotoxy(1,1);
         cout<<"En tu camino por la tundra entras en un CIA(Centro de Investigacion Ambiental), donde te proponen invertir en un proyecto, ";
+        gotoxy(1,1);
         cout<<"el cual se trata de una [ACADEMIA DE CUIDADO AMBIENTAL],donde ademas de cursar la carga academica corriente, se anadirian varios modulos con respecto al cuidado ambiental, tales como: "<<endl;
+        gotoxy(1,1);
         cout<<"El reciclaje y sus beneficios, energias no contaminantes, produccion agricola sostenible, entre otros diversos temas."<<endl;
+        gotoxy(1,1);
         cout<<"Que decidiras?"<<endl;
+        gotoxy(1,1);
         cout<<"1.Donar 5 puntos, y  3 papeles para los libros"<<endl;
+        gotoxy(1,1);
         cout<<"2.Seguir con tu camino"<<endl;
         bool decision3=true;
         while(decision3==true){
             cin>>opcion3;
             if(opcion3==1){
                 system("cls");
-                cout<<"Aceptas el proyecto, y donas lo necesario"<<endl;
                 Jugador->pts=Jugador->pts-5;
                 Jugador->inventario->papel=Jugador->inventario->papel-3;
-                cout<<"Debido a tu solidaridad con este nuevo proyecto muchos ninos y adolescentes aprenderan sobre el tema y se podra tener un mejor futuro"<<endl;
-                cout<<"Gracias a tu accion se logro progresar academicamente, seras recompensado con x2 en tus puntos "<<endl;
                 Jugador->pts=Jugador->pts*2;
+                gotoxy(1,6);
+                cout<<"Aceptas el proyecto, y donas lo necesario"<<endl;
+                gotoxy(1,7);
+                cout<<"Debido a tu solidaridad con este nuevo proyecto muchos ninos y adolescentes aprenderan sobre el tema y se podra tener un mejor futuro"<<endl;
+                gotoxy(1,8);
+                cout<<"Gracias a tu accion se logro progresar academicamente, seras recompensado con x2 en tus puntos "<<endl;
+                gotoxy(1,9);
                 cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts;
                 decision3=false;
             }else if(opcion3<1 || opcion3>3){
-                cout<<"Por favor ingrese una opcion valida"<<endl;
+                system("cls");
+                gotoxy(30,20);
+                color(hConsole,12);
+                cout<< "Opcion Invalida" << endl;
+                color(hConsole,15);
             }else{
                 system("cls");
                 cout<<"Seguiras de largo y continuaras tu camino,recuerda que es importante siempre ayudar y aportar conocimiento a los mas jovenes. El conocimiento es poder, y el poder se traduce en buenas acciones al medio ambiente"<<endl;
@@ -812,25 +1318,32 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
             }
         }
     }
-    if(Jugador->posicion==18){
+    if(Jugador->posicion==18){  //YA TERMINÉ SU IMPRESIÓN 
         int opcion4;
         system("cls");
+        gotoxy(12,14);
         cout<<Jugador->nombre_jugador<<" has entrado en una zona de conservacion"<<endl;
-        cout<<"Al entrar en la playa te encuentras con un cumulo de desechos, sobretodo de productos fabricados por plastico,podrias seguir tu camino o usando tus recursos podrias ingeniarte una solucion"<<endl;
+        gotoxy(23,16);
+        cout<<"Al entrar en la playa te encuentras con un cumulo de desechos"; 
+        gotoxy(17,17);
+        cout<<"sobretodo de productos fabricados por plastico,podrias seguir tu camino o"; 
+        gotoxy(28,18);
+        cout<<"usando tus recursos podrias ingeniarte una solucion";
+        gotoxy(15,19);
         cout<<"Si tuvieses 1 madera y 1 de metal podrias elaborar un [RECOLECTOR DE PAPELES] "<<endl;
+        gotoxy(46,21);
         cout<<"Que decidiras?"<<endl;
+        gotoxy(30,23);
         cout<<"1.Invertir tiempo y recursos en limpiar la zona"<<endl;
+        gotoxy(44,24);
         cout<<"2.Seguir de largo"<<endl;
         bool decision4=true;
         while(decision4==true){
             cin>>opcion4;
             if(opcion4==1){
                 system("cls");
-                cout<<"Con tus recursos logras obtener un [RECOLECTOR DE PAPELES],con el cual empiezas a retirar los desechos de la playa."<<endl;
                 Jugador->inventario->madera=Jugador->inventario->madera-1;
                 Jugador->inventario->metal=Jugador->inventario->metal-1;
-                cout<<"Despues de un tiempo, la totalidad de la playa se encuentra limpia"<<endl;
-                cout<<"Gracias a tu accion se logro salvar esta zona, has ganado un x2 de todos tus recursos actuales y 5 puntos"<<endl;
                 Jugador->inventario->agua=Jugador->inventario->agua*2;
                 Jugador->inventario->madera=Jugador->inventario->madera*2;
                 Jugador->inventario->metal=Jugador->inventario->metal*2;
@@ -838,15 +1351,34 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
                 Jugador->inventario->piedra=Jugador->inventario->piedra*2;
                 Jugador->inventario->semilla =Jugador->inventario->semilla*2;
                 Jugador->pts=Jugador->pts+5;
+                gotoxy(23,3);
+                cout<<"Con tus recursos logras obtener un [RECOLECTOR DE PAPELES],con"; 
+                gotoxy(28,4);
+                cout<<"el cual empiezas a retirar los desechos de la playa";
+                gotoxy(21,6);
+                cout<<"Despues de un tiempo, la totalidad de la playa se encuentra limpia"<<endl;
+                gotoxy(23,7);
+                cout<<"Gracias a tu accion se logro salvar esta zona, has ganado un x2";
+                gotoxy(12,8);
+                cout<<"de todos tus recursos actuales y 5 puntos";
+                gotoxy(23+5,9);
                 cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts;
-                cout<<"Has duplicado tus recursos, ahora ";
+                gotoxy(38,10);
+                cout<<"Has duplicado tus recursos, ahora";
                 MostrarInventario(Jugador);
                 decision4=false;
             }else if(opcion4<1 || opcion4>3){
-                cout<<"Por favor ingrese una opcion valida"<<endl;
+                system("cls");
+                gotoxy(30,20);
+                color(hConsole,12);
+                cout<< "Opcion Invalida" << endl;
+                color(hConsole,15);
             }else{
                 system("cls");
-                cout<<"Seguiras de largo,pero recuerda que debido a la contaminacion por plasticos y desechos es que la vida maritima se encuentra en peligro,considera tus acciones."<<endl;
+                gotoxy(23+5,20);
+                cout<<"Seguiras de largo,pero recuerda que debido a la contaminacion";
+                gotoxy(1,20);
+                cout<<"por plasticos y desechos es que la vida maritima se encuentra en peligro,considera tus acciones."<<endl;
                 decision4=false;
             }
         }
@@ -855,22 +1387,24 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
     if(Jugador->posicion==22){
         int opcion5;
         system("cls");
+        gotoxy(1,1);
         cout<<Jugador->nombre_jugador<<" has entrado en una zona de investigacion"<<endl;
+        gotoxy(1,1);
         cout<<"Te contacta un cientifico, el cual te propone invertir en un refugio para la cria y cuidado de especies en peligro extincion, lo cual traeria enormes beneficios a los ecosistemas donde ya no se encuentran"<<endl;
+        gotoxy(1,1);
         cout<<"Que decidiras?"<<endl;
+        gotoxy(1,1);
         cout<<"1.Invertir 10 puntos, 1 agua,1 metal,1 madera en la construccion del refugio"<<endl;
+        gotoxy(1,1);
         cout<<"2.Seguir de largo"<<endl;
         bool decision5=true;
         while(decision5==true){
             cin>>opcion5;
             if(opcion5==1){
                 system("cls");
-                cout<<"Con tus recursos logras construir [REFUGIO DE ESPECIES EN PELIGRO DE EXTINCION],con el cual especies como la nutria,el jaguar, el caiman podran vivir tranquilos"<<endl;
                 Jugador->inventario->madera=Jugador->inventario->madera-1;
                 Jugador->inventario->metal=Jugador->inventario->metal-1;
                 Jugador->inventario->agua=Jugador->inventario->agua-1;
-                cout<<"El cientifico te da las gracias por salvar a diversas especies"<<endl;
-                cout<<"Gracias a tu accion se logro salvar esta zona, has ganado un x4 en tus puntos y un +3 en recursos"<<endl;
                 Jugador->inventario->agua=Jugador->inventario->agua+2;
                 Jugador->inventario->madera=Jugador->inventario->madera+2;
                 Jugador->inventario->metal=Jugador->inventario->metal+2;
@@ -878,12 +1412,24 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
                 Jugador->inventario->piedra=Jugador->inventario->piedra+2;
                 Jugador->inventario->semilla =Jugador->inventario->semilla+2;
                 Jugador->pts=Jugador->pts*4;
+                gotoxy(1,1);
+                cout<<"Con tus recursos logras construir [REFUGIO DE ESPECIES EN PELIGRO DE EXTINCION],con el cual especies como la nutria,el jaguar, el caiman podran vivir tranquilos"<<endl;
+                gotoxy(1,1);
+                cout<<"El cientifico te da las gracias por salvar a diversas especies"<<endl;
+                gotoxy(1,1);
+                cout<<"Gracias a tu accion se logro salvar esta zona, has ganado un x4 en tus puntos y un +3 en recursos"<<endl;
+                gotoxy(1,1);
                 cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts<<endl;
+                gotoxy(1,1);
                 cout<<"Han aumentado tus recursos, ahora ";
                 MostrarInventario(Jugador);
                 decision5=false;
             }else if(opcion5<1 || opcion5>3){
-                cout<<"Por favor ingrese una opcion valida"<<endl;
+                system("cls");
+                gotoxy(30,20);
+                color(hConsole,12);
+                cout<< "Opcion Invalida" << endl;
+                color(hConsole,15);
             }else{
                 system("cls");
                 cout<<"Seguiras de largo,pero recuerda que debido a la contaminacion por plasticos y desechos es que la vida maritima se encuentra en peligro,considera tus acciones."<<endl;
@@ -894,6 +1440,7 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
 }
 
 void Trivias(Jugadores *&Jugador){
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // IMPLEMENTACIÓN DE COLORES EN LA TERMINAL
     int casilladeljugador;
     casilladeljugador=Jugador->posicion;
         // trivia pre boss es incendio forestal
@@ -1557,6 +2104,7 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero){
     while(valido==false){
             system("cls");
             mostrartablero(Tablero);
+            MostrarJugadores(JugadorInicial);
             gotoxy(21,18);
             cout<< "''"<<Jugador->nombre_jugador << "'', Que opcion deseas realizar?";
             gotoxy(18,20);
@@ -1651,9 +2199,9 @@ void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores) {
         system("cls");
         gotoxy(30,15);
         color(hConsole,12);
-        cout<< "INICIO DE LA RONDA: " << ronda_contador;
+        cout << "INICIO DE LA RONDA: " << ronda_contador;
         gotoxy(30,17);
-        cout<< "   BUENA SUERTE" << endl;
+        cout << "   BUENA SUERTE" << endl;
         delay(2);
         color(hConsole,15);
         Ronda(Tablero, lista_jugadores, fin_partida);
@@ -1664,18 +2212,18 @@ void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores) {
             gotoxy(30,15);
             cout << "LA PARTIDA HA FINALIZADO";
             gotoxy(30,17);
-            cout<<"  GRACIAS POR JUGAR ;)";
+            cout << "  GRACIAS POR JUGAR ;)";
             delay(3);
         }
         
         int respuesta;
-        gotoxy(23,18);
+        gotoxy(25,18);
         cout << "Desea continuar la partida?" << endl;
-        gotoxy(34,20);
+        gotoxy(36,20);
         cout << "1. Si" << endl;
-        gotoxy(34,21);
+        gotoxy(36,21);
         cout << "2. No" << endl;
-        gotoxy(34,23);
+        gotoxy(36,23);
         cin >> respuesta;
         if (respuesta == 1) {
             fin_partida = false;
@@ -1685,7 +2233,7 @@ void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores) {
             gotoxy(30,15);
             cout << "LA PARTIDA HA FINALIZADO";
             gotoxy(30,17);
-            cout<<"  GRACIAS POR JUGAR ;)";
+            cout << "  GRACIAS POR JUGAR ;)";
             delay(3);
             fin_partida = true;
         } else {
@@ -1694,14 +2242,11 @@ void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores) {
         ronda_contador++;
     } while (!fin_partida);
     
-    //TOP TEN
+    // TOP TEN
+    guardarTop(lista_jugadores);
 
-    
-
-    //VACIADO DE LISTA DE JUGADORES
-
-    lista_jugadores=NULL;
-
+    // VACIADO DE LISTA DE JUGADORES
+    lista_jugadores = NULL;
 }
 
 void MainMenu(Casillas **Tablero, Jugadores **lista_jugadores) {
