@@ -223,6 +223,559 @@ int flechas_menu(const char *opciones[], int n){
     return opcionSeleccionada;
 }
 
+void imprimirflechas(){
+    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
+    //FLECHAS DERECHA
+    color(hConsole,12);
+    gotoxy(54,3);
+    cout<<"|";
+    gotoxy(54,4);
+    cout<<"|";
+    gotoxy(54,5);//lista flecha 1
+    cout<<"V";
+    gotoxy(54,9);
+    cout<<"|";
+    gotoxy(54,10);
+    cout<<"|";
+    gotoxy(54,11);
+    cout<<"V";
+    //FLECHAS IZQUIERDA
+    gotoxy(23,6);
+    cout<<"|";
+    gotoxy(23,7);
+    cout<<"|";
+    gotoxy(23,8);
+    cout<<"V";
+    gotoxy(23,12);
+    cout<<"|";
+    gotoxy(23,13);
+    cout<<"|";
+    gotoxy(23,14);
+    cout<<"V";
+    color(hConsole,15);
+}    
+
+void mostrartablero(Casillas *Tablero){
+    system("cls");
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // IMPLEMENTACIÓN DE COLORES EN LA TERMINAL
+    mostrarCursor();
+    int columnas = 5, filas = 14;
+    bool izquierdaADerecha = true;
+    Casillas *mover = Tablero;
+
+    for (int i = 1; i < filas; i += 3) {
+        if (izquierdaADerecha) {
+            for (int j = 0; j < columnas; j++) {
+                if (mover->id_casillas < 10) { // ORDEN IZQUIERDA->DERECHA DE 1 DIGITO
+                    // BOSQUE
+                    if (mover->id_casillas > 0 && mover->id_casillas < 6) {
+                        gotoxy((j * 6) + 5 + 20, i+1);
+                        color(hConsole, 10);
+                        cout << "|0" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    // CIUDAD
+                    if (mover->id_casillas > 10 && mover->id_casillas < 16) {
+                        gotoxy((j * 6) + 5 + 20, i+1);
+                        color(hConsole, 15);
+                        cout << "|0" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    // TUNDRA
+                    if (mover->id_casillas > 20 && mover->id_casillas < 25) {
+                        gotoxy((j * 6) + 5 + 18, i+1);
+                        color(hConsole, 11);
+                        cout << "|0" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    if (mover->id_casillas==25) {
+                        gotoxy((j * 6) + 5 + 20, i+1);
+                        color(hConsole, 10);
+                        cout << "|" << mover->id_casillas << "|";
+                        color(hConsole, 15);
+                    }
+                } else { // ORDEN IZQUIERDA->DERECHA DE 2 DIGITOS
+                    // BOSQUE
+                    if (mover->id_casillas > 0 && mover->id_casillas < 6) {
+                        gotoxy((j * 6) + 5 + 20, i+1);
+                        color(hConsole, 10);
+                        cout << "|" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    // CIUDAD
+                    if (mover->id_casillas > 10 && mover->id_casillas < 16) {
+                        gotoxy((j * 6) + 5 + 20, i+1);
+                        color(hConsole, 15);
+                        cout << "|" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    // TUNDRA
+                    if (mover->id_casillas > 20 && mover->id_casillas < 25) {
+                        gotoxy((j * 6) + 5 + 20, i+1);
+                        color(hConsole, 11);
+                        cout << "|" << mover->id_casillas << "|";
+                        color(hConsole, 12);
+                        cout << "->";
+                        color(hConsole, 15);
+                    }
+                    if (mover->id_casillas==25) {
+                        gotoxy((j * 6) + 5 + 20, i+1);
+                        color(hConsole, 10);
+                        cout << "|" << mover->id_casillas << "|";
+                        color(hConsole, 15);
+                    }
+                }
+                mover = mover->prox;
+            }
+        } else {
+            for (int j = columnas - 1; j >= 0; j--) {
+                if (mover->id_casillas < 10) { // ORDEN DERECHA->IZQUIERDA DE 1 DIGITO
+                    // MARITIMO
+                    if (mover->id_casillas >= 6 && mover->id_casillas <= 10) {
+                        gotoxy((j * 6) + 3 + 20, i+1);
+                        color(hConsole, 12);
+                        cout << "<-";
+                        color(hConsole, 9);
+                        cout << "|0" << mover->id_casillas << "|";
+                    }
+                    // SABANA
+                    if (mover->id_casillas > 15 && mover->id_casillas < 21) {
+                        gotoxy((j * 6) + 3 + 20, i+1);
+                        color(hConsole, 12);
+                        cout << "<-";
+                        color(hConsole, 14);
+                        cout << "|0" << mover->id_casillas << "|";
+                    }
+                } else { // ORDEN DERECHA->IZQUIERDA DE 2 DIGITOS
+                    // MARITIMO
+                    if (mover->id_casillas >= 6 && mover->id_casillas <= 10) {
+                        gotoxy((j * 6) + 3 + 20, i+1);
+                        color(hConsole, 12);
+                        cout << "<-";
+                        color(hConsole, 9);
+                        cout << "|" << mover->id_casillas << "|";
+                    }
+                    // SABANA
+                    if (mover->id_casillas > 15 && mover->id_casillas < 21) {
+                        gotoxy((j * 6) + 3 + 20, i+1);
+                        color(hConsole, 12);
+                        cout << "<-";
+                        color(hConsole, 14);
+                        cout << "|" << mover->id_casillas << "|";
+                    }
+                }
+                mover = mover->prox;
+            }
+        }
+        izquierdaADerecha = !izquierdaADerecha; 
+    }
+    
+    imprimirflechas();
+}
+
+void MostrarJugadores(Jugadores *listajugadores){
+    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
+    Jugadores *mover=listajugadores;
+    while (mover!=NULL){  //CICLO QUE APLICA COLOR A CADA PUNTO DE CADA JUGADOR
+        if (mover->equipo==1){
+            color(hConsole,12);
+            if (mover->posicion==1){
+                gotoxy( 24+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==2){
+                gotoxy( 30+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==3){
+                gotoxy( 36+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==4){
+                gotoxy( 42+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==5){
+                gotoxy( 48+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==6){
+                gotoxy( 48+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==7){
+                gotoxy( 42+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==8){
+                gotoxy( 36+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==9){
+                gotoxy( 30+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==10){
+                gotoxy( 24+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==11){
+                gotoxy( 24+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==12){
+                gotoxy( 30+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==13){
+                gotoxy( 36+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==14){
+                gotoxy( 42+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==15){
+                gotoxy( 48+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==16){
+                gotoxy( 48+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==17){
+                gotoxy( 42+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==18){
+                gotoxy( 36+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==19){
+                gotoxy( 30+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==20){
+                gotoxy( 24+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==21){
+                gotoxy( 24+mover->equipo,14+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==22){
+                gotoxy( 30+mover->equipo,14+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==23){
+                gotoxy( 36+mover->equipo,14+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==24){
+                gotoxy( 42+mover->equipo,14+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==25){
+                gotoxy( 48+mover->equipo,14+1 );
+                cout<<"*";
+            }
+        }
+        
+        if (mover->equipo==2){
+            color(hConsole,9);
+            if (mover->posicion==1){
+                gotoxy( 24+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==2){
+                gotoxy( 30+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==3){
+                gotoxy( 36+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==4){
+                gotoxy( 42+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==5){
+                gotoxy( 48+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==6){
+                gotoxy( 48+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==7){
+                gotoxy( 42+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==8){
+                gotoxy( 36+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==9){
+                gotoxy( 30+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==10){
+                gotoxy( 24+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==11){
+                gotoxy( 24+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==12){
+                gotoxy( 30+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==13){
+                gotoxy( 36+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==14){
+                gotoxy( 42+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==15){
+                gotoxy( 48+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==16){
+                gotoxy( 48+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==17){
+                gotoxy( 42+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==18){
+                gotoxy( 36+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==19){
+                gotoxy( 30+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==20){
+                gotoxy( 24+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==21){
+                gotoxy( 24+mover->equipo,14+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==22){
+                gotoxy( 30+mover->equipo,14+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==23){
+                gotoxy( 36+mover->equipo,14+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==24){
+                gotoxy( 42+mover->equipo,14+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==25){
+                gotoxy( 48+mover->equipo,14+1 );
+                cout<<"*";
+            }
+        }
+        
+        if (mover->equipo==3){
+            color(hConsole,10);
+            if (mover->posicion==1){
+                gotoxy( 24+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==2){
+                gotoxy( 30+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==3){
+                gotoxy( 36+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==4){
+                gotoxy( 42+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==5){
+                gotoxy( 48+mover->equipo,2+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==6){
+                gotoxy( 48+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==7){
+                gotoxy( 42+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==8){
+                gotoxy( 36+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==9){
+                gotoxy( 30+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==10){
+                gotoxy( 24+mover->equipo,5+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==11){
+                gotoxy( 24+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==12){
+                gotoxy( 30+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==13){
+                gotoxy( 36+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==14){
+                gotoxy( 42+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==15){
+                gotoxy( 48+mover->equipo,8+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==16){
+                gotoxy( 48+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==17){
+                gotoxy( 42+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==18){
+                gotoxy( 36+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==19){
+                gotoxy( 30+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==20){
+                gotoxy( 24+mover->equipo,11+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==21){
+                gotoxy( 24+mover->equipo,14+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==22){
+                gotoxy( 30+mover->equipo,14+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==23){
+                gotoxy( 36+mover->equipo,14+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==24){
+                gotoxy( 42+mover->equipo,14+1 );
+                cout<<"*";
+            }
+            if (mover->posicion==25){
+                gotoxy( 48+mover->equipo,14+1 );
+                cout<<"*";
+            }
+        }
+        mover=mover->prox_jugador;
+    }
+    color(hConsole,15);
+}
+
+int flechas_partida(const char *opciones[], int n,Jugadores *listajugadores , Casillas *Tablero, int numronda){
+    int opcionSeleccionada = 1; 
+    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
+    int tecla;
+    bool repite = true;
+
+    do{
+        ocultarCursor();
+        system("cls");
+        mostrartablero(Tablero);
+        MostrarJugadores(listajugadores);
+        gotoxy(32,0);
+        color(hConsole,12);
+        cout << "RONDA ACTUAL: " << numronda;
+        color(hConsole, 12);
+        gotoxy(20-4, 26-8 + opcionSeleccionada); cout << "==>" << endl;
+
+        // Imprime el título del menú
+        ocultarCursor();
+        color(hConsole, 6);
+        gotoxy(29-3, 25-8); cout << "QUE OPCION DESEA UTILIZAR?"; //Hay que encontrar un mejor nombre
+        // color(hConsole, 8);
+        gotoxy(8-3,32-8); cout<<"-Usar las Teclas de las ''FLECHAS DIRECCIONALES'' para moverse por el menu";
+        gotoxy(20-3,33-8); cout<<"-Presione enter para seleccionar alguna opcion";
+        // gotoxy(12,21); cout<<"-Se recomienda aumentar el tamano de la ventana del compilador";
+        
+        // Imprime las opciones del menú
+
+        for (int i = 0; i < n; ++i) {
+            if(i==2){
+                ocultarCursor();
+                color(hConsole, 7);
+                gotoxy(24-3+9, 27-8 + i); cout << i + 1 << ") " << opciones[i];    
+            }else{
+                ocultarCursor();
+                color(hConsole, 7);
+                gotoxy(24-3, 27-8 + i); cout << i + 1 << ") " << opciones[i];
+            }
+        }
+
+      // Solo permite que se ingrese ARRIBA, ABAJO o ENTER
+
+        do {
+            ocultarCursor();
+            tecla = getch();
+        }while (tecla != ARRIBA && tecla != ABAJO && tecla != ENTER);
+        
+        switch (tecla) {
+
+            case ARRIBA:   // En caso que se presione ARRIBA 
+                opcionSeleccionada--;
+                if (opcionSeleccionada < 1) {
+                    opcionSeleccionada = n;
+                }
+            break;
+
+        case ABAJO:
+            opcionSeleccionada++;
+            if (opcionSeleccionada > n) {
+                opcionSeleccionada = 1;
+            }
+
+        break;
+
+        case ENTER:
+            repite = false;
+        break;
+        }
+    } while (repite);
+
+    return opcionSeleccionada;
+}
+
 void imprime_opciones_menu(){
     cout<<"A:  Iniciar Partida"<<endl;
     cout<<"C:  Tutorial/Instrucciones"<<endl;
@@ -308,486 +861,6 @@ void imprime_instrucciones(){
         }
     }
     system("pause");
-}
-
-void imprimirflechas(){
-    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
-    //FLECHAS DERECHA
-    color(hConsole,12);
-    gotoxy(54,2);
-    cout<<"|";
-    gotoxy(54,3);
-    cout<<"|";
-    gotoxy(54,4);//lista flecha 1
-    cout<<"V";
-    gotoxy(54,8);
-    cout<<"|";
-    gotoxy(54,9);
-    cout<<"|";
-    gotoxy(54,10);
-    cout<<"V";
-    //FLECHAS IZQUIERDA
-    gotoxy(23,5);
-    cout<<"|";
-    gotoxy(23,6);
-    cout<<"|";
-    gotoxy(23,7);
-    cout<<"V";
-    gotoxy(23,11);
-    cout<<"|";
-    gotoxy(23,12);
-    cout<<"|";
-    gotoxy(23,13);
-    cout<<"V";
-    color(hConsole,15);
-}    
-
-void MostrarJugadores(Jugadores *listajugadores){
-    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );//IMPLEMENTACIÓN DE COLORES EN LA TEMRMINAL
-    Jugadores *mover=listajugadores;
-    while (mover!=NULL){  //CICLO QUE APLICA COLOR A CADA PUNTO DE CADA JUGADOR
-        if (mover->equipo==1){
-            color(hConsole,12);
-            if (mover->posicion==1){
-                gotoxy( 24+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==2){
-                gotoxy( 30+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==3){
-                gotoxy( 36+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==4){
-                gotoxy( 42+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==5){
-                gotoxy( 48+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==6){
-                gotoxy( 48+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==7){
-                gotoxy( 42+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==8){
-                gotoxy( 36+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==9){
-                gotoxy( 30+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==10){
-                gotoxy( 24+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==11){
-                gotoxy( 24+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==12){
-                gotoxy( 30+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==13){
-                gotoxy( 36+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==14){
-                gotoxy( 42+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==15){
-                gotoxy( 48+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==16){
-                gotoxy( 48+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==17){
-                gotoxy( 42+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==18){
-                gotoxy( 36+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==19){
-                gotoxy( 30+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==20){
-                gotoxy( 24+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==21){
-                gotoxy( 24+mover->equipo,14 );
-                cout<<"*";
-            }
-            if (mover->posicion==22){
-                gotoxy( 30+mover->equipo,14 );
-                cout<<"*";
-            }
-            if (mover->posicion==23){
-                gotoxy( 36+mover->equipo,14 );
-                cout<<"*";
-            }
-            if (mover->posicion==24){
-                gotoxy( 42+mover->equipo,14 );
-                cout<<"*";
-            }
-            if (mover->posicion==25){
-                gotoxy( 48+mover->equipo,14 );
-                cout<<"*";
-            }
-        }
-        
-        if (mover->equipo==2){
-            color(hConsole,9);
-            if (mover->posicion==1){
-                gotoxy( 24+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==2){
-                gotoxy( 30+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==3){
-                gotoxy( 36+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==4){
-                gotoxy( 42+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==5){
-                gotoxy( 48+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==6){
-                gotoxy( 48+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==7){
-                gotoxy( 42+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==8){
-                gotoxy( 36+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==9){
-                gotoxy( 30+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==10){
-                gotoxy( 24+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==11){
-                gotoxy( 24+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==12){
-                gotoxy( 30+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==13){
-                gotoxy( 36+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==14){
-                gotoxy( 42+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==15){
-                gotoxy( 48+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==16){
-                gotoxy( 48+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==17){
-                gotoxy( 42+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==18){
-                gotoxy( 36+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==19){
-                gotoxy( 30+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==20){
-                gotoxy( 24+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==21){
-                gotoxy( 24+mover->equipo,14 );
-                cout<<"*";
-            }
-            if (mover->posicion==22){
-                gotoxy( 30+mover->equipo,14 );
-                cout<<"*";
-            }
-            if (mover->posicion==23){
-                gotoxy( 36+mover->equipo,14 );
-                cout<<"*";
-            }
-            if (mover->posicion==24){
-                gotoxy( 42+mover->equipo,14 );
-                cout<<"*";
-            }
-            if (mover->posicion==25){
-                gotoxy( 48+mover->equipo,14 );
-                cout<<"*";
-            }
-        }
-        
-        if (mover->equipo==3){
-            color(hConsole,10);
-            if (mover->posicion==1){
-                gotoxy( 24+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==2){
-                gotoxy( 30+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==3){
-                gotoxy( 36+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==4){
-                gotoxy( 42+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==5){
-                gotoxy( 48+mover->equipo,2 );
-                cout<<"*";
-            }
-            if (mover->posicion==6){
-                gotoxy( 48+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==7){
-                gotoxy( 42+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==8){
-                gotoxy( 36+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==9){
-                gotoxy( 30+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==10){
-                gotoxy( 24+mover->equipo,5 );
-                cout<<"*";
-            }
-            if (mover->posicion==11){
-                gotoxy( 24+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==12){
-                gotoxy( 30+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==13){
-                gotoxy( 36+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==14){
-                gotoxy( 42+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==15){
-                gotoxy( 48+mover->equipo,8 );
-                cout<<"*";
-            }
-            if (mover->posicion==16){
-                gotoxy( 48+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==17){
-                gotoxy( 42+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==18){
-                gotoxy( 36+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==19){
-                gotoxy( 30+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==20){
-                gotoxy( 24+mover->equipo,11 );
-                cout<<"*";
-            }
-            if (mover->posicion==21){
-                gotoxy( 24+mover->equipo,14 );
-                cout<<"*";
-            }
-            if (mover->posicion==22){
-                gotoxy( 30+mover->equipo,14 );
-                cout<<"*";
-            }
-            if (mover->posicion==23){
-                gotoxy( 36+mover->equipo,14 );
-                cout<<"*";
-            }
-            if (mover->posicion==24){
-                gotoxy( 42+mover->equipo,14 );
-                cout<<"*";
-            }
-            if (mover->posicion==25){
-                gotoxy( 48+mover->equipo,14 );
-                cout<<"*";
-            }
-        }
-        mover=mover->prox_jugador;
-    }
-    color(hConsole,15);
-}
-
-void mostrartablero(Casillas *Tablero){
-    system("cls");
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // IMPLEMENTACIÓN DE COLORES EN LA TERMINAL
-    mostrarCursor();
-    int columnas = 5, filas = 14;
-    bool izquierdaADerecha = true;
-    Casillas *mover = Tablero;
-
-    for (int i = 1; i < filas; i += 3) {
-        if (izquierdaADerecha) {
-            for (int j = 0; j < columnas; j++) {
-                if (mover->id_casillas < 10) { // ORDEN IZQUIERDA->DERECHA DE 1 DIGITO
-                    // BOSQUE
-                    if (mover->id_casillas > 0 && mover->id_casillas < 6) {
-                        gotoxy((j * 6) + 5 + 20, i);
-                        color(hConsole, 10);
-                        cout << "|0" << mover->id_casillas << "|";
-                        color(hConsole, 12);
-                        cout << "->";
-                        color(hConsole, 15);
-                    }
-                    // CIUDAD
-                    if (mover->id_casillas > 10 && mover->id_casillas < 16) {
-                        gotoxy((j * 6) + 5 + 20, i);
-                        color(hConsole, 15);
-                        cout << "|0" << mover->id_casillas << "|";
-                        color(hConsole, 12);
-                        cout << "->";
-                        color(hConsole, 15);
-                    }
-                    // TUNDRA
-                    if (mover->id_casillas > 20 && mover->id_casillas < 25) {
-                        gotoxy((j * 6) + 5 + 18, i);
-                        color(hConsole, 11);
-                        cout << "|0" << mover->id_casillas << "|";
-                        color(hConsole, 12);
-                        cout << "->";
-                        color(hConsole, 15);
-                    }
-                    if (mover->id_casillas==25) {
-                        gotoxy((j * 6) + 5 + 20, i);
-                        color(hConsole, 10);
-                        cout << "|" << mover->id_casillas << "|";
-                        color(hConsole, 15);
-                    }
-                } else { // ORDEN IZQUIERDA->DERECHA DE 2 DIGITOS
-                    // BOSQUE
-                    if (mover->id_casillas > 0 && mover->id_casillas < 6) {
-                        gotoxy((j * 6) + 5 + 20, i);
-                        color(hConsole, 10);
-                        cout << "|" << mover->id_casillas << "|";
-                        color(hConsole, 12);
-                        cout << "->";
-                        color(hConsole, 15);
-                    }
-                    // CIUDAD
-                    if (mover->id_casillas > 10 && mover->id_casillas < 16) {
-                        gotoxy((j * 6) + 5 + 20, i);
-                        color(hConsole, 15);
-                        cout << "|" << mover->id_casillas << "|";
-                        color(hConsole, 12);
-                        cout << "->";
-                        color(hConsole, 15);
-                    }
-                    // TUNDRA
-                    if (mover->id_casillas > 20 && mover->id_casillas < 25) {
-                        gotoxy((j * 6) + 5 + 20, i);
-                        color(hConsole, 11);
-                        cout << "|" << mover->id_casillas << "|";
-                        color(hConsole, 12);
-                        cout << "->";
-                        color(hConsole, 15);
-                    }
-                    if (mover->id_casillas==25) {
-                        gotoxy((j * 6) + 5 + 20, i);
-                        color(hConsole, 10);
-                        cout << "|" << mover->id_casillas << "|";
-                        color(hConsole, 15);
-                    }
-                }
-                mover = mover->prox;
-            }
-        } else {
-            for (int j = columnas - 1; j >= 0; j--) {
-                if (mover->id_casillas < 10) { // ORDEN DERECHA->IZQUIERDA DE 1 DIGITO
-                    // MARITIMO
-                    if (mover->id_casillas >= 6 && mover->id_casillas <= 10) {
-                        gotoxy((j * 6) + 3 + 20, i);
-                        color(hConsole, 12);
-                        cout << "<-";
-                        color(hConsole, 9);
-                        cout << "|0" << mover->id_casillas << "|";
-                    }
-                    // SABANA
-                    if (mover->id_casillas > 15 && mover->id_casillas < 21) {
-                        gotoxy((j * 6) + 3 + 20, i);
-                        color(hConsole, 12);
-                        cout << "<-";
-                        color(hConsole, 14);
-                        cout << "|0" << mover->id_casillas << "|";
-                    }
-                } else { // ORDEN DERECHA->IZQUIERDA DE 2 DIGITOS
-                    // MARITIMO
-                    if (mover->id_casillas >= 6 && mover->id_casillas <= 10) {
-                        gotoxy((j * 6) + 3 + 20, i);
-                        color(hConsole, 12);
-                        cout << "<-";
-                        color(hConsole, 9);
-                        cout << "|" << mover->id_casillas << "|";
-                    }
-                    // SABANA
-                    if (mover->id_casillas > 15 && mover->id_casillas < 21) {
-                        gotoxy((j * 6) + 3 + 20, i);
-                        color(hConsole, 12);
-                        cout << "<-";
-                        color(hConsole, 14);
-                        cout << "|" << mover->id_casillas << "|";
-                    }
-                }
-                mover = mover->prox;
-            }
-        }
-        izquierdaADerecha = !izquierdaADerecha; 
-    }
-    
-    imprimirflechas();
 }
 
 void MostrarInventario(Jugadores *&JugadorX){
@@ -2087,28 +2160,23 @@ void Jefes(Jugadores *&Jugador){
     }
 }
 
-void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero){
+void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, int numronda){
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // IMPLEMENTACIÓN DE COLORES EN LA TERMINAL
     Jugadores *Jugador = JugadorInicial;
     int opcion;
+    int n = 3; // número de opciones del Menú
+    const char *opciones[] = {"PERMANECER EN LA CASILLA ACTUAL", "MOVERTE 1 CASILLA HACIA ADELANTE", "ABRIR INVENTARIO"};
     
     bool valido;
     valido=false;
     while(valido==false){
             system("cls");
-            mostrartablero(Tablero);
-            MostrarJugadores(JugadorInicial);
             gotoxy(21,18);
             cout<< "''"<<Jugador->nombre_jugador << "'', Que opcion deseas realizar?";
             gotoxy(18,20);
-            cout<<"0- Para permanecer en la casilla actual";
-            gotoxy(18,21);
-            cout<<"1- Para moverte una casilla hacia adelante";
-            gotoxy(24,22);
-            cout<<"2- Para abrir tu inventario" << endl;
-            gotoxy(39,24);
-            cin>>opcion;
-            if (opcion == 1) {
+            opcion=flechas_partida(opciones,n,JugadorInicial,Tablero, numronda);
+            
+            if (opcion == 2) {
                 if (Jugador->ubicacion_casilla!=NULL) {
                     Jugador->ubicacion_casilla=Jugador->ubicacion_casilla->prox;
                     Jugador->posicion=Jugador->ubicacion_casilla->id_casillas;
@@ -2125,17 +2193,17 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero){
                 }
             }
 
-            if(opcion==0){
+            if(opcion==1){
                 gotoxy(21,26);
                 cout<< Jugador->nombre_jugador<<" No ha realizado movimiento..."<<endl;
                 valido=true;
             }
-            if(opcion==2){
+            if(opcion==3){
                 system("cls");
                 MostrarInventario(Jugador);
                 valido=false;
             }
-            if(opcion<0 || opcion>2){
+            if(opcion<1 || opcion>3){
                 system("cls");
                 gotoxy(30,20);
                 color(hConsole,12);
@@ -2149,8 +2217,8 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero){
     }
 }
 
-void Turno(Casillas *&Tablero, Jugadores *&jugador, bool &fin_partida) {
-    mover_jugador(jugador, Tablero);
+void Turno(Casillas *&Tablero, Jugadores *&jugador, bool &fin_partida, int numronda) {
+    mover_jugador(jugador, Tablero, numronda);
     if (jugador->posicion == 25) {
         cout << "FELICIDADES " << jugador->nombre_jugador << " has llegado al final del juego, sigue cuidando el ambiente y aprendiendo de él!" << endl;
         fin_partida = true;  
@@ -2158,10 +2226,10 @@ void Turno(Casillas *&Tablero, Jugadores *&jugador, bool &fin_partida) {
     }
 }
 
-void Ronda(Casillas *&Tablero, Jugadores *&lista_jugadores, bool &fin_partida) {
+void Ronda(Casillas *&Tablero, Jugadores *&lista_jugadores, bool &fin_partida, int numronda) {
     Jugadores *auxiliar_jugadores = lista_jugadores;
     while (auxiliar_jugadores != NULL && !fin_partida) {
-        Turno(Tablero, auxiliar_jugadores, fin_partida);
+        Turno(Tablero, auxiliar_jugadores, fin_partida, numronda);
         auxiliar_jugadores = auxiliar_jugadores->prox_jugador; 
     }
 }
@@ -2187,17 +2255,17 @@ void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores) {
     CrearListadeJugadores(lista_jugadores, Tablero, cantidad_jugadores);
 
     int ronda_contador = 1;
-    
+    system("cls");
+    gotoxy(30,15);
+    color(hConsole,12);
+    cout << "INICIO DE LA RONDA: " << ronda_contador;
+    gotoxy(30,17);
+    cout << "   BUENA SUERTE" << endl;
+    delay(2);
     do {
-        system("cls");
-        gotoxy(30,15);
-        color(hConsole,12);
-        cout << "INICIO DE LA RONDA: " << ronda_contador;
-        gotoxy(30,17);
-        cout << "   BUENA SUERTE" << endl;
-        delay(2);
         color(hConsole,15);
-        Ronda(Tablero, lista_jugadores, fin_partida);
+        system("cls");
+        Ronda(Tablero, lista_jugadores, fin_partida,ronda_contador);
         
         if (fin_partida) {
             system("cls");
