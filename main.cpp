@@ -16,8 +16,8 @@
 #define ABAJO 80
 #define ENTER 13
 #define color SetConsoleTextAttribute
-using namespace std;
 
+using namespace std;
 //Declaración de Estructuras
 
 struct Inventario{
@@ -47,6 +47,18 @@ struct Jugadores{
     string nombre_jugador;
     Inventario *inventario;
     Jugadores *prox_jugador;
+};
+
+struct Tienda{
+    int agua;
+    int metal;
+    int piedra;
+    int madera;
+    int papel;
+    int semilla;
+    int X2;
+    int X3;
+    int X4;
 };
 
 //INICIALIZACIÓN DE ESTRUCTURAS
@@ -98,7 +110,6 @@ bool TableroVacio(Casillas *inicio){
 bool JugadoresVacio(Jugadores *inicio){
     return inicio==NULL;
 }
-
 
 //CONTROL DE GRÁFICOS
 
@@ -2159,14 +2170,180 @@ void Jefes(Jugadores *&Jugador){
             }
     }
 }
+void mostrartienda(Jugadores *&Jugador){
+    system("cls");
+    cout<<"Bienvenido a la tienda, que desea comprar?"<<endl;
+    int n;
+    while(n!=7){
+        cout<<"1.Agua"<<endl;
+        cout<<"2.Metal"<<endl;
+        cout<<"3.Madera"<<endl;
+        cout<<"4.Semillas"<<endl;
+        cout<<"5.Piedras"<<endl;
+        cout<<"6.Papel"<<endl;
+        cout<<"7.Cerrar tienda"<<endl;
+        bool valido1=false;
+        cin>>n;
+        switch(n){
+            case 1:
+                cout<<"Has decidido comprar agua, cuantas quieres llevarte? cada una cuesta 1 punto hasta un maximo de 10 por jugador"<<endl;
+                int opcion1;
+                cin>>opcion1;
+                while(valido1==false){
+                    if(opcion1>10){
+                        cout<<"CANTIDAD MAXIMA EXCEDIDA,SELECCIONE CON UN MAXIMO DE 10"<<endl;
+                        valido1=false;
+                        cin>>opcion1;
+                    }else{
+                        if(Jugador->pts>=opcion1){
+                            cout<<"Cantidad valida de compra, "<<Jugador->nombre_jugador <<" ha adquirido "<<opcion1<< " aguas"<<endl;
+                            Jugador->inventario->agua+=opcion1;
+                            Jugador->pts-=opcion1;
+                            cout<<"El jugador ha cambiado "<< opcion1 <<" puntos, por "<< opcion1<< " aguas, y ahora posee "<<Jugador->pts<<" puntos y "<<Jugador->inventario->agua<<" aguas"<<endl;
+                            valido1=true;
+                        }else{
+                            cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con los puntos necesarios para realizar esta compra"<<endl;
+                            valido1=true;
+                        }
+                    }
+                }
+                break;
+            case 2:
+                cout<<"Has decidido comprar metal, cuantas quieres llevarte? cada una cuesta 1 punto hasta un maximo de 10 por jugador"<<endl;
+                int opcion2;
+                cin>>opcion2;
+                while(valido1==false){
+                    if(opcion2>10){
+                        cout<<"CANTIDAD MAXIMA EXCEDIDA,SELECCIONE CON UN MAXIMO DE 10"<<endl;
+                        valido1=false;
+                        cin>>opcion2;
+                    }else{
+                        if(Jugador->pts>=opcion2){
+                            cout<<"Cantidad valida de compra, "<<Jugador->nombre_jugador <<" ha adquirido "<<opcion2<< " aguas"<<endl;
+                            Jugador->inventario->metal+=opcion2;
+                            Jugador->pts-=opcion2;
+                            cout<<"El jugador ha cambiado "<< opcion2 <<" puntos, por "<< opcion2<< " metal, y ahora posee "<<Jugador->pts<<" puntos y "<<Jugador->inventario->metal<<" metal"<<endl;
+                            valido1=true;
+                        }else{
+                            cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con los puntos necesarios para realizar esta compra"<<endl;
+                            valido1=true;
+                        }
+                    }
+                }
+            break;
+            case 3:
+            cout<<"Has decidido comprar madera, cuantas quieres llevarte? cada una cuesta 1 punto hasta un maximo de 10 por jugador"<<endl;
+                int opcion3;
+                cin>>opcion3;
+                while(valido1==false){
+                    if(opcion3>10){
+                        cout<<"CANTIDAD MAXIMA EXCEDIDA,SELECCIONE CON UN MAXIMO DE 10"<<endl;
+                        valido1=false;
+                        cin>>opcion3;
+                    }else{
+                        if(Jugador->pts>=opcion3){
+                            cout<<"Cantidad valida de compra, "<<Jugador->nombre_jugador <<" ha adquirido "<<opcion3<< " maderas"<<endl;
+                            Jugador->inventario->madera+=opcion3;
+                            Jugador->pts-=opcion3;
+                            cout<<"El jugador ha cambiado "<< opcion3 <<" puntos, por "<< opcion3<< " maderas, y ahora posee "<<Jugador->pts<<" puntos y "<<Jugador->inventario->madera<<" maderas"<<endl;
+                            valido1=true;
+                        }else{
+                            cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con los puntos necesarios para realizar esta compra"<<endl;
+                            valido1=true;
+                        }
+                    }
+                }     
+                break;
+            case 4:
+                    cout<<"Has decidido comprar semillas, cuantas quieres llevarte? Cada una cuesta 1 punto hasta un máximo de 10 por jugador"<<endl;
+                    int opcion4;
+                    cin>>opcion4;
+                    while(valido1 == false){
+                        if(opcion4 > 10){
+                            cout<<"CANTIDAD MAXIMA EXCEDIDA, SELECCIONE CON UN MÁXIMO DE 10"<<endl;
+                            valido1 = false;
+                            cin>>opcion4;
+                        } else {
+                            if(Jugador->pts >= opcion4){
+                                cout<<"Cantidad valida de compra, "<<Jugador->nombre_jugador <<" ha adquirido "<<opcion4<< " semillas"<<endl;
+                                Jugador->inventario->semilla += opcion4;
+                                Jugador->pts -= opcion4;
+                                cout<<"El jugador ha cambiado "<< opcion4 <<" puntos por "<< opcion4<< " semillas, y ahora posee "<<Jugador->pts<<" puntos y "<<Jugador->inventario->semilla<<" semillas"<<endl;
+                                valido1 = true;
+                            } else {
+                                cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con los puntos necesarios para realizar esta compra"<<endl;
+                                valido1 = true;
+                            }
+                        }
+                    }
+                break;
+            case 5:
+                    cout<<"Has decidido comprar piedras, cuantas quieres llevarte? Cada una cuesta 1 punto hasta un máximo de 10 por jugador"<<endl;
+                    int opcion5;
+                    cin>>opcion5;
+                    while(valido1 == false){
+                        if(opcion5 > 10){
+                            cout<<"CANTIDAD MAXIMA EXCEDIDA, SELECCIONE CON UN MÁXIMO DE 10"<<endl;
+                            valido1 = false;
+                            cin>>opcion5;
+                        } else {
+                            if(Jugador->pts >= opcion5){
+                                cout<<"Cantidad válida de compra, "<<Jugador->nombre_jugador <<" ha adquirido "<<opcion5<< " piedras"<<endl;
+                                Jugador->inventario->piedra += opcion5;
+                                Jugador->pts -= opcion5;
+                                cout<<"El jugador ha cambiado "<< opcion5 <<" puntos por "<< opcion5<< " piedras, y ahora posee "<<Jugador->pts<<" puntos y "<<Jugador->inventario->piedra<<" piedras"<<endl;
+                                valido1 = true;
+                            } else {
+                                cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con los puntos necesarios para realizar esta compra"<<endl;
+                                valido1 = true;
+                                
+                            }
+                        }
+                    }
+                break;
+            case 6:
+                    cout<<"Has decidido comprar papel, cuántos quieres llevarte? Cada uno cuesta 1 punto hasta un máximo de 10 por jugador"<<endl;
+                    int opcion6;
+                    cin>>opcion6;
+                    while(valido1 == false){
+                        if(opcion6 > 10){
+                            cout<<"CANTIDAD MAXIMA EXCEDIDA, SELECCIONE CON UN MÁXIMO DE 10"<<endl;
+                            valido1 = false;
+                            cin>>opcion6;
+                            
+                        } else {
+                            if(Jugador->pts >= opcion6){
+                                cout<<"Cantidad valida de compra, "<<Jugador->nombre_jugador <<" ha adquirido "<<opcion6<< " papeles"<<endl;
+                                Jugador->inventario->papel += opcion6;
+                                Jugador->pts -= opcion6;
+                                cout<<"El jugador ha cambiado "<< opcion6 <<" puntos por "<< opcion6<< " papeles, y ahora posee "<<Jugador->pts<<" puntos y "<<Jugador->inventario->papel<<" papeles"<<endl;
+                                valido1 = true;
+                            } else {
+                                cout<<"El jugador "<<Jugador->nombre_jugador<<" no cuenta con los puntos necesarios para realizar esta compra"<<endl;
+                                valido1 = true;
+                            }
+                        }
+                    }
+                break;
+            case 7:
+            cout<<"Ha cerrado la tienda"<<endl;
+            break;
+            default: if (n < 1 || n > 7) 
+            cout << "Opcion invalida,intente nuevamente" << endl;
+            }
+
+    }
+    
+
+}
 
 void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, int numronda){
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // IMPLEMENTACIÓN DE COLORES EN LA TERMINAL
     Jugadores *Jugador = JugadorInicial;
     int opcion;
-    int n = 3; // número de opciones del Menú
-    const char *opciones[] = {"PERMANECER EN LA CASILLA ACTUAL", "MOVERTE 1 CASILLA HACIA ADELANTE", "ABRIR INVENTARIO"};
-    
+    int n = 4; // número de opciones del Menú
+
+    const char *opciones[] = {"PERMANECER EN LA CASILLA ACTUAL", "MOVERTE 1 CASILLA HACIA ADELANTE", "ABRIR INVENTARIO","  ABRIR TIENDA"};
     bool valido;
     valido=false;
     while(valido==false){
@@ -2203,7 +2380,12 @@ void mover_jugador(Jugadores *&JugadorInicial, Casillas *& Tablero, int numronda
                 MostrarInventario(Jugador);
                 valido=false;
             }
-            if(opcion<1 || opcion>3){
+            if(opcion==4){
+                system("cls");
+                mostrartienda(Jugador);
+                valido=false;
+            }
+            if(opcion<1 || opcion>4){
                 system("cls");
                 gotoxy(30,20);
                 color(hConsole,12);
