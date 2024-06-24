@@ -734,17 +734,22 @@ int flechas_partida(const char *opciones[], int n,Jugadores *listajugadores , Ca
 
         // Imprime el título del menú
         ocultarCursor();
+        color(hConsole,12);
+        gotoxy(29+2,25-9);
+        cout<<"Turno de: "<<listajugadores->nombre_jugador<<endl;
         color(hConsole, 6);
         gotoxy(29-3, 25-8); cout << "QUE OPCION DESEA UTILIZAR?"; //Hay que encontrar un mejor nombre
-        // color(hConsole, 8);
-        gotoxy(8-3,32-8); cout<<"-Usar las Teclas de las ''FLECHAS DIRECCIONALES'' para moverse por el menu";
-        gotoxy(20-3,33-8); cout<<"-Presione enter para seleccionar alguna opcion";
-        // gotoxy(12,21); cout<<"-Se recomienda aumentar el tamano de la ventana del compilador";
+        
+        color(hConsole, 12);
+        gotoxy(26-3,32-8); cout<<"Te encuentras en la posicion: "<<listajugadores->posicion;
+        color(hConsole, 8);
+        gotoxy(8-3,32-5); cout<<"-Usar las Teclas de las ''FLECHAS DIRECCIONALES'' para moverse por el menu";
+        gotoxy(20-3,33-5); cout<<"-Presione enter para seleccionar alguna opcion";
         
         // Imprime las opciones del menú
 
         for (int i = 0; i < n; ++i) {
-            if(i==2){
+            if(i==2 || i==3){
                 ocultarCursor();
                 color(hConsole, 7);
                 gotoxy(24-3+9, 27-8 + i); cout << i + 1 << ") " << opciones[i];    
@@ -909,74 +914,136 @@ void MostrarInventario(Jugadores *&JugadorX){
 
 //CONTROL DE ARCHIVOS
 
-
-void ordenarJugadoresPorPuntos(Jugadores *&lista_jugadores) {
-    if (!lista_jugadores) return;
-
-    Jugadores *actual = lista_jugadores;
-    while (actual) {
-        Jugadores *maxJugador = actual;
-        Jugadores *siguiente = actual->prox_jugador;
-
-        while (siguiente!=NULL) {
-            if (siguiente->pts > maxJugador->pts) {
-                maxJugador = siguiente;
+void ordenarJugadoresPorPuntos(vector<Jugadores*> &jugadores) {
+    int n = jugadores.size();
+    for (int i = 0; i < n - 1; ++i) {
+        for (int j = 0; j < n - i - 1; ++j) {
+            if (jugadores[j]->pts < jugadores[j + 1]->pts) {
+                swap(jugadores[j], jugadores[j + 1]);
             }
-            siguiente = siguiente->prox_jugador;
         }
+    }
+}
 
-        if (maxJugador != actual) {
-            int tempPts = maxJugador->pts;
-            maxJugador->pts = actual->pts;
-            actual->pts = tempPts;
-
-            int tempEquipo = maxJugador->equipo;
-            maxJugador->equipo = actual->equipo;
-            actual->equipo = tempEquipo;
-
-            int tempPosicion = maxJugador->posicion;
-            maxJugador->posicion = actual->posicion;
-            actual->posicion = tempPosicion;
-
-            Casillas *tempUbicacionCasilla = maxJugador->ubicacion_casilla;
-            maxJugador->ubicacion_casilla = actual->ubicacion_casilla;
-            actual->ubicacion_casilla = tempUbicacionCasilla;
-
-            string tempNombreEquipo = maxJugador->nombre_equipo;
-            maxJugador->nombre_equipo = actual->nombre_equipo;
-            actual->nombre_equipo = tempNombreEquipo;
-
-            string tempNombreJugador = maxJugador->nombre_jugador;
-            maxJugador->nombre_jugador = actual->nombre_jugador;
-            actual->nombre_jugador = tempNombreJugador;
-
-            Inventario *tempInventario = maxJugador->inventario;
-            maxJugador->inventario = actual->inventario;
-            actual->inventario = tempInventario;
+void leerTopDesdeArchivo(vector<Jugadores*> &jugadores) {
+    ifstream archivo("top_ten.txt");
+    if (archivo.is_open()) {
+        string linea;
+        while (getline(archivo, linea)) {
+            if (linea.empty() || linea[0] == '=') continue;
+            Jugadores* nuevo_jugador = new Jugadores;
+            size_t pos = linea.find(". ");
+            size_t pos_puntos = linea.find(" - Puntos: ");
+            if (pos != string::npos && pos_puntos != string::npos) {
+                nuevo_jugador->nombre_jugador = linea.substr(pos + 2, pos_puntos - (pos + 2));
+                nuevo_jugador->pts = stoi(linea.substr(pos_puntos + 11));
+                jugadores.push_back(nuevo_jugador);
+            }
         }
-
-        actual = actual->prox_jugador;
+        archivo.close();
     }
 }
 
 void guardarTop(Jugadores *lista_jugadores) {
-    ordenarJugadoresPorPuntos(lista_jugadores);
+    vector<Jugadores*> jugadores;
+    leerTopDesdeArchivo(jugadores);
+    
+    Jugadores *actual = lista_jugadores;
+    while (actual) {
+        jugadores.push_back(actual);
+        actual = actual->prox_jugador;
+    }
+
+    ordenarJugadoresPorPuntos(jugadores);
 
     ofstream archivo("top_ten.txt");
     if (archivo.is_open()) {
         archivo << "TOP MEJORES JUGADORES\n";
         archivo << "====================\n";
 
-        Jugadores *actual = lista_jugadores;
-        int contador = 0;
-        while (actual && contador < 10) {
-            archivo << contador + 1 << ". " << actual->nombre_jugador << " - Puntos: " << actual->pts << "\n";
-            actual = actual->prox_jugador;
-            contador++;
+        for (int i = 0; i < min((int)jugadores.size(), 10); ++i) {
+            archivo << i + 1 << ". " << jugadores[i]->nombre_jugador << " - Puntos: " << jugadores[i]->pts << "\n";
         }
         archivo.close();
     } else {
         cout << "No se pudo abrir el archivo para escribir el top 10.\n";
+    }
+}
+
+void guardarEstadoPartida(Jugadores *lista_jugadores) {
+    ofstream archivo("estado_partida.txt");
+    if (archivo.is_open()) {
+        Jugadores *actual = lista_jugadores;
+        while (actual) {
+            archivo << actual->nombre_jugador << "\n";
+            archivo << actual->posicion << "\n";
+            archivo << actual->inventario->agua << "\n";
+            archivo << actual->inventario->metal << "\n";
+            archivo << actual->inventario->piedra << "\n";
+            archivo << actual->inventario->madera << "\n";
+            archivo << actual->inventario->papel << "\n";
+            archivo << actual->inventario->semilla << "\n";
+            archivo << actual->pts << "\n";
+            archivo << "\n";  // Separador entre jugadores
+            actual = actual->prox_jugador;
+        }
+        archivo.close();
+        cout << "Partida guardada exitosamente.\n";
+    } else {
+        cout << "No se pudo abrir el archivo para guardar el estado de la partida.\n";
+    }
+}
+
+void inicializarTablero(Casillas *&Tablero, int num_casillas) {
+    Tablero = new Casillas;
+    Tablero->id_casillas = 1;
+    Casillas *actual = Tablero;
+    for (int i = 2; i <= num_casillas; ++i) {
+        actual->prox = new Casillas;
+        actual = actual->prox;
+        actual->id_casillas = i;
+    }
+    actual->prox = nullptr;
+}
+
+void cargarEstadoPartida(Jugadores *&lista_jugadores, Casillas *Tablero) {
+    ifstream archivo("estado_partida.txt");
+    if (archivo.is_open()) {
+        Jugadores *ultimo_jugador = nullptr;
+        string nombre;
+        while (getline(archivo, nombre)) {
+            if (nombre.empty()) continue;
+            Jugadores *nuevo_jugador = new Jugadores;
+            nuevo_jugador->nombre_jugador = nombre;
+            archivo >> nuevo_jugador->posicion;
+            nuevo_jugador->inventario = new Inventario;
+            archivo >> nuevo_jugador->inventario->agua;
+            archivo >> nuevo_jugador->inventario->metal;
+            archivo >> nuevo_jugador->inventario->piedra;
+            archivo >> nuevo_jugador->inventario->madera;
+            archivo >> nuevo_jugador->inventario->papel;
+            archivo >> nuevo_jugador->inventario->semilla;
+            archivo >> nuevo_jugador->pts;
+            archivo.ignore(); // Ignorar el salto de línea después de los puntos
+
+            // Asignar la casilla correspondiente al jugador
+            Casillas *actual_casilla = Tablero;
+            while (actual_casilla && actual_casilla->id_casillas != nuevo_jugador->posicion) {
+                actual_casilla = actual_casilla->prox;
+            }
+            nuevo_jugador->ubicacion_casilla = actual_casilla;
+
+            nuevo_jugador->prox_jugador = nullptr;
+            if (!lista_jugadores) {
+                lista_jugadores = nuevo_jugador;
+            } else {
+                ultimo_jugador->prox_jugador = nuevo_jugador;
+            }
+            ultimo_jugador = nuevo_jugador;
+        }
+        archivo.close();
+    } else {
+        cout << "No se pudo abrir el archivo para cargar el estado de la partida.\n";
     }
 }
 
@@ -2484,72 +2551,123 @@ void Ronda(Casillas *&Tablero, Jugadores *&lista_jugadores, bool &fin_partida, i
 void Partida(Casillas *&Tablero, Jugadores *&lista_jugadores) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // IMPLEMENTACIÓN DE COLORES EN LA TERMINAL
     bool fin_partida = false;
-    bool cantidadvalida = false;
-    int cantidad_jugadores;
     system("cls");
     mostrarCursor();
-    while (!cantidadvalida) {
-        gotoxy(20,15);
-        cout << "Ingrese la cantidad de jugadores de la partida: ";
-        cin >> cantidad_jugadores;
-        if (cantidad_jugadores <= 0 || cantidad_jugadores > 3) {
-            cout << "La cantidad máxima de jugadores es de 3, intente de nuevo" << endl;
-        } else {
-            cantidadvalida = true;
+
+    // Preguntar si desea jugar una nueva partida o continuar una partida guardada
+    int opcion;
+    gotoxy(20, 14);
+    color(hConsole,14);
+    cout << "Seleccione una opcion:\n";
+    gotoxy(20, 16);
+    color(hConsole,15);
+    cout << "  1. Nueva partida\n";
+    gotoxy(20-5, 17);
+    cout << "2. Continuar partida guardada\n";
+    cin >> opcion;
+
+    if (opcion == 1) {
+        // Nueva partida
+        bool cantidadvalida = false;
+        int cantidad_jugadores;
+        system("cls");
+        while (!cantidadvalida) {
+            gotoxy(20, 15);
+            cout << "Ingrese la cantidad de jugadores de la partida: ";
+            cin >> cantidad_jugadores;
+            if (cantidad_jugadores <= 0 || cantidad_jugadores > 3) {
+                cout << "La cantidad máxima de jugadores es de 3, intente de nuevo" << endl;
+            } else {
+                cantidadvalida = true;
+            }
         }
+        system("cls");
+        CrearListadeJugadores(lista_jugadores, Tablero, cantidad_jugadores);
+    } else if (opcion == 2) {
+        // Cargar partida guardada
+        cargarEstadoPartida(lista_jugadores, Tablero);
+    } else {
+        cout << "Opción no válida, iniciando nueva partida por defecto." << endl;
+        bool cantidadvalida = false;
+        int cantidad_jugadores;
+        system("cls");
+        while (!cantidadvalida) {
+            gotoxy(20, 15);
+            cout << "Ingrese la cantidad de jugadores de la partida: ";
+            cin >> cantidad_jugadores;
+            if (cantidad_jugadores <= 0 || cantidad_jugadores > 3) {
+                cout << "La cantidad máxima de jugadores es de 3, intente de nuevo" << endl;
+            } else {
+                cantidadvalida = true;
+            }
+        }
+        system("cls");
+        CrearListadeJugadores(lista_jugadores, Tablero, cantidad_jugadores);
     }
-    system("cls");
-    CrearListadeJugadores(lista_jugadores, Tablero, cantidad_jugadores);
 
     int ronda_contador = 1;
     system("cls");
-    gotoxy(30,15);
-    color(hConsole,12);
-    cout << "INICIO DE LA RONDA: " << ronda_contador;
-    gotoxy(30,17);
-    cout << "   BUENA SUERTE" << endl;
-    delay(2);
+    // gotoxy(30, 15);
+    // color(hConsole, 12);
+    // cout << "INICIO DE LA RONDA: " << ronda_contador;
+    // gotoxy(30, 17);
+    // cout << "   BUENA SUERTE" << endl;
+    // delay(2);
     do {
-        color(hConsole,15);
+        color(hConsole, 15);
         system("cls");
-        Ronda(Tablero, lista_jugadores, fin_partida,ronda_contador);
-        
+        Ronda(Tablero, lista_jugadores, fin_partida, ronda_contador);
+
         if (fin_partida) {
             system("cls");
-            color(hConsole,14);
-            gotoxy(30,15);
+            color(hConsole, 14);
+            gotoxy(30, 15);
             cout << "LA PARTIDA HA FINALIZADO";
-            gotoxy(30,17);
+            gotoxy(30, 17);
             cout << "  GRACIAS POR JUGAR ;)";
             delay(3);
         }
-        
+
         int respuesta;
-        gotoxy(25,18);
+        gotoxy(25, 18);
         cout << "Desea continuar la partida?" << endl;
-        gotoxy(36,20);
+        gotoxy(36, 20);
         cout << "1. Si" << endl;
-        gotoxy(36,21);
+        gotoxy(36, 21);
         cout << "2. No" << endl;
-        gotoxy(36,23);
+        gotoxy(36, 23);
         cin >> respuesta;
         if (respuesta == 1) {
             fin_partida = false;
         } else if (respuesta == 2) {
             system("cls");
-            color(hConsole,14);
-            gotoxy(30,15);
+            color(hConsole, 14);
+            gotoxy(30, 15);
             cout << "LA PARTIDA HA FINALIZADO";
-            gotoxy(30,17);
+            gotoxy(30, 17);
             cout << "  GRACIAS POR JUGAR ;)";
             delay(3);
             fin_partida = true;
+
+            // Preguntar si desea guardar la partida
+            int guardar_respuesta;
+            gotoxy(25, 18);
+            cout << "Desea guardar la partida para continuarla más tarde?" << endl;
+            gotoxy(36, 20);
+            cout << "1. Si" << endl;
+            gotoxy(36, 21);
+            cout << "2. No" << endl;
+            gotoxy(36, 23);
+            cin >> guardar_respuesta;
+            if (guardar_respuesta == 1) {
+                guardarEstadoPartida(lista_jugadores);
+            }
         } else {
             cout << "Ingrese una opción válida" << endl;
         }
         ronda_contador++;
     } while (!fin_partida);
-    
+
     // TOP TEN
     guardarTop(lista_jugadores);
 

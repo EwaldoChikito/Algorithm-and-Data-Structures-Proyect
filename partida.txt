@@ -1,0 +1,11 @@
+nombre-jugador
+posicion 
+agua
+metal
+piedra
+madera
+papel
+semilla
+puntos 
+
+datos del siguiente jugador
