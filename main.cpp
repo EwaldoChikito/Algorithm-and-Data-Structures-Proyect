@@ -11,6 +11,7 @@
 #include <conio.h>
 #include <ctime>
 #include <time.h>
+#include <vector>
 
 #define ARRIBA 72
 #define ABAJO 80
@@ -906,16 +907,8 @@ void MostrarInventario(Jugadores *&JugadorX){
         }
 }
 
-/*void mostrarjugadores(Jugadores *JugadorInicial){
-    Jugadores *mover=JugadorInicial;
-        while (mover != NULL){
-            cout <<" | "<< mover->nombre_jugador<<" | " <<"->";
-            mover = mover->prox_jugador;
-        }
-        cout<<"F I N"<<endl;
-    }*/
-
 //CONTROL DE ARCHIVOS
+
 
 void ordenarJugadoresPorPuntos(Jugadores *&lista_jugadores) {
     if (!lista_jugadores) return;
@@ -1239,12 +1232,12 @@ void recursosnegativos(Jugadores *&Jugador){
     }
 }
 
-void AccionesC_Investigacion(Jugadores *&Jugador){
+void AccionesC_Investigacion(Jugadores *&Jugador){ //YA TERMINÉ LA IMPRESIÓN :D
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // IMPLEMENTACIÓN DE COLORES EN LA TERMINAL
     if(Jugador->posicion==3){
         int opcion1;
         system("cls");
-        gotoxy(30,9);
+        gotoxy(23,9);
         cout<<Jugador->nombre_jugador<<" has entrado en una zona de conservacion"<<endl;
         gotoxy(23,10);
         cout<<"Te encuentras ubicado en un claro del bosque, donde se tiene un";
@@ -1298,17 +1291,22 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
     }   
     if(Jugador->posicion==7){
         int opcion2;
-        cout<<Jugador->nombre_jugador<<" has entrado en una zona de investigacion"<<endl;
         system("cls");
-        gotoxy(1,1);
-        cout<<"Al entrar en la ciudad encuentras una manifestacion pacifica en contra del uso de combustibles contaminantes,planteando la implementacion de combustibles no contaminantes. Se te acerca el lider de este grupo promocionando su idea y te pregunta "<<endl;
-        gotoxy(1,1);
+        gotoxy(23,9);
+        cout<<Jugador->nombre_jugador<<" has entrado en una zona de investigacion"<<endl;
+        gotoxy(1,10);
+        cout<<"Al entrar en la ciudad encuentras una manifestacion pacifica en contra del uso de"; 
+        gotoxy(5,11);
+        cout<<"combustibles contaminantes,planteando la implementacion de combustibles no contaminantes."<<endl; 
+        gotoxy(15,12);
+        cout<<"Se te acerca el lider de este grupo promocionando su idea y te pregunta "<<endl;
+        gotoxy(3,13);
         cout<<" [DESEAS COLABORAR ECONOMICAMENTE PARA LA FABRICACION DE COMBUSTIBLES NO CONTAMINANTES]"<<endl;
-        gotoxy(1,1);
+        gotoxy(33,15);
         cout<<"Que decidiras?"<<endl;
-        gotoxy(1,1);
+        gotoxy(19,17);
         cout<<"1.Donar 5 puntos, y adicionalmente 2 aguas"<<endl;
-        gotoxy(1,1);
+        gotoxy(29,18);
         cout<<"2.Seguir con tu camino"<<endl;
         bool decision2=true;
         while(decision2==true){
@@ -1321,15 +1319,21 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
                 Jugador->inventario->madera=Jugador->inventario->madera*2;
                 Jugador->inventario->piedra=Jugador->inventario->piedra*2;
                 Jugador->pts=Jugador->pts+25;
-                gotoxy(1,6);
+                gotoxy(2,9);
                 cout<<"Aceptas la propuesta del lider, decides contribuir economicamente a su causa"<<endl;
-                gotoxy(1,7);
-                cout<<"Te enteras que gracias a tu colaboracion ya pueden terminar la produccion de su nuevo combustible no contaminante, hecho en base a productos naturales y cierto tipo de energia"<<endl;
-                gotoxy(1,8);
-                cout<<"Gracias a tu accion se logro avanzar en el desarrollo en contra de la contaminacion por C02, seras recompensado con 25 puntos y un x2 de  tus recursos [PIEDRA],[AGUA],[MADERA]"<<endl;
-                gotoxy(1,9);
+                gotoxy(2,10);
+                cout<<"Te enteras que gracias a tu colaboracion ya pueden terminar la produccion de"<<endl; 
+                gotoxy(1,11);
+                cout<<"su nuevo combustible no contaminante, hecho en base a productos naturales y cierto tipo de energia"<<endl;
+                gotoxy(9,12);
+                cout<<"Gracias a tu accion se logro avanzar en el desarrollo en contra"<<endl; 
+                gotoxy(9,13);
+                cout<<"de la contaminacion por C02, seras recompensado con 25 puntos y"<<endl;
+                gotoxy(17,14); 
+                cout<<"un x2 de  tus recursos [PIEDRA],[AGUA],[MADERA]"<<endl;
+                gotoxy(1,15);
                 cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts;
-                gotoxy(38,10);
+                gotoxy(30,17);
                 cout<<"Has duplicado tus recursos, ahora ";
                 MostrarInventario(Jugador);
                 decision2=false;
@@ -1341,29 +1345,44 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
                 color(hConsole,15);
             }else{
                 system("cls");
-                cout<<"Seguiras de largo, pero ten en cuenta que al no aportar seguiran produciendo y utilizando combustibles que poco a poco acabaran con nuestro ecosistema"<<endl;
+                gotoxy(17,14); 
+                cout<<"Seguiras de largo, pero ten en cuenta que al no"<<endl;
+                gotoxy(17,15);
+                cout<<"seguiran produciendo y utilizando combustibles"<<endl;
+                gotoxy(17,16);
+                cout<<"que poco a poco acabaran con nuestro ecosistema"<<endl;
+                cout<<""<<endl;
                 decision2=false;
             }
         }
         
     }
-
     if(Jugador->posicion==12){
         int opcion3;
         system("cls");
-        gotoxy(1,1);
+        gotoxy(23,9);
         cout<<Jugador->nombre_jugador<<" has entrado en una zona de investigacion"<<endl;
-        gotoxy(1,1);
-        cout<<"En tu camino por la tundra entras en un CIA(Centro de Investigacion Ambiental), donde te proponen invertir en un proyecto, ";
-        gotoxy(1,1);
-        cout<<"el cual se trata de una [ACADEMIA DE CUIDADO AMBIENTAL],donde ademas de cursar la carga academica corriente, se anadirian varios modulos con respecto al cuidado ambiental, tales como: "<<endl;
-        gotoxy(1,1);
-        cout<<"El reciclaje y sus beneficios, energias no contaminantes, produccion agricola sostenible, entre otros diversos temas."<<endl;
-        gotoxy(1,1);
+        gotoxy(15,10);
+        cout<<"En tu camino por la tundra entras en un CIA(Centro"<<endl;
+        gotoxy(5,11); 
+        cout<<"de Investigacion Ambiental), donde te proponen invertir en un proyecto, ";
+        gotoxy(18,12);
+        cout<<"el cual se trata de una [ACADEMIA DE CUIDADO"<<endl;
+        gotoxy(14,13); 
+        cout<<"AMBIENTAL],donde ademas de cursar la carga academica"<<endl;
+        gotoxy(14,14);
+        cout<<"corriente, se anadirian varios modulos con respecto"<<endl;
+        gotoxy(23,15);
+        cout<<"al cuidado ambiental, tales como: "<<endl;
+        gotoxy(12,16);
+        cout<<"El reciclaje y sus beneficios, energias no contaminantes,"<<endl;
+        gotoxy(13,17);
+        cout<<"produccion agricola sostenible, entre otros diversos temas."<<endl;
+        gotoxy(33,18);
         cout<<"Que decidiras?"<<endl;
-        gotoxy(1,1);
+        gotoxy(17,19);
         cout<<"1.Donar 5 puntos, y  3 papeles para los libros"<<endl;
-        gotoxy(1,1);
+        gotoxy(29,20);
         cout<<"2.Seguir con tu camino"<<endl;
         bool decision3=true;
         while(decision3==true){
@@ -1373,13 +1392,19 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
                 Jugador->pts=Jugador->pts-5;
                 Jugador->inventario->papel=Jugador->inventario->papel-3;
                 Jugador->pts=Jugador->pts*2;
-                gotoxy(1,6);
+                gotoxy(20,9);
                 cout<<"Aceptas el proyecto, y donas lo necesario"<<endl;
-                gotoxy(1,7);
-                cout<<"Debido a tu solidaridad con este nuevo proyecto muchos ninos y adolescentes aprenderan sobre el tema y se podra tener un mejor futuro"<<endl;
-                gotoxy(1,8);
-                cout<<"Gracias a tu accion se logro progresar academicamente, seras recompensado con x2 en tus puntos "<<endl;
-                gotoxy(1,9);
+                gotoxy(17,10);
+                cout<<"Debido a tu solidaridad con este nuevo proyecto"<<endl;
+                gotoxy(14,11);
+                cout<<"muchos ninos y adolescentes aprenderan sobre el tema "<<endl;
+                gotoxy(24,12);
+                cout<<"y se podra tener un mejor futuro"<<endl;
+                gotoxy(13,13);
+                cout<<"Gracias a tu accion se logro progresar academicamente,"<<endl;
+                gotoxy(19,14);
+                cout<<"seras recompensado con x2 en tus puntos "<<endl;
+                gotoxy(20,16);
                 cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts;
                 decision3=false;
             }else if(opcion3<1 || opcion3>3){
@@ -1390,12 +1415,19 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
                 color(hConsole,15);
             }else{
                 system("cls");
-                cout<<"Seguiras de largo y continuaras tu camino,recuerda que es importante siempre ayudar y aportar conocimiento a los mas jovenes. El conocimiento es poder, y el poder se traduce en buenas acciones al medio ambiente"<<endl;
+                gotoxy(13,9);
+                cout<<"Seguiras de largo y continuaras tu camino,recuerda que"<<endl;
+                gotoxy(12,10);
+                cout<<"es importante siempre ayudar y aportar conocimiento a los"<<endl;
+                gotoxy(11,11); 
+                cout<<"mas jovenes. El conocimiento es poder, y el poder se traduce"<<endl;
+                gotoxy(22,12); 
+                cout<<"en buenas acciones al medio ambiente"<<endl;
                 decision3=false;
             }
         }
     }
-    if(Jugador->posicion==18){  //YA TERMINÉ SU IMPRESIÓN 
+    if(Jugador->posicion==18){
         int opcion4;
         system("cls");
         gotoxy(12,14);
@@ -1464,15 +1496,21 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
     if(Jugador->posicion==22){
         int opcion5;
         system("cls");
-        gotoxy(1,1);
+        gotoxy(23,9);
         cout<<Jugador->nombre_jugador<<" has entrado en una zona de investigacion"<<endl;
-        gotoxy(1,1);
-        cout<<"Te contacta un cientifico, el cual te propone invertir en un refugio para la cria y cuidado de especies en peligro extincion, lo cual traeria enormes beneficios a los ecosistemas donde ya no se encuentran"<<endl;
-        gotoxy(1,1);
+        gotoxy(17,10);
+        cout<<"Te contacta un cientifico, el cual te propone"<<endl;
+        gotoxy(17,11);
+        cout<<"invertir en un refugio para la cria y cuidado "<<endl;
+        gotoxy(16,12);
+        cout<<"de especies en peligro extincion, lo cual traeria "<<endl;
+        gotoxy(13,13);
+        cout<<"enormes beneficios a los ecosistemas donde ya no se encuentran"<<endl;
+        gotoxy(33,15);
         cout<<"Que decidiras?"<<endl;
-        gotoxy(1,1);
+        gotoxy(2,17);
         cout<<"1.Invertir 10 puntos, 1 agua,1 metal,1 madera en la construccion del refugio"<<endl;
-        gotoxy(1,1);
+        gotoxy(31,18);
         cout<<"2.Seguir de largo"<<endl;
         bool decision5=true;
         while(decision5==true){
@@ -1489,15 +1527,21 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
                 Jugador->inventario->piedra=Jugador->inventario->piedra+2;
                 Jugador->inventario->semilla =Jugador->inventario->semilla+2;
                 Jugador->pts=Jugador->pts*4;
-                gotoxy(1,1);
-                cout<<"Con tus recursos logras construir [REFUGIO DE ESPECIES EN PELIGRO DE EXTINCION],con el cual especies como la nutria,el jaguar, el caiman podran vivir tranquilos"<<endl;
-                gotoxy(1,1);
+                gotoxy(13,9);
+                cout<<"Con tus recursos logras construir [REFUGIO DE ESPECIES"<<endl;
+                gotoxy(13,10);
+                cout<<"EN PELIGRO DE EXTINCION],con el cual especies como la"<<endl;
+                gotoxy(14,11);
+                cout<<"nutria,el jaguar, el caiman podran vivir tranquilos."<<endl;
+                gotoxy(11,12);
                 cout<<"El cientifico te da las gracias por salvar a diversas especies"<<endl;
-                gotoxy(1,1);
-                cout<<"Gracias a tu accion se logro salvar esta zona, has ganado un x4 en tus puntos y un +3 en recursos"<<endl;
-                gotoxy(1,1);
+                gotoxy(14,13);
+                cout<<"Gracias a tu accion se logro salvar esta zona, has"<<endl;
+                gotoxy(14,14);
+                cout<<"ganado un x4 en tus puntos y un +3 en recursos"<<endl;
+                gotoxy(14,15);
                 cout<<Jugador->nombre_jugador<<" tus puntos ahora son: "<<Jugador->pts<<endl;
-                gotoxy(1,1);
+                gotoxy(23,16);
                 cout<<"Han aumentado tus recursos, ahora ";
                 MostrarInventario(Jugador);
                 decision5=false;
@@ -1509,7 +1553,12 @@ void AccionesC_Investigacion(Jugadores *&Jugador){
                 color(hConsole,15);
             }else{
                 system("cls");
-                cout<<"Seguiras de largo,pero recuerda que debido a la contaminacion por plasticos y desechos es que la vida maritima se encuentra en peligro,considera tus acciones."<<endl;
+                gotoxy(17,9);
+                cout<<"Seguiras de largo,pero recuerda que debido a la"<<endl;
+                gotoxy(13,10);
+                cout<<"contaminacion por plasticos y desechos es que la vida"<<endl;
+                gotoxy(12,11);
+                cout<<"maritima se encuentra en peligro,considera tus acciones."<<endl;
                 decision5=false;
             }
         }
@@ -1827,6 +1876,21 @@ void Jefes(Jugadores *&Jugador){
         int opcion1; 
         cout<<Jugador->nombre_jugador<<" SE ENCUENTRA EN EL JEFE DE LA ZONA [BOSQUE]"<<endl;
         cout<<"----------------------------------------------"<<endl;
+        gotoxy(0,0);
+        cout<<"";
+        gotoxy(0,0);
+        cout<<"";
+        gotoxy(0,0);
+        cout<<"";
+        gotoxy(0,0);
+        cout<<"";
+        gotoxy(0,0);
+        cout<<"";
+        gotoxy(0,0);
+        cout<<"";
+        gotoxy(0,0);
+        cout<<"";
+
         cout<<"Te encuentras al final del bosque, sientes la vista pesada y te empieza a costar respirar, al seguir caminando te encuentras"<<endl;
         cout<<" con un escenario desolador, un [INCENDIO FORESTAL],que esta acabando con la zona.Necesitas tomar una accion inmediata que pueda ayudar en la zona con los recursos necesarios"<<endl;
         cout<<"----------------------------------------------"<<endl;
@@ -2170,6 +2234,7 @@ void Jefes(Jugadores *&Jugador){
             }
     }
 }
+
 void mostrartienda(Jugadores *&Jugador){
     system("cls");
     cout<<"Bienvenido a la tienda, que desea comprar?"<<endl;
